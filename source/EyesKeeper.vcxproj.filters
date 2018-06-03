@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="xml">
+      <UniqueIdentifier>{f1f8d058-15f6-4aa0-afbd-999b75477f4e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pugixml\src\pugiconfig.hpp">
+      <Filter>xml</Filter>
+    </ClInclude>
+    <ClInclude Include="pugixml\src\pugixml.hpp">
+      <Filter>xml</Filter>
+    </ClInclude>
+    <ClInclude Include="activity_monitor.h" />
+    <ClInclude Include="beforepause_wnd.h" />
+    <ClInclude Include="bigpause_wnd.h" />
+    <ClInclude Include="DataLog.h" />
+    <ClInclude Include="debug_wnd.h" />
+    <ClInclude Include="excercises.h" />
+    <ClInclude Include="eyecoach_resources.h" />
+    <ClInclude Include="language_set.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="minipause_wnd.h" />
+    <ClInclude Include="oscapabilities.h" />
+    <ClInclude Include="settings_wnd.h" />
+    <ClInclude Include="statemachine.h" />
+    <ClInclude Include="task_mgr.h" />
+    <ClInclude Include="timeloc.h" />
+    <ClInclude Include="waiting_wnd.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pugixml\src\pugixml.cpp">
+      <Filter>xml</Filter>
+    </ClCompile>
+    <ClCompile Include="activity_monitor.cpp" />
+    <ClCompile Include="beforepause_wnd.cpp" />
+    <ClCompile Include="bigpause_wnd.cpp" />
+    <ClCompile Include="DataLog.cpp" />
+    <ClCompile Include="debug_wnd.cpp" />
+    <ClCompile Include="excercises.cpp" />
+    <ClCompile Include="eyecoach_resources.cpp" />
+    <ClCompile Include="language_set.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="minipause_wnd.cpp" />
+    <ClCompile Include="notification_wnd.cpp" />
+    <ClCompile Include="oscapabilities.cpp" />
+    <ClCompile Include="settings_wnd.cpp" />
+    <ClCompile Include="statemachine.cpp" />
+    <ClCompile Include="task_mgr.cpp" />
+    <ClCompile Include="timeloc.cpp" />
+    <ClCompile Include="waiting_wnd.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="notification_wnd.h" />
+  </ItemGroup>
+</Project>

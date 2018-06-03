@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<language_pack short="en" full="English" author="Alexander Garustovich" contact="eyeleoapp@gmail.com">
+	
+	<!-- Taskbar Icon and Menu -->
+	<string id="tb_menu_quit" text="Quit" />
+	<string id="tb_menu_quit_tip" text="Stop EyeLeo activity and close the application" />
+	<string id="tb_menu_pause_monitoring" text="Disable breaks for..." />
+	<string id="tb_menu_pause_monitoring_1" text="Disable for an hour" />
+	<string id="tb_menu_pause_monitoring_2" text="Disable for three hours" />
+	<string id="tb_menu_pause_monitoring_tip" text="Disable EyeLeo activity: don't show notifications and breaks" />
+	<string id="tb_menu_resume_monitoring" text="Resume activity" />
+	<string id="tb_menu_settings" text="EyeLeo Settings" />
+	<string id="tb_menu_take_break_now" text="Take long break now" />
+	
+	<string id="tb_popup_default" text="EyeLeo" />
+	<string id="tb_popup_active_1" text="EyeLeo: %s left to long break" />
+	<string id="tb_popup_paused" text="EyeLeo: suspended for %s" />
+	
+	<string id="tb_notification_first_launch" text="EyeLeo is now counting time for short and long breaks. Next long break will be in %s." />
+	<string id="tb_notification_start_after_pause" text="EyeLeo is now working. Pause ended." />
+	<string id="tb_notification_long_break" text="EyeLeo reminds you about long break coming in %s." />
+	<string id="tb_notification_auto_relax_ended" text="EyeLeo accounted your absence as a long break. Next will be in %s." />
+	
+	<string id="settings_title" text="EyeLeo settings" />
+	<string id="settings_settings_tab" text="Settings" />
+	<string id="settings_information_tab" text="Information" />
+	<string id="settings_general_panel_label" text="General" />
+	
+	<string id="settings_big_pause_label_1" text="Take long break every" />
+	<string id="settings_big_pause_value_1_1" text="20 minutes" />
+	<string id="settings_big_pause_value_1_2" text="25 minutes" />
+	<string id="settings_big_pause_value_1_3" text="30 minutes" />
+	<string id="settings_big_pause_value_1_4" text="35 minutes" />
+	<string id="settings_big_pause_value_1_5" text="40 minutes" />
+	<string id="settings_big_pause_value_1_6" text="45 minutes" />
+	<string id="settings_big_pause_value_1_7" text="50 minutes" />
+	<string id="settings_big_pause_value_1_8" text="60 minutes" />
+	<string id="settings_big_pause_value_1_9" text="90 minutes" />
+	<string id="settings_big_pause_value_1_10" text="120 minutes" />
+	
+	<string id="settings_big_pause_label_2" text="for" />
+	<string id="settings_big_pause_value_2_1" text="2 minutes" />
+	<string id="settings_big_pause_value_2_2" text="3 minutes" />
+	<string id="settings_big_pause_value_2_3" text="4 minutes" />
+	<string id="settings_big_pause_value_2_4" text="5 minutes" />
+	<string id="settings_big_pause_value_2_5" text="7 minutes" />
+	<string id="settings_big_pause_value_2_6" text="10 minutes" />
+	<string id="settings_big_pause_value_2_7" text="15 minutes" />
+	<string id="settings_big_pause_value_2_8" text="20 minutes" />
+	<string id="settings_big_pause_tooltip" text="Long break is time when you have to get rest from your computer. At that time display is dimmed." />
+	
+	<string id="settings_big_pause_warning_label" text="Notify about long break coming in" />
+	<string id="settings_big_pause_warning_value_1" text="20 seconds" />
+	<string id="settings_big_pause_warning_value_2" text="30 seconds" />
+	<string id="settings_big_pause_warning_value_3" text="1 minute" />
+	<string id="settings_big_pause_warning_value_4" text="1.5 minute" />
+	<string id="settings_big_pause_warning_tooltip" text="Preliminary notification will help you gradually prepare to Long Break." />
+	
+	<string id="settings_mini_pause_label" text="Take a short break every" />
+	<string id="settings_mini_pause_tooltip" text="Short breaks happen more often than long breaks, but they are shorter. At that time you need to perform a short eye excercise." />
+	<string id="settings_mini_pause_value_1" text="5 minutes" />
+	<string id="settings_mini_pause_value_2" text="8 minutes" />
+	<string id="settings_mini_pause_value_3" text="10 minutes" />
+	<string id="settings_mini_pause_value_4" text="15 minutes" />
+	<string id="settings_mini_pause_value_5" text="20 minutes" />
+	<string id="settings_mini_pause_value_6" text="30 minutes" />
+	
+	<string id="settings_mini_pause_duration_value_1" text="8 seconds" />
+	<string id="settings_mini_pause_duration_value_2" text="15 seconds" />
+	<string id="settings_mini_pause_duration_value_3" text="20 seconds" />
+	
+	<string id="settings_enable_sounds_label" text="Enable sounds" />
+	<string id="settings_enable_strict_mode_label" text="Enable strict mode" />
+	<string id="settings_enable_strict_mode_tooltip" text="Strict mode is designed for those who are really hard to tear away from computer. In that mode you can't ingore or postpone Long Break" />
+	<string id="settings_have_window_nearby" text="I have a window nearby" />
+	<string id="settings_have_window_nearby_tooltip" text="If this option is disabled, then excercise 'look at the window' won't be shown." />
+	<string id="settings_can_close_notifications_label" text="Let me close notifications with right mouse button" />
+	<string id="settings_can_close_notifications_tooltip" text="Enable this option if you want to have ability to close notification windows with right mouse button" />
+	<string id="settings_save_and_close_button" text="Save and Close" />
+	<string id="settings_try_short_break_button" text="Try short break" />
+	<string id="settings_try_long_break_button" text="Try long break" />
+	
+	<string id="information_info_1" text="It helps you to care about your health when you are sitting in front of a computer.{n}It reminds you to do regular breaks so that you could take a rest for your eyes, move your body and relax." />
+	<string id="information_author" text="Author: Alexander Garustovich" />
+	<string id="information_license" text="" />
+	<string id="information_info_2" text="If you have any suggestions, press 'Give feedback' button to proceed to eyeleo feedback page. Please also consider making a donation because the project is free for everybody, but not free for author. Thank you!"/>
+	<string id="information_info_3" text="" />
+	<string id="information_give_feedback_button" text="Give feedback" />
+	<string id="information_make_donation_button" text="Make a donation" />
+	
+	<!-- Mini Pause window -->
+	<string id="mini_pause_text_1_1" text="Take a short break.{n}Roll your eyes." />
+	<string id="mini_pause_text_1_2" text="Take a break.{n}Roll your eyes." />
+	<string id="mini_pause_text_1_3" text="Time for a short break.{n}Roll your eyes." />
+	<string id="mini_pause_text_1_4" text="Time for a break.{n}Roll your eyes." />
+	<string id="mini_pause_text_1_5" text="Short break!{n}Roll your eyes." />
+	
+	<string id="mini_pause_text_2_1" text="Take a short break!{n}Move eyes up and down." />
+	<string id="mini_pause_text_2_2" text="Take a break!{n}Move eyes up and down." />
+	<string id="mini_pause_text_2_3" text="Time for a short break!{n}Move eyes up and down." />
+	<string id="mini_pause_text_2_4" text="Time for a break!{n}Move eyes up and down." />
+	<string id="mini_pause_text_2_5" text="Short break!{n}Move eyes up and down." />
+	
+	<string id="mini_pause_text_3_1" text="Take a short break!{n}Move eyes left and right." />
+	<string id="mini_pause_text_3_2" text="Take a break!{n}Move eyes left and right." />
+	<string id="mini_pause_text_3_3" text="Time for a short break!{n}Move eyes left and right." />
+	<string id="mini_pause_text_3_4" text="Time for a break!{n}Move eyes left and right." />
+	<string id="mini_pause_text_3_5" text="Short break!{n}Move eyes left and right." />
+	
+	<string id="mini_pause_text_4_1" text="Take a short break!{n}Close your eyes tightly." />
+	<string id="mini_pause_text_4_2" text="Take a break!{n}Close your eyes tightly." />
+	<string id="mini_pause_text_4_3" text="Time for a short break!{n}Close your eyes tightly." />
+	<string id="mini_pause_text_4_4" text="Time for a break!{n}Close your eyes tightly." />
+	<string id="mini_pause_text_4_5" text="Short break!{n}Close your eyes tightly." />
+	
+	<string id="mini_pause_text_5_1" text="Take a short break!{n}Blink your eyes." />
+	<string id="mini_pause_text_5_2" text="Take a break!{n}Blink your eyes." />
+	<string id="mini_pause_text_5_3" text="Time for a short break!{n}Blink your eyes." />
+	<string id="mini_pause_text_5_4" text="Time for a break!{n}Blink your eyes." />
+	<string id="mini_pause_text_5_5" text="Short break!{n}Blink your eyes." />
+	
+	<string id="mini_pause_text_6_1" text="Take a short break!{n}Look at distant objects in the window." />
+	<string id="mini_pause_text_6_2" text="Take a break!{n}Look at distant objects in the window." />
+	<string id="mini_pause_text_6_3" text="Time for a short break!{n}Look at distant objects in the window." />
+	<string id="mini_pause_text_6_4" text="Time for a break!{n}Look at distant objects in the window." />
+	<string id="mini_pause_text_6_5" text="Short break!{n}Look at distant objects in the window." />
+	
+	<string id="mini_pause_text_settings" text="Did you know that you may change EyeLeo preferences?" />
+	<string id="mini_pause_text_donate" text="If you like EyeLeo, consider making a donation on eyeleo.com" />
+	<string id="mini_pause_text_tell_friend" text="If you like EyeLeo, tell your friend about it." />
+	<string id="mini_pause_text_posture" text="Keep your posture straight." />
+	<string id="mini_pause_text_check_eyeleo" text="Check out a new version of EyeLeo at eyeleo.com" />
+	
+	<!-- Before Pause window -->
+	<string id="before_pause_text" text="It's time for a long break!{n}Are you ready?" />
+	<string id="before_pause_refuse_button" text="No, thanks" />
+	<string id="before_pause_postpone_button" text="Give me 3 minutes" />
+	<string id="before_pause_accept_button" text="Start break (%d)" />
+	
+	<!-- Waiting Fullscreen window -->
+	<string id="waiting_text" text="Please minimize or close fullscreen application to start break." />
+	
+	<!-- Big Pause window -->
+	<string id="big_pause_text_1" text="It's time for a long break.{n}Stand up and move your body." />
+	<string id="big_pause_text_2" text="It's time for a long break.{n}Spend a few minutes taking rest from the display." />
+	<string id="big_pause_text_3" text="It's time for a long break.{n}Move your body and relax eyes." />
+	
+	<string id="big_pause_time_left_text" text="%s left..." />
+	
+	<string id="big_pause_skip_button" text="Skip" />
+	
+	<!-- Long Break Notification window -->
+	<string id="notification_wnd_label" text="Break in" />
+	
+	<!-- Time -->
+	<string id="hours" text="hours" />
+	<string id="hour" text="hour" />
+	<string id="minutes" text="minutes" />
+	<string id="minute" text="minute" />
+	<string id="seconds" text="seconds" />
+	<string id="second" text="second" />
+</language_pack>

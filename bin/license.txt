@@ -1,0 +1,22 @@
+                     EyeLeo v1.3
+           Copyright (c) 2010-2018 EyeLeo.com
+
+1. Terms
+This End-User License Agreement ("EULA") is a legal agreement between you (either an individual or a single entity) and EyeLeo.com. SOFTWARE identified above, which includes associated SOFTWARE components. By downloading, installing, copying, or otherwise using the SOFTWARE, you agree to be bound by the terms of this EULA. If you do not agree to the terms of this EULA, do not install or use the SOFTWARE.
+
+2. Rights
+You are granted a non-exclusive License to use this copy of EyeLeo for any purposes for an unlimited period of time. The software product under this License is provided free of charge.
+
+Even though a license fee is not paid for the use of Freeware Version software, it does not mean that there are no conditions for using such software:
+   1. The Software may be installed and used by the Licensee for any legal purpose, and on any number of systems as long as it is not sold, and all original files are included, including this license.
+   2. The Licensee will not have any proprietary rights in and to the Software. The Licensee acknowledges and agrees that the Licensor retains all copyrights and other proprietary rights in and to the Software.
+   3. Use within the scope of this License is free of charge and no royalty or licensing fees shall be paid by the Licensee.
+  
+  
+3. Restrictions
+   1. You may not reverse engineer, de-compile, or disassemble the SOFTWARE.
+   2. You may not rent, lease, lend, request donations for the SOFTWARE.
+   3. You may permanently transfer all of your rights under this EULA, provided the recipient agrees to the terms of this EULA.
+
+4. Warranty
+EyeLeo is provided "as is" without warranties of any kind, either expressed or implied, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose. The entire risk as to the quality and performance of the program is with you.

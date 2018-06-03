@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<language_pack short="ru" full="Русский" author="Александр Гарустович" contact="eyeleoapp@gmail.com">
+	
+	<!-- Taskbar Icon and Menu -->
+	<string id="tb_menu_quit" text="Выход" />
+	<string id="tb_menu_quit_tip" text="Завершить приложение" />
+	<string id="tb_menu_pause_monitoring" text="Отключить на время..." />
+	<string id="tb_menu_pause_monitoring_1" text="Отключить на 1 час" />
+	<string id="tb_menu_pause_monitoring_2" text="Отключить на 3 часа" />
+	<string id="tb_menu_pause_monitoring_tip" text="Отключить отсчет времени и не показывать сообщения 1 час" />
+	<string id="tb_menu_resume_monitoring" text="Возобновить работу" />
+	<string id="tb_menu_settings" text="Открыть настройки EyeLeo" />
+	<string id="tb_menu_take_break_now" text="Сделать перерыв сейчас" />
+	
+	<string id="tb_popup_default" text="EyeLeo" />
+	<string id="tb_popup_active_1" text="EyeLeo: %s до перерыва" />
+	<string id="tb_popup_paused" text="EyeLeo: отключен на %s" />
+	
+	<string id="tb_notification_first_launch" text="EyeLeo начал отсчитывать время до следующего большого и короткого перерыва. Следующий большой перерыв будет через %s." />
+	<string id="tb_notification_start_after_pause" text="EyeLeo снова работает, пауза закончилась." />
+	<string id="tb_notification_long_break" text="EyeLeo напоминает, что большой перерыв начинается через %s." />
+	<string id="tb_notification_auto_relax_ended" text="EyeLeo засчитал ваше отсутствие за большой перерыв. Следующий через %s." />
+	
+	<string id="settings_title" text="EyeLeo настройки" />
+	<string id="settings_settings_tab" text="Настройки" />
+	<string id="settings_information_tab" text="Информация" />
+	<string id="settings_general_panel_label" text="Общие" />
+	
+	<string id="settings_big_pause_label_1" text="Делать большой перерыв каждые" />
+	<string id="settings_big_pause_value_1_1" text="20 минут" />
+	<string id="settings_big_pause_value_1_2" text="25 минут" />
+	<string id="settings_big_pause_value_1_3" text="30 минут" />
+	<string id="settings_big_pause_value_1_4" text="35 минут" />
+	<string id="settings_big_pause_value_1_5" text="40 минут" />
+	<string id="settings_big_pause_value_1_6" text="45 минут" />
+	<string id="settings_big_pause_value_1_7" text="50 минут" />
+	<string id="settings_big_pause_value_1_8" text="60 минут" />
+	<string id="settings_big_pause_value_1_9" text="90 минут" />
+	<string id="settings_big_pause_value_1_10" text="120 минут" />
+	
+	<string id="settings_big_pause_label_2" text="на" />
+	<string id="settings_big_pause_value_2_1" text="2 минуты" />
+	<string id="settings_big_pause_value_2_2" text="3 минуты" />
+	<string id="settings_big_pause_value_2_3" text="4 минуты" />
+	<string id="settings_big_pause_value_2_4" text="5 минут" />
+	<string id="settings_big_pause_value_2_5" text="7 минут" />
+	<string id="settings_big_pause_value_2_6" text="10 минут" />
+	<string id="settings_big_pause_value_2_7" text="15 минут" />
+	<string id="settings_big_pause_value_2_8" text="20 минут" />
+	<string id="settings_big_pause_tooltip" text="Большой перерыв это время, когда вам следует отвлечься от компьютера. На этот период монитор затемняется, чтобы не было соблазна проигнорировать его." />
+	
+	<string id="settings_big_pause_warning_label" text="Предупреждать о большом перерыве за" />
+	<string id="settings_big_pause_warning_value_1" text="20 секунд" />
+	<string id="settings_big_pause_warning_value_2" text="30 секунд" />
+	<string id="settings_big_pause_warning_value_3" text="1 минуту" />
+	<string id="settings_big_pause_warning_value_4" text="1.5 минуты" />
+	<string id="settings_big_pause_warning_tooltip" text="Предварительное извещение о большом перерыве поможет вам быть готовым к нему." />
+	
+	<string id="settings_mini_pause_label" text="Делать короткие перерывы каждые" />
+	<string id="settings_mini_pause_tooltip" text="Короткие перерывы проводятся чаще больших перерывов, но их длительность - всего несколько секунд. За это время вы можете снять немного напряжения с глаз." />
+	<string id="settings_mini_pause_value_1" text="5 минуты" />
+	<string id="settings_mini_pause_value_2" text="8 минут" />
+	<string id="settings_mini_pause_value_3" text="10 минут" />
+	<string id="settings_mini_pause_value_4" text="15 минут" />
+	<string id="settings_mini_pause_value_5" text="20 минут" />
+	<string id="settings_mini_pause_value_6" text="30 минут" />
+	
+	<string id="settings_mini_pause_duration_value_1" text="8 секунд" />
+	<string id="settings_mini_pause_duration_value_2" text="15 секунд" />
+	<string id="settings_mini_pause_duration_value_2" text="20 секунд" />
+	
+	<string id="settings_enable_sounds_label" text="Включить звуки" />
+	<string id="settings_enable_strict_mode_label" text="Включить строгий режим" />
+	<string id="settings_enable_strict_mode_tooltip" text="Строгий режим добавлен для тех, кому трудно отвлечься от компьютера. В этом режиме нельзя проигнорировать или отложить перерыв." />
+	<string id="settings_have_window_nearby" text="Рядом со мной есть окно" />
+	<string id="settings_have_window_nearby_tooltip" text="Если эта опция выключена, то упражнение 'посмотрите в окно' не будет предложено." />
+	<string id="settings_can_close_notifications_label" text="Возможность закрывать окна уведомлений правой кнопкой мыши" />
+	<string id="settings_can_close_notifications_tooltip" text="Если эта опция включена, то вы сможете закрывать окна уведомлений правой кнопкой мыши" />
+	<string id="settings_save_and_close_button" text="Сохранить и Выйти" />
+	<string id="settings_try_short_break_button" text="Попробовать короткий перерыв" />
+	<string id="settings_try_long_break_button" text="Попробовать большой перерыв" />
+	
+	<string id="information_info_1" text="Это приложение, помогающее вам заботиться о своем здоровье при работе за компьютером.{n}Оно регулярно напоминает вам делать перерывы, чтобы вы могли отвлечься от монитора и снять напряжение с глаз, подвигать телом или просто расслабиться." />
+	<string id="information_author" text="Автор: Александр Гарустович" />
+	<string id="information_license" text="" />
+	<string id="information_info_2" text="Если у вас есть идеи по улучшению программы, нажмите на кнопку 'Оставить отзыв' и попадёте на страницу отзывов. Также подумайте о том, чтобы поддержать проект любой суммой денег. Для этого нажмите кнопку 'Помочь проекту'." />
+	<string id="information_info_3" text="" />
+	<string id="information_give_feedback_button" text="Оставить отзыв" />
+	<string id="information_make_donation_button" text="Помочь проекту" />
+	
+	<!-- Mini Pause window -->
+	<string id="mini_pause_text_1_1" text="Сделайте мини-перерыв.{n}Повращайте глазами." />
+	<string id="mini_pause_text_1_2" text="Время для короткого перерыва.{n}Повращайте глазами." />
+	<string id="mini_pause_text_1_3" text="Короткий перерыв!{n}Повращайте глазами." />
+	
+	<string id="mini_pause_text_2_1" text="Сделайте мини-перерыв.{n}Двигайте глазами вверх и вниз." />
+	<string id="mini_pause_text_2_2" text="Время для короткого перерыва.{n}Двигайте глазами вверх и вниз." />
+	<string id="mini_pause_text_2_3" text="Короткий перерыв!{n}Двигайте глазами вверх и вниз." />
+	
+	<string id="mini_pause_text_3_1" text="Сделайте мини-перерыв.{n}Двигайте глазами влево и вправо." />
+	<string id="mini_pause_text_3_2" text="Время для короткого перерыва.{n}Двигайте глазами влево и вправо." />
+	<string id="mini_pause_text_3_3" text="Короткий перерыв!{n}Двигайте глазами влево и вправо." />
+	
+	<string id="mini_pause_text_4_1" text="Сделайте мини-перерыв.{n}Зажмурьте глаза на несколько секунд." />
+	<string id="mini_pause_text_4_2" text="Время для короткого перерыва.{n}Зажмурьте глаза на несколько секунд." />
+	<string id="mini_pause_text_4_3" text="Короткий перерыв!{n}Зажмурьте глаза на несколько секунд." />
+	
+	<string id="mini_pause_text_5_1" text="Сделайте мини-перерыв.{n}Легко поморгайте глазами." />
+	<string id="mini_pause_text_5_2" text="Время для короткого перерыва.{n}Легко поморгайте глазами." />
+	<string id="mini_pause_text_5_3" text="Короткий перерыв!{n}Легко поморгайте глазами." />
+	
+	<string id="mini_pause_text_6_1" text="Сделайте мини-перерыв.{n}Посмотрите вдаль в окно." />
+	<string id="mini_pause_text_6_2" text="Время для короткого перерыва.{n}Посмотрите вдаль в окно." />
+	<string id="mini_pause_text_6_3" text="Короткий перерыв!{n}Посмотрите вдаль в окно." />
+	
+	<string id="mini_pause_text_settings" text="А вы знали, что можно менять настройки EyeLeo?" />
+	<string id="mini_pause_text_donate" text="Если вам нравится EyeLeo, поддержите проект пожертвованием на сайте." />
+	<string id="mini_pause_text_tell_friend" text="Если вам нравится EyeLeo, расскажите о нем другу." />
+	<string id="mini_pause_text_posture" text="На забывайте держать осанку." />
+	<string id="mini_pause_text_check_eyeleo" text="Проверьте наличие новой версии EyeLeo на ru.eyeleo.com" />
+
+	<!-- Before Pause window -->
+	<string id="before_pause_text" text="Пришло время для большого перерыва!{n}Вы готовы?" />
+	<string id="before_pause_refuse_button" text="Отказаться" />
+	<string id="before_pause_postpone_button" text="Еще 3 минуты" />
+	<string id="before_pause_accept_button" text="Перерыв! (%d)" />
+	
+	<!-- Waiting Fullscreen window -->
+	<string id="waiting_text" text="Пожалуйста, сверните или закройте полноэкранное приложение, чтобы начать перерыв." />
+	
+	<!-- Big Pause window -->
+	<string id="big_pause_text_1" text="Сейчас время большого перерыва.{n}Отдохните от монитора несколько минут." />
+	<string id="big_pause_text_2" text="Сейчас время большого перерыва.{n}Пожалуйста, встаньте и подвигайтесь." />
+	<string id="big_pause_text_3" text="Сейчас время большого перерыва.{n}Дайте глазам отдохнуть от дисплея." />
+	
+	<string id="big_pause_time_left_text" text="Осталось %s..." />
+	
+	<string id="big_pause_skip_button" text="Пропустить" />
+	
+	<!-- Long Break Notification window -->
+	<string id="notification_wnd_label" text="Перерыв через" />
+	
+	<!-- Time -->
+	<string id="hours" text="часов" />
+	<string id="hours_" text="часа" />
+	<string id="hour" text="час" />
+	<string id="minutes" text="минут" />
+	<string id="minutes_" text="минуты" />
+	<string id="minute" text="минута" />
+	<string id="seconds" text="секунд" />
+	<string id="seconds_" text="секунды" />
+	<string id="second" text="секунда" />
+	<string id="too_many_hours" text="больше часа" />
+</language_pack>
