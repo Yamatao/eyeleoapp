@@ -76,6 +76,8 @@
 	<string id="settings_have_window_nearby_tooltip" text="If this option is disabled, then excercise 'look at the window' won't be shown." />
 	<string id="settings_can_close_notifications_label" text="Let me close notifications with right mouse button" />
 	<string id="settings_can_close_notifications_tooltip" text="Enable this option if you want to have ability to close notification windows with right mouse button" />
+	<string id="settings_can_enable_inactivity_tracking" text="Enable inactivity tracking" />
+	<string id="settings_can_enable_inactivity_tracking_tooltip" text="Tracks mouse/keyboard inactivity and automaticly considers rest done" />
 	<string id="settings_save_and_close_button" text="Save and Close" />
 	<string id="settings_try_short_break_button" text="Try short break" />
 	<string id="settings_try_long_break_button" text="Try long break" />

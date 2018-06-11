@@ -56,6 +56,7 @@ Section "Install EyeLeo (required)"
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR\Langpacks
   File "Langpacks\langpack.ru.xml"
+  File "Langpacks\langpack.en.xml"
   
   SetOutPath $INSTDIR\Personages\leopard
   File "Personages\leopard\leopard_blink.png"

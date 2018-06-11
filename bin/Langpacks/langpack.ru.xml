@@ -76,6 +76,8 @@
 	<string id="settings_have_window_nearby_tooltip" text="Если эта опция выключена, то упражнение 'посмотрите в окно' не будет предложено." />
 	<string id="settings_can_close_notifications_label" text="Возможность закрывать окна уведомлений правой кнопкой мыши" />
 	<string id="settings_can_close_notifications_tooltip" text="Если эта опция включена, то вы сможете закрывать окна уведомлений правой кнопкой мыши" />
+	<string id="settings_can_enable_inactivity_tracking" text="Отслеживание активности мыши и клавиатуры" />
+	<string id="settings_can_enable_inactivity_tracking_tooltip" text="Если пользователь не использовал мышь или клавиатуру несколько минут, то считать, что он отдыхает" />
 	<string id="settings_save_and_close_button" text="Сохранить и Выйти" />
 	<string id="settings_try_short_break_button" text="Попробовать короткий перерыв" />
 	<string id="settings_try_long_break_button" text="Попробовать большой перерыв" />
