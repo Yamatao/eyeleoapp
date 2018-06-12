@@ -4,7 +4,6 @@
 #include "wx/wx.h"
 #include "wx/timer.h"
 #include "task_mgr.h"
-#include "IWindow.h"
 
 enum
 {

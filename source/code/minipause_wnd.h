@@ -4,7 +4,6 @@
 #include "wx/wx.h"
 #include "wx/timer.h"
 #include "task_mgr.h"
-#include "IWindow.h"
 
 class MiniPauseControls;
 class MiniPauseWindow : public wxFrame, public ITask
@@ -32,7 +31,6 @@ private:
 
 	EState _state;
 	
-	//wxTimer _timer;
 	MiniPauseControls * _controlsWnd;
 
 	int _timeLeft;

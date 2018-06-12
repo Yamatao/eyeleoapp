@@ -7,7 +7,7 @@
 * in accordance with the terms of the license agreement you entered into with iWin.
 */ 
 #include <stdarg.h>
-#include "DataLog.h"
+#include "logging.h"
 #ifdef WIN32
 	#include <stdio.h>
 	#include <windows.h>
@@ -49,37 +49,40 @@ wxString GetSavePath()
 	return savePath;
 }
 
-void InitializeDataLog()
+namespace logging
 {
+	void Init()
+	{
 #ifndef MASTER_RELEASE
 #ifdef WIN32
-	_wfopen_s( &dataLog, GetSavePath() + L"log.txt", L"w" );
+		_wfopen_s(&dataLog, GetSavePath() + L"log.txt", L"w");
 #else
-	dataLog = fopen( "log.txt", "w" );
+		dataLog = fopen("log.txt", "w");
 #endif
-	if ( dataLog )
-		fclose( dataLog );
-	dataLog = 0;
+		if (dataLog)
+			fclose(dataLog);
+		dataLog = 0;
 #endif
-}
+	}
 
-void LogMsg( wxString const & msg )
-{
+	void logging::msg(wxString const & msg)
+	{
 #ifndef MASTER_RELEASE
-	bool writeNewLine = true;
+		bool writeNewLine = true;
 
 #ifdef WIN32
-	_wfopen_s( &dataLog, (GetSavePath() + L"log.txt").c_str(), L"a" );
+		_wfopen_s(&dataLog, (GetSavePath() + L"log.txt").c_str(), L"a");
 #else
-	dataLog = fopen("log.txt", "a" );
+		dataLog = fopen("log.txt", "a");
 #endif
-	
-	fwrite( (const char*)msg.mb_str(wxConvUTF8), 1, msg.size(), dataLog );
-	
-	if ( writeNewLine )
-		fwrite( "\n", 1, 1, dataLog );
-	
-	fclose( dataLog );
-	dataLog = 0;
+
+		fwrite((const char*)msg.mb_str(wxConvUTF8), 1, msg.size(), dataLog);
+
+		if (writeNewLine)
+			fwrite("\n", 1, 1, dataLog);
+
+		fclose(dataLog);
+		dataLog = 0;
 #endif
+	}
 }

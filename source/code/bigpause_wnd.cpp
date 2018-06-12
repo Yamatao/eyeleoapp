@@ -6,7 +6,7 @@
 #include "language_set.h"
 #include "timeloc.h"
 #include "excercises.h"
-#include "DataLog.h"
+#include "logging.h"
 
 #ifdef WIN32
 	#include <Wtsapi32.h>
@@ -34,7 +34,7 @@ BigPauseWindow::BigPauseWindow(int displayInd) :
 {
 	SetName(std::string("BigPauseWindow") + (char)('0' + displayInd));
 
-	LogMsg("BigPauseWindow::BigPauseWindow");
+	logging::msg("BigPauseWindow::BigPauseWindow");
 }
 
 void BigPauseWindow::Init()
@@ -46,7 +46,7 @@ void BigPauseWindow::Init()
 
 	SetPosition(displayRect.GetPosition());
 
-	//LogMsg(wxString::Format("BigPauseWindow init displayInd=%d, x=%d, y=%d, w=%d, h=%d", _displayInd, displayRect.GetPosition().x, displayRect.GetPosition().y, displayRect.GetSize().GetWidth(), displayRect.GetSize().GetHeight()));
+	//logging::msg(wxString::Format("BigPauseWindow init displayInd=%d, x=%d, y=%d, w=%d, h=%d", _displayInd, displayRect.GetPosition().x, displayRect.GetPosition().y, displayRect.GetSize().GetWidth(), displayRect.GetSize().GetHeight()));
 
 	_showing = true;
 	_hiding = false;
@@ -82,7 +82,7 @@ void BigPauseWindow::Init()
 		int ind = 1;
 		while (ind < 20)
 		{
-			if (!langPack->has(wxString::Format(L"big_pause_text_%d", ind)))
+			if (!langPack->Has(wxString::Format(L"big_pause_text_%d", ind)))
 			{
 				ind--;
 				break;
@@ -91,7 +91,7 @@ void BigPauseWindow::Init()
 		}
 
 		if (ind > 0)
-			text->SetLabel(langPack->get(wxString::Format(L"big_pause_text_%d", rand() % ind + 1)));
+			text->SetLabel(langPack->Get(wxString::Format(L"big_pause_text_%d", rand() % ind + 1)));
 
 		vsizer->Add(text);
 		vsizer->AddSpacer(50);
@@ -105,7 +105,7 @@ void BigPauseWindow::Init()
 		timeText->SetSize(200, 30);
 		_timeText = timeText;
 
-		wxButton * btnSkip = new wxButton(this, ID_BTN_SKIP, langPack->get("big_pause_skip_button"));
+		wxButton * btnSkip = new wxButton(this, ID_BTN_SKIP, langPack->Get("big_pause_skip_button"));
 		btnSkip->SetFont(wxFont(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false));
 		btnSkip->SetBackgroundColour(wxColor(255, 255, 255, 0));
 		btnSkip->SetBackgroundStyle(wxBG_STYLE_COLOUR);
@@ -141,7 +141,7 @@ BigPauseWindow::~BigPauseWindow()
 
 	getApp()->OnBigPauseWindowClosed(this);
 
-	LogMsg("BigPauseWindow::~BigPauseWindow end");
+	logging::msg("BigPauseWindow::~BigPauseWindow end");
 }
 
 void BigPauseWindow::SetBreakDuration(int seconds)
@@ -161,7 +161,7 @@ void BigPauseWindow::UpdateTimeLabel()
 	}
 	else
 	{
-		wxString str = wxString::Format(langPack->get("big_pause_time_left_text"), getTimeStr(_breakTimeLeft, SECONDS, getApp()->getLang()));
+		wxString str = wxString::Format(langPack->Get("big_pause_time_left_text"), getTimeStr(_breakTimeLeft, SECONDS, getApp()->getLang()));
 		if (str != _timeText->GetLabel())
 		{
 			_timeText->SetLabel(str);
@@ -222,7 +222,7 @@ void BigPauseWindow::ExecuteTask(float f, long time_went)
 			_preventClosing = false;
 			Close();
 
-			LogMsg(wxString::Format("BigPauseWindow (%s)::Update -> Close", GetName()));
+			logging::msg(wxString::Format("BigPauseWindow (%s)::Update -> Close", GetName()));
 		}
 		else
 		{
@@ -262,7 +262,7 @@ WXLRESULT BigPauseWindow::MSWWindowProc(WXUINT message, WXWPARAM wParam, WXLPARA
 
 void BigPauseWindow::Hide()
 {
-	LogMsg("BigPauseWindow::Hide");
+	logging::msg("BigPauseWindow::Hide");
 
 	if ( _hiding )
 		return;
@@ -280,7 +280,7 @@ void BigPauseWindow::Hide()
 
 void BigPauseWindow::OnSkipClicked(wxCommandEvent &)
 {
-	LogMsg("BigPauseWindow::OnSkipClicked");
+	logging::msg("BigPauseWindow::OnSkipClicked");
 
 	getApp()->OnSkipBigPauseClicked();
 }

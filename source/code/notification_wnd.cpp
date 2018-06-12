@@ -197,7 +197,7 @@ void NotificationWindowLook::Init(int displayInd, unsigned int showCount)
 	txt->SetFont(wxFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false));
 	txt->SetForegroundColour(wxColour(255, 255, 255, 255));
 	txt->SetPosition(wxPoint(89, 13));
-	txt->SetLabel(langPack->get(L"notification_wnd_label"));
+	txt->SetLabel(langPack->Get(L"notification_wnd_label"));
 
 	_txtTime = new wxStaticText(this, wxID_ANY, L"", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
 	_txtTime->SetFont(wxFont(14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false));

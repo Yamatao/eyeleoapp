@@ -4,7 +4,7 @@
 #include "wx/button.h"
 #include "image_resources.h"
 #include "language_set.h"
-#include "DataLog.h"
+#include "logging.h"
 #include "settings.h"
 
 BEGIN_EVENT_TABLE(BeforePauseWindow, wxFrame)
@@ -47,7 +47,7 @@ void BeforePauseWindow::Init()
 	wxRect displayRect = osCaps.displays[_displayInd].clientArea;
 	SetPosition(wxPoint(displayRect.GetX() + displayRect.GetWidth() / 2 - GetSize().GetX() / 2, displayRect.GetY() + displayRect.GetHeight() / 2 - GetSize().GetY() / 2));
 
-	wxStaticText * txt = new wxStaticText(this, wxID_ANY, langPack->get("before_pause_text"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
+	wxStaticText * txt = new wxStaticText(this, wxID_ANY, langPack->Get("before_pause_text"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);
 	wxFont font(15, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false);
 	txt->SetFont(font);
 	txt->SetBackgroundStyle(wxBG_STYLE_COLOUR);
@@ -62,7 +62,7 @@ void BeforePauseWindow::Init()
 	_btnReady->SetBackgroundStyle(wxBG_STYLE_COLOUR);
 	UpdateReadyTimer();
 
-	wxButton * btnPostpone = new wxButton(this, ID_BEFORE_PAUSE_GIVE_ME_TIME, langPack->get("before_pause_postpone_button"));
+	wxButton * btnPostpone = new wxButton(this, ID_BEFORE_PAUSE_GIVE_ME_TIME, langPack->Get("before_pause_postpone_button"));
 	btnPostpone->SetBackgroundColour(wxColor(255, 255, 255, 0));
 	btnPostpone->SetBackgroundStyle(wxBG_STYLE_COLOUR);
 
@@ -73,7 +73,7 @@ void BeforePauseWindow::Init()
 	}
 	else
 	{
-		wxButton * btnRefuse = new wxButton(this, ID_BEFORE_PAUSE_NO_THANKS, langPack->get("before_pause_refuse_button"));
+		wxButton * btnRefuse = new wxButton(this, ID_BEFORE_PAUSE_NO_THANKS, langPack->Get("before_pause_refuse_button"));
 		btnRefuse->SetBackgroundColour(wxColor(255, 255, 255, 0));
 		btnRefuse->SetBackgroundStyle(wxBG_STYLE_COLOUR);
 
@@ -91,7 +91,7 @@ void BeforePauseWindow::Init()
 
 BeforePauseWindow::~BeforePauseWindow()
 {
-	LogMsg("BeforePauseWindow::~BeforePauseWindow");
+	logging::msg("BeforePauseWindow::~BeforePauseWindow");
 
 	if (!getApp()->isFinished())
 		g_TaskMgr->RemoveTasks(GetName());
@@ -102,7 +102,7 @@ BeforePauseWindow::~BeforePauseWindow()
 void BeforePauseWindow::UpdateReadyTimer()
 {
 	int iReadyTimer = (int)(_readyTimer + 1.0f);
-	wxString readyText = wxString::Format(langPack->get("before_pause_accept_button"), iReadyTimer);
+	wxString readyText = wxString::Format(langPack->Get("before_pause_accept_button"), iReadyTimer);
 	_btnReady->SetLabel(readyText);
 }
 
@@ -213,6 +213,6 @@ void BeforePauseWindow::OnPaint(wxPaintEvent& WXUNUSED(evt))
 
 void BeforePauseWindow::Hide()
 {
-	LogMsg("BeforePauseWindow::Hide");
+	logging::msg("BeforePauseWindow::Hide");
 	Destroy();
 }

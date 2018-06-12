@@ -20,7 +20,7 @@
 #include "language_set.h"
 #include "debug_wnd.h"
 #include "excercises.h"
-#include "DataLog.h"
+#include "logging.h"
 #include "settings.h"
 #include <algorithm>
 
@@ -107,7 +107,7 @@ bool EyeApp::OnInit()
 	if (!IsOnlyInstance())
 		return false;
 
-	InitializeDataLog();
+	logging::Init();
 	
 	srand((unsigned)time(0));
 	
@@ -214,8 +214,8 @@ bool EyeApp::OnInit()
 	//_debugWindow->Show(true);
 
 	int big_pause_seconds = _timeLeftToBigPause / 1000;
-	wxString text = wxString::Format(langPack->get("tb_notification_first_launch"), getTimeStr(big_pause_seconds, SECONDS, _lang));
-	_taskBarIcon->ShowBalloon(langPack->get("tb_popup_default"), text, 1000 * 10, wxICON_INFORMATION);
+	wxString text = wxString::Format(langPack->Get("tb_notification_first_launch"), getTimeStr(big_pause_seconds, SECONDS, _lang));
+	_taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), text, 1000 * 10, wxICON_INFORMATION);
 	
 	return true;
 }
@@ -268,7 +268,7 @@ wxString EyeApp::GetSavePath() const
 
 void EyeApp::RestartBigPauseInterval()
 {
-	LogMsg("RestartBigPauseInterval");
+	logging::msg("RestartBigPauseInterval");
 
 	_postponeCount = 0;
 	_inactivityTime = 0;
@@ -286,7 +286,7 @@ void EyeApp::RestartBigPauseInterval()
 
 void EyeApp::SetBigPauseTime(long ms)
 {
-	LogMsg(wxString::Format(L"SetBigPauseTime to %d", ms));
+	logging::msg(wxString::Format(L"SetBigPauseTime to %d", ms));
 	
 	_postponeCount = 0;
 	_inactivityTime = 0;
@@ -297,7 +297,7 @@ void EyeApp::SetBigPauseTime(long ms)
 	}
 	else if (ms > 1000 * 60 * _bigPauseInterval) // not more current duration setting (bug check)
 	{
-		LogMsg(wxString::Format(L"Error! SetBigPauseTime"));
+		logging::msg(wxString::Format(L"Error! SetBigPauseTime"));
 		ms = 1000 * 60 * _bigPauseInterval;
 	}
 
@@ -313,7 +313,7 @@ void EyeApp::SetBigPauseTime(long ms)
 
 void EyeApp::RestartMiniPauseInterval()
 {
-	LogMsg("RestartMiniPauseInterval");
+	logging::msg("RestartMiniPauseInterval");
 
 	if (_enableMiniPause)
 		_timeLeftToMiniPause = _miniPauseInterval * 1000 * 60;
@@ -325,7 +325,7 @@ void EyeApp::RestartMiniPauseInterval()
 
 void EyeApp::SetMiniPauseTime(long ms)
 {
-	LogMsg(wxString::Format(L"SetMiniPauseTime to %d", ms));
+	logging::msg(wxString::Format(L"SetMiniPauseTime to %d", ms));
 
 	if (ms < 1000 * 91)
 		ms = 1000 * 91;
@@ -349,24 +349,24 @@ void EyeApp::OnUserActivity()
 	
 	if (GetNextState() == STATE_AUTO_RELAX)
 	{
-		LogMsg("OnUserActivity ended auto-relax");
+		logging::msg("OnUserActivity ended auto-relax");
 		ApplySettings();
 
 		int big_pause_seconds = _timeLeftToBigPause / 1000;
-		wxString text = wxString::Format(langPack->get("tb_notification_auto_relax_ended"), getTimeStr(big_pause_seconds, SECONDS, _lang));
-		_taskBarIcon->ShowBalloon(langPack->get("tb_popup_default"), text, 1000 * 8, wxICON_INFORMATION);
+		wxString text = wxString::Format(langPack->Get("tb_notification_auto_relax_ended"), getTimeStr(big_pause_seconds, SECONDS, _lang));
+		_taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), text, 1000 * 8, wxICON_INFORMATION);
 	}
 }
 
 // Check if full screen app is running, returns display number or -1 as 'display'
 bool EyeApp::IsFullscreenAppRunning(int * display, HWND * fullscreenWndHandle) const
 {
-	LogMsg("IsFullscreenAppRunning");
+	logging::msg("IsFullscreenAppRunning");
 	
     HWND hWnd = GetForegroundWindow();
 	if (!hWnd)
 	{
-		LogMsg("IsFullscreenAppRunning failed 0");
+		logging::msg("IsFullscreenAppRunning failed 0");
 		return false;
 	}
 
@@ -374,32 +374,32 @@ bool EyeApp::IsFullscreenAppRunning(int * display, HWND * fullscreenWndHandle) c
 	HWND hShell = GetShellWindow();
 	if (hWnd == hDesktop || hWnd == hShell)
 	{
-		LogMsg("IsFullscreenAppRunning failed 1");
+		logging::msg("IsFullscreenAppRunning failed 1");
 		return false;
 	}
 
 	if (!IsWindowVisible(hWnd) || IsIconic(hWnd))
 	{
-		LogMsg("IsFullscreenAppRunning failed 2");
+		logging::msg("IsFullscreenAppRunning failed 2");
 		return false;
 	}
 	
 	RECT wndArea;
 	if (!GetWindowRect(hWnd, &wndArea))
 	{
-		LogMsg("IsFullscreenAppRunning failed 3");
+		logging::msg("IsFullscreenAppRunning failed 3");
 		return false;
 	}
 
 	refillResolutionParams();
 
-	LogMsg(wxString::Format("wndArea (%d, %d), (%d, %d)", wndArea.left, wndArea.right, wndArea.top, wndArea.bottom));
+	logging::msg(wxString::Format("wndArea (%d, %d), (%d, %d)", wndArea.left, wndArea.right, wndArea.top, wndArea.bottom));
 
 	for (int d = 0; d < osCaps.numDisplays; ++d)
 	{
 		wxRect displayArea = osCaps.displays[d].geometry;
 		
-		LogMsg(wxString::Format("%d) displayArea (%d, %d, %d, %d)", d, displayArea.x, displayArea.y, displayArea.width, displayArea.height));
+		logging::msg(wxString::Format("%d) displayArea (%d, %d, %d, %d)", d, displayArea.x, displayArea.y, displayArea.width, displayArea.height));
 		
 		if (wndArea.left == displayArea.x &&
 			wndArea.top == displayArea.y &&
@@ -410,7 +410,7 @@ bool EyeApp::IsFullscreenAppRunning(int * display, HWND * fullscreenWndHandle) c
 				*display = d;
 			if (fullscreenWndHandle)
 				*fullscreenWndHandle = hWnd;
-			LogMsg(wxString::Format("fullscreen app is at disp %d", d));
+			logging::msg(wxString::Format("fullscreen app is at disp %d", d));
 			return true;
 		}
 	}
@@ -429,7 +429,7 @@ void EyeApp::UpdateTaskbarText()
 	{
 		int secs = _inactivityTime / 1000;
 		//secs = (secs <= 50) ? secs : (secs + 59);
-		wxString text = wxString::Format(langPack->get("tb_popup_paused"), getTimeStr(secs, SECONDS, _lang));
+		wxString text = wxString::Format(langPack->Get("tb_popup_paused"), getTimeStr(secs, SECONDS, _lang));
 		_taskBarIcon->UpdateTooltip(text);
 		return;
 	}
@@ -438,12 +438,12 @@ void EyeApp::UpdateTaskbarText()
 	{
 		int secs = _timeLeftToBigPause / 1000;
 		//secs = (secs <= 50) ? secs : (secs + 59);
-		wxString text = wxString::Format(langPack->get("tb_popup_active_1"), getTimeStr(secs, SECONDS, _lang));
+		wxString text = wxString::Format(langPack->Get("tb_popup_active_1"), getTimeStr(secs, SECONDS, _lang));
 		_taskBarIcon->UpdateTooltip(text);
 	}
 	else
 	{
-		_taskBarIcon->UpdateTooltip(langPack->get("tb_popup_default"));
+		_taskBarIcon->UpdateTooltip(langPack->Get("tb_popup_default"));
 	}
 }
 
@@ -482,7 +482,7 @@ void EyeApp::OnTaskEvent(wxCommandEvent &c)
 
 	if (pl->check != 12345)
 	{
-		LogMsg(wxString::Format("Detected wrong event! pl=%x", pl));
+		logging::msg(wxString::Format("Detected wrong event! pl=%x", pl));
 		assert(false);
 	}
 
@@ -561,7 +561,7 @@ void EyeApp::ExecuteTask(float f, long time_went)
 			_inactivityTime -= time_went * multiplier;
 			if (_inactivityTime <= 0)
 			{
-				_taskBarIcon->ShowBalloon(langPack->get("tb_popup_default"), langPack->get("tb_notification_start_after_pause"), 1000 * 10, wxICON_INFORMATION);
+				_taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), langPack->Get("tb_notification_start_after_pause"), 1000 * 10, wxICON_INFORMATION);
 				RestartBigPauseInterval();
 				RestartMiniPauseInterval();
 
@@ -574,8 +574,8 @@ void EyeApp::ExecuteTask(float f, long time_went)
 
 	case STATE_FIRST_LAUNCH:
 		{
-			wxString text = wxString::Format(langPack->get("tb_notification_first_launch"), getTimeStr(_bigPauseInterval, MINUTES, _lang));
-			_taskBarIcon->ShowBalloon(langPack->get("tb_popup_default"), text, 1000 * 10, wxICON_INFORMATION);
+			wxString text = wxString::Format(langPack->Get("tb_notification_first_launch"), getTimeStr(_bigPauseInterval, MINUTES, _lang));
+			_taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), text, 1000 * 10, wxICON_INFORMATION);
 
 			_firstLaunch = false;
 
@@ -587,7 +587,7 @@ void EyeApp::ExecuteTask(float f, long time_went)
 	case STATE_IDLE:
 		if (_enableBigPause || _enableMiniPause)
 		{
-			//LogMsg(wxString::Format("idle: _timeLeftToBigPause=%d, _timeLeftToMiniPause=%d, _inactivityTime=%d", _timeLeftToBigPause, _timeLeftToMiniPause, _inactivityTime));
+			//logging::msg(wxString::Format("idle: _timeLeftToBigPause=%d, _timeLeftToMiniPause=%d, _inactivityTime=%d", _timeLeftToBigPause, _timeLeftToMiniPause, _inactivityTime));
 			
 			RepeatState();
 			
@@ -644,7 +644,7 @@ void EyeApp::ExecuteTask(float f, long time_went)
 								wnd->Show(true);
 								_notificationWnd = wnd;
 
-								LogMsg(wxString("Notification window opened"));
+								logging::msg(wxString("Notification window opened"));
 
 								_showedLongBreakCountdown = true;
 								//_fastMode = false;
@@ -686,7 +686,7 @@ void EyeApp::ExecuteTask(float f, long time_went)
 	
 	case STATE_WAITING_SCREEN:
 		{
-			//LogMsg(wxString::Format("waiting: _fullscreenBlockDuration=%d", _fullscreenBlockDuration));
+			//logging::msg(wxString::Format("waiting: _fullscreenBlockDuration=%d", _fullscreenBlockDuration));
 			RepeatState();
 			
 			int multiplier = _fastMode ? 1 : 1;
@@ -722,7 +722,7 @@ void EyeApp::ExecuteTask(float f, long time_went)
 	
 	case STATE_START_BIG_PAUSE:
 		{
-			//LogMsg(wxString("start big pause:"));
+			//logging::msg(wxString("start big pause:"));
 			if (_enableStrictMode)
 			{
 				HWND hwnd;
@@ -756,7 +756,7 @@ void EyeApp::ExecuteTask(float f, long time_went)
 	
 	case STATE_AUTO_RELAX:
 		RepeatState();
-		//LogMsg(wxString("auto relax:"));
+		//logging::msg(wxString("auto relax:"));
 		_inactivityTime += time_went;
 		
 		if (!CheckInactivity())
@@ -770,7 +770,7 @@ void EyeApp::ExecuteTask(float f, long time_went)
 	
 	case STATE_RELAXING:
 		{
-			//LogMsg(wxString::Format("relaxing: _relaxingTimeLeft=%d", _relaxingTimeLeft));
+			//logging::msg(wxString::Format("relaxing: _relaxingTimeLeft=%d", _relaxingTimeLeft));
 
 			int multiplier = _fastMode ? 1 : 1;
 			_relaxingTimeLeft -= time_went * multiplier;
@@ -855,7 +855,7 @@ void EyeApp::RefuseBigPause()
 
 void EyeApp::AutoRelax()
 {
-	LogMsg("AutoRelax");
+	logging::msg("AutoRelax");
 
 	UninstallActivityMonitor();
 	InstallActivityMonitor();
@@ -874,11 +874,11 @@ void EyeApp::StartBigPause()
 {
 	if (!_bigPauseWnds.empty())
 	{
-		// we should only get here from Settings Wnd
+		// we should only Get here from Settings Wnd
 		return;
 	}
 	
-	LogMsg("StartBigPause");
+	logging::msg("StartBigPause");
 
 	_showedLongBreakCountdown = false;
 
@@ -899,7 +899,7 @@ void EyeApp::StartBigPause()
 		for (int displayInd = 0; displayInd < osCaps.numDisplays; ++displayInd)
 		{
 			BigPauseWindow * wnd = new BigPauseWindow(displayInd);
-			//LogMsg(wxString::Format("_bigPauseDuration = %d", _bigPauseDuration * 60));
+			//logging::msg(wxString::Format("_bigPauseDuration = %d", _bigPauseDuration * 60));
 			wnd->Init();
 			wnd->SetBreakDuration(_bigPauseDuration * 60);
 			wnd->Show(true);
@@ -914,7 +914,7 @@ void EyeApp::StartBigPause()
 	}
 	else
 	{
-		LogMsg("fullscreen block, show wait wnd");
+		logging::msg("fullscreen block, show wait wnd");
 		
 		ShowWaitingWnd();
 		_fullscreenBlockDuration = 0;
@@ -924,7 +924,7 @@ void EyeApp::StartBigPause()
 
 void EyeApp::ShowWaitingWnd()
 {
-	LogMsg(wxString::Format("ShowWaitingWnd()"));
+	logging::msg(wxString::Format("ShowWaitingWnd()"));
 
 	if (!_waitWnds.empty())
 		return;
@@ -934,7 +934,7 @@ void EyeApp::ShowWaitingWnd()
 
 	if ( !isFullscreen )
 	{
-		LogMsg(wxString::Format("no fullscreen app found"));
+		logging::msg(wxString::Format("no fullscreen app found"));
 	}
 	
 	for (int displayInd = 0; displayInd < osCaps.numDisplays; ++displayInd)
@@ -942,7 +942,7 @@ void EyeApp::ShowWaitingWnd()
 		if (fullscreenDisplay == displayInd)
 			continue;
 		
-		LogMsg(wxString::Format("ShowWaitingWnd shows wnd at disp %d", displayInd));
+		logging::msg(wxString::Format("ShowWaitingWnd shows wnd at disp %d", displayInd));
 
 		WaitingFullscreenWindow * wnd = new WaitingFullscreenWindow();
 		wnd->Init(displayInd);
@@ -954,7 +954,7 @@ void EyeApp::ShowWaitingWnd()
 
 void EyeApp::CloseWaitingWnd()
 {
-	LogMsg(wxString::Format("CloseWaitingWnd"));
+	logging::msg(wxString::Format("CloseWaitingWnd"));
 
 	if (!_waitWnds.empty())
 	{
@@ -976,7 +976,7 @@ void EyeApp::OnCloseWaitingWnd(WaitingFullscreenWindow * ptr)
 	}
 	else
 	{
-		LogMsg(wxString::Format("OnCloseWaitingWnd failed to find wnd"));
+		logging::msg(wxString::Format("OnCloseWaitingWnd failed to find wnd"));
 	}
 }
 
@@ -1003,7 +1003,7 @@ void EyeApp::CloseBigPauseWnds()
 
 void EyeApp::StopBigPause()
 {
-	LogMsg(wxString::Format("EyeApp::StopBigPause, bigPauseWnds.size=%d", _bigPauseWnds.size()));
+	logging::msg(wxString::Format("EyeApp::StopBigPause, bigPauseWnds.size=%d", _bigPauseWnds.size()));
 	
 	CloseBigPauseWnds();
 	
@@ -1012,7 +1012,7 @@ void EyeApp::StopBigPause()
 
 	SaveSettings();
 
-	LogMsg(wxString::Format("EyeApp::StopBigPause end"));
+	logging::msg(wxString::Format("EyeApp::StopBigPause end"));
 }
 
 void EyeApp::OnSkipBigPauseClicked()
@@ -1030,7 +1030,7 @@ void EyeApp::OnSkipBigPauseClicked()
 
 void EyeApp::StartMiniPause()
 {
-	LogMsg("StartMiniPause");
+	logging::msg("StartMiniPause");
 	
 	int fullscreenDisplay = -1;
 	IsFullscreenAppRunning(&fullscreenDisplay);
@@ -1053,7 +1053,7 @@ void EyeApp::StartMiniPause()
 	}
 	else
 	{
-		LogMsg("(!) _miniPauseWnds is not empty");
+		logging::msg("(!) _miniPauseWnds is not empty");
 	}
 	
 	// play sound
@@ -1111,7 +1111,7 @@ void EyeApp::OpenSettings()
 #ifndef MASTER_RELEASE
 	appendix = _("");
 #endif
-	SettingsWindow *wnd = new SettingsWindow(langPack->get("settings_title") + appendix);
+	SettingsWindow *wnd = new SettingsWindow(langPack->Get("settings_title") + appendix);
 	wnd->Show(true);
 	_settingsWnd = wnd;
 
@@ -1120,7 +1120,7 @@ void EyeApp::OpenSettings()
 
 bool EyeApp::LoadSettings()
 {
-	LogMsg("LoadSettings");
+	logging::msg("LoadSettings");
 
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file((GetSavePath() + L"settings.xml").wchar_str());
@@ -1217,7 +1217,7 @@ void EyeApp::CheckSettings()
 {
 	if (_bigPauseInterval > 120)
 	{
-		LogMsg("CheckSettings: bigPauseInterval corrected");
+		logging::msg("CheckSettings: bigPauseInterval corrected");
 		assert(false);
 
 		_bigPauseInterval = 120; // in minutes
@@ -1225,7 +1225,7 @@ void EyeApp::CheckSettings()
 	
 	if (_bigPauseDuration > 30)
 	{
-		LogMsg("CheckSettings: bigPauseDuration corrected");
+		logging::msg("CheckSettings: bigPauseDuration corrected");
 		assert(false);
 
 		_bigPauseDuration = 30;
@@ -1233,7 +1233,7 @@ void EyeApp::CheckSettings()
 	
 	if (_warningInterval > 3.0f)
 	{
-		LogMsg("CheckSettings: warningInterval corrected");
+		logging::msg("CheckSettings: warningInterval corrected");
 		assert(false);
 
 		_warningInterval = 3.0f;
@@ -1241,7 +1241,7 @@ void EyeApp::CheckSettings()
 	
 	if (_miniPauseInterval > 30)
 	{
-		LogMsg("CheckSettings: miniPauseInterval corrected");
+		logging::msg("CheckSettings: miniPauseInterval corrected");
 		assert(false);
 
 		_miniPauseInterval = 30;
@@ -1249,7 +1249,7 @@ void EyeApp::CheckSettings()
 
 	if (_miniPauseDuration > 20)
 	{
-		LogMsg("CheckSettings: miniPauseDuration corrected");
+		logging::msg("CheckSettings: miniPauseDuration corrected");
 		assert(false);
 
 		_miniPauseDuration = 20;
@@ -1257,7 +1257,7 @@ void EyeApp::CheckSettings()
 	
 	if (_timeLeftToBigPause > 1000 * 60 * _bigPauseInterval)
 	{
-		LogMsg("CheckSettings: _timeLeftToBigPause corrected");
+		logging::msg("CheckSettings: _timeLeftToBigPause corrected");
 		assert(false);
 
 		_timeLeftToBigPause = 1000 * 60 * _bigPauseInterval;
@@ -1265,7 +1265,7 @@ void EyeApp::CheckSettings()
 
 	if (_timeLeftToMiniPause > 1000 * 60 * _miniPauseInterval)
 	{
-		LogMsg("CheckSettings: _timeLeftToMiniPause corrected");
+		logging::msg("CheckSettings: _timeLeftToMiniPause corrected");
 		assert(false);
 
 		_timeLeftToMiniPause = 1000 * 60 * _miniPauseInterval;
@@ -1282,7 +1282,7 @@ void EyeApp::SaveSettings()
 	_lastMiniPauseTimeLeft = _timeLeftToMiniPause;
 
 	///
-	LogMsg("SaveSettings");
+	logging::msg("SaveSettings");
 	
 	pugi::xml_document doc;
 	pugi::xml_node node = doc.append_child(pugi::node_element);
@@ -1369,7 +1369,7 @@ void EyeApp::ResetSettings()
 
 void EyeApp::ApplySettings()
 {
-	LogMsg("ApplySettings");
+	logging::msg("ApplySettings");
 
 	RestartBigPauseInterval();
 	RestartMiniPauseInterval();
@@ -1378,7 +1378,7 @@ void EyeApp::ApplySettings()
 
 void EyeApp::OnSettingsClosed()
 {
-	LogMsg("OnSettingsClosed");
+	logging::msg("OnSettingsClosed");
 	
 	_settingsWnd = 0;
 	
@@ -1419,7 +1419,7 @@ void EyeApp::OnSettingsClosed()
 			_timeLeftToMiniPause = 0;
 	}
 
-	LogMsg(wxString::Format("    _timeLeftToMiniPause = %d, _timeLeftToBigPause = %d", _timeLeftToMiniPause, _timeLeftToBigPause));
+	logging::msg(wxString::Format("    _timeLeftToMiniPause = %d, _timeLeftToBigPause = %d", _timeLeftToMiniPause, _timeLeftToBigPause));
 }
 
 void EyeApp::TogglePausedMode(int minutes)
@@ -1499,7 +1499,7 @@ void EyeApp::Exit()
 
 int EyeApp::OnExit()
 {
-	LogMsg("OnExit");
+	logging::msg("OnExit");
 	
 	static int destroyCount = 0;
 	if (destroyCount)
@@ -1522,25 +1522,25 @@ int EyeApp::OnExit()
 	delete g_Personage;
 	
 	int res = wxApp::OnExit();
-	LogMsg("done OnExit");
+	logging::msg("done OnExit");
 	return res;
 }
 
 void EyeApp::OnQueryEndSession(wxCloseEvent &evt)
 {
-	LogMsg("OnQueryEndSession");
+	logging::msg("OnQueryEndSession");
 	
 	DeletePendingEvents();
 	getApp()->Exit();
 	
 	wxApp::OnQueryEndSession(evt);
 	
-	LogMsg("done OnQueryEndSession");
+	logging::msg("done OnQueryEndSession");
 }
 
 void EyeApp::OnEndSession(wxCloseEvent &evt)
 {
-	LogMsg("OnEndSession");
+	logging::msg("OnEndSession");
 	
 	UninstallActivityMonitor();
 	_taskBarIcon->RemoveIcon();
@@ -1549,14 +1549,14 @@ void EyeApp::OnEndSession(wxCloseEvent &evt)
 	
 	wxApp::OnEndSession(evt);
 	
-	LogMsg("done OnEndSession");
+	logging::msg("done OnEndSession");
 }
 
 void EyeApp::OnSessionUnlock()
 {
-	LogMsg("EyeApp::OnSessionUnlock");
+	logging::msg("EyeApp::OnSessionUnlock");
 
-	_taskBarIcon->ShowBalloon(langPack->get("tb_popup_default"), langPack->get("tb_notification_start_after_pause"), 1000 * 10, wxICON_INFORMATION);
+	_taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), langPack->Get("tb_notification_start_after_pause"), 1000 * 10, wxICON_INFORMATION);
 
 	RestartBigPauseInterval();
 	RestartMiniPauseInterval();
@@ -1586,7 +1586,7 @@ EyeTaskBarIcon::EyeTaskBarIcon() :
 	_iconPause = new wxIcon(L"pause.ico", wxBITMAP_TYPE_ICO, 16, 16);
 	_iconResume = new wxIcon(L"resume.ico", wxBITMAP_TYPE_ICO, 16, 16);
 
-	if (!SetIcon(*_icon, langPack->get("tb_popup_default")))
+	if (!SetIcon(*_icon, langPack->Get("tb_popup_default")))
 		wxMessageBox(wxT("Could not set icon."));
 	
 	Connect(wxEVT_TASKBAR_LEFT_DOWN,
@@ -1626,13 +1626,13 @@ wxMenu * EyeTaskBarIcon::CreatePopupMenu()
 {
 	_menu = new wxMenu();
 	
-	wxMenuItem *item = new wxMenuItem(_menu, ID_TASKBAR_MENU_SETTINGS, langPack->get("tb_menu_settings"), langPack->get("tb_menu_settings_tip"));
+	wxMenuItem *item = new wxMenuItem(_menu, ID_TASKBAR_MENU_SETTINGS, langPack->Get("tb_menu_settings"), langPack->Get("tb_menu_settings_tip"));
 	item->SetBitmap(*_iconSettings);
 	_menu->Append(item);
 	
 	if (getApp()->GetNextState() == STATE_SUSPENDED)
 	{
-		item = new wxMenuItem(_menu, ID_TASKBAR_MENU_PAUSE_RESUME_MONITORING, langPack->get("tb_menu_resume_monitoring"), langPack->get("tb_menu_resume_monitoring_tip"));
+		item = new wxMenuItem(_menu, ID_TASKBAR_MENU_PAUSE_RESUME_MONITORING, langPack->Get("tb_menu_resume_monitoring"), langPack->Get("tb_menu_resume_monitoring_tip"));
 		item->SetBitmap(*_iconResume);
 		_menu->Append(item);
 	}
@@ -1640,25 +1640,25 @@ wxMenu * EyeTaskBarIcon::CreatePopupMenu()
 	{
 		wxMenu* subMenu = new wxMenu();
 
-		item = _menu->AppendSubMenu(subMenu, langPack->get("tb_menu_pause_monitoring"));
+		item = _menu->AppendSubMenu(subMenu, langPack->Get("tb_menu_pause_monitoring"));
 		//item->SetBitmap(*_iconPause);
 
-		wxMenuItem *subitem = new wxMenuItem(_menu, ID_TASKBAR_MENU_PAUSE_RESUME_MONITORING, langPack->get("tb_menu_pause_monitoring_1"), langPack->get("tb_menu_pause_monitoring_tip"));
+		wxMenuItem *subitem = new wxMenuItem(_menu, ID_TASKBAR_MENU_PAUSE_RESUME_MONITORING, langPack->Get("tb_menu_pause_monitoring_1"), langPack->Get("tb_menu_pause_monitoring_tip"));
 		subitem->SetBitmap(*_iconPause);
 		subMenu->Append(subitem);
 
-		subitem = new wxMenuItem(_menu, ID_TASKBAR_MENU_PAUSE_RESUME_MONITORING_2, langPack->get("tb_menu_pause_monitoring_2"), langPack->get("tb_menu_pause_monitoring_tip"));
+		subitem = new wxMenuItem(_menu, ID_TASKBAR_MENU_PAUSE_RESUME_MONITORING_2, langPack->Get("tb_menu_pause_monitoring_2"), langPack->Get("tb_menu_pause_monitoring_tip"));
 		subitem->SetBitmap(*_iconPause);
 		subMenu->Append(subitem);
 
-		item = new wxMenuItem(_menu, ID_TASKBAR_MENU_TAKE_LONG_BREAK_NOW, langPack->get("tb_menu_take_break_now"));
+		item = new wxMenuItem(_menu, ID_TASKBAR_MENU_TAKE_LONG_BREAK_NOW, langPack->Get("tb_menu_take_break_now"));
 		//item->SetBitmap(*_iconSettings);
 		_menu->Append(item);
 	}
 
 	_menu->AppendSeparator();
 	
-	item = new wxMenuItem(_menu, ID_TASKBAR_MENU_QUIT, langPack->get("tb_menu_quit"), langPack->get("tb_menu_quit_tip"));
+	item = new wxMenuItem(_menu, ID_TASKBAR_MENU_QUIT, langPack->Get("tb_menu_quit"), langPack->Get("tb_menu_quit_tip"));
 	_menu->Append(item);
 
 	return _menu;

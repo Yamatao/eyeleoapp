@@ -9,8 +9,8 @@ struct LanguagePack
 	wxString contact;
 	std::map<wxString, wxString> strings;
 	
-	wxString const &	get(wxString const & id);
-	bool				has(wxString const & id) const;
+	wxString const &	Get(wxString const & id);
+	bool				Has(wxString const & id) const;
 };
 
 bool LoadLanguagePack(wxString const & lang);

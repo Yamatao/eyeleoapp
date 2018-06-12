@@ -20,9 +20,6 @@
     <ClCompile Include="..\code\bigpause_wnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\code\DataLog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\code\debug_wnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -65,6 +62,9 @@
     <ClCompile Include="..\code\image_resources.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\code\logging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\code\activity_monitor.h">
@@ -76,16 +76,10 @@
     <ClInclude Include="..\code\bigpause_wnd.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\code\DataLog.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\code\debug_wnd.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\code\excercises.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\code\IWindow.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\code\language_set.h">
@@ -122,6 +116,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\code\image_resources.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\logging.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -246,7 +246,7 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount)
 		while (ind < 20)
 		{
 			wxString id = wxString::Format(L"mini_pause_text_%d_%d", _excercise, ind);
-			if (langPack->has(id) == false)
+			if (!langPack->Has(id))
 			{
 				ind--;
 				break;
@@ -266,7 +266,7 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount)
 		{
 			if ( (int)showCount == specialMessages[i].show_count)
 			{
-				text = langPack->get(specialMessages[i].message);
+				text = langPack->Get(specialMessages[i].message);
 				txt->SetForegroundColour(specialMessages[i].color);
 				break;
 			}
@@ -275,7 +275,7 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount)
 		if ( text.empty() )
 		{
 			wxString id = wxString::Format(L"mini_pause_text_%d_%d", MiniPauseControls::_excercise, MiniPauseControls::_line);
-			text = langPack->get(id);
+			text = langPack->Get(id);
 			txt->SetForegroundColour(wxColour(255, 255, 255));
 		}
 

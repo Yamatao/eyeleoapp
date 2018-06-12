@@ -3,7 +3,7 @@
 #include "main.h"
 #include "image_resources.h"
 #include "language_set.h"
-#include "DataLog.h"
+#include "logging.h"
 
 BEGIN_EVENT_TABLE(WaitingFullscreenWindow, wxFrame)
 	EVT_PAINT(WaitingFullscreenWindow::OnPaint)
@@ -38,7 +38,7 @@ void WaitingFullscreenWindow::Init(int displayInd)
 	wxRect displayRect = osCaps.displays[displayInd].clientArea;
 	SetPosition(wxPoint(displayRect.GetX() + displayRect.GetWidth() / 2 - GetSize().GetX() / 2, displayRect.GetY() + displayRect.GetHeight() / 2 - GetSize().GetY() / 2));
 
-	wxStaticText * txt = new wxStaticText(this, wxID_ANY, langPack->get("waiting_text"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
+	wxStaticText * txt = new wxStaticText(this, wxID_ANY, langPack->Get("waiting_text"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);
 	wxFont font(13, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false);
 	txt->SetFont(font);
 	txt->SetBackgroundStyle(wxBG_STYLE_COLOUR);
@@ -52,7 +52,7 @@ void WaitingFullscreenWindow::Init(int displayInd)
 
 WaitingFullscreenWindow::~WaitingFullscreenWindow()
 {
-	LogMsg("WaitingFullscreenWindow::~WaitingFullscreenWindow");
+	logging::msg("WaitingFullscreenWindow::~WaitingFullscreenWindow");
 
 	if (!getApp()->isFinished())
 		g_TaskMgr->RemoveTasks(GetName());
@@ -110,7 +110,7 @@ void WaitingFullscreenWindow::Hide()
 	if ( _hiding )
 		return;
 
-	LogMsg("WaitingFullscreenWindow::Hide");
+	logging::msg("WaitingFullscreenWindow::Hide");
 
 	_hiding = true;
 	_showing = false;

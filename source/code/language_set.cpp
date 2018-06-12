@@ -3,12 +3,12 @@
 
 LanguagePack * langPack = 0;
 
-wxString const & LanguagePack::get(wxString const & id)
+wxString const & LanguagePack::Get(wxString const & id)
 {
 	return strings[id];
 }
 
-bool LanguagePack::has(wxString const & id) const
+bool LanguagePack::Has(wxString const & id) const
 {
 	return strings.find(id) != strings.end();
 }

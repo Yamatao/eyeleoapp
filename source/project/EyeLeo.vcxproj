@@ -22,7 +22,7 @@
     <ClCompile Include="..\code\activity_monitor.cpp" />
     <ClCompile Include="..\code\beforepause_wnd.cpp" />
     <ClCompile Include="..\code\bigpause_wnd.cpp" />
-    <ClCompile Include="..\code\DataLog.cpp" />
+    <ClCompile Include="..\code\logging.cpp" />
     <ClCompile Include="..\code\debug_wnd.cpp" />
     <ClCompile Include="..\code\excercises.cpp" />
     <ClCompile Include="..\code\image_resources.cpp" />
@@ -42,11 +42,10 @@
     <ClInclude Include="..\code\activity_monitor.h" />
     <ClInclude Include="..\code\beforepause_wnd.h" />
     <ClInclude Include="..\code\bigpause_wnd.h" />
-    <ClInclude Include="..\code\DataLog.h" />
+    <ClInclude Include="..\code\logging.h" />
     <ClInclude Include="..\code\debug_wnd.h" />
     <ClInclude Include="..\code\excercises.h" />
     <ClInclude Include="..\code\image_resources.h" />
-    <ClInclude Include="..\code\IWindow.h" />
     <ClInclude Include="..\code\language_set.h" />
     <ClInclude Include="..\code\main.h" />
     <ClInclude Include="..\code\minipause_wnd.h" />
@@ -81,20 +80,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -155,6 +154,8 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>c:\Development\wxWidgets-3.0.4\lib\vc_lib\;..\libs\pugixml\scripts\vs2013\Win32_DebugStatic\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wxbase30u.lib;wxmsw30u_core.lib;wxmsw30u_adv.lib;wxtiff.lib;wxjpeg.lib;wxpng.lib;wxzlib.lib;pugixml.lib;comctl32.lib;winmm.lib;rpcrt4.lib;Wtsapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
