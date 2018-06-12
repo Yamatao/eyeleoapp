@@ -9,11 +9,11 @@
 *.ilk
 
 # Build folders
-source/libs/pugixml/scripts/vs2010
-source/libs/pugixml/scripts/vs2013
-source/libs/pugixml/scripts/vs2015
+build
+libs/pugixml/build
+libs/pugixml/scripts/vs2010
+libs/pugixml/scripts/vs2013
+libs/pugixml/scripts/vs2015
 source/project/Debug
 source/project/Release
 source/project/.vs
-ActivityMonitorDLL/Debug
-ActivityMonitorDLL/Release

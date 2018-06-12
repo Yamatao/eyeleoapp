@@ -3,7 +3,6 @@
 
 #include "wx/wx.h"
 #include "wx/taskbar.h"
-#include "statemachine.h"
 #include "task_mgr.h"
 #include <vector>
 
