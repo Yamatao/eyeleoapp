@@ -1,17 +1,26 @@
-// dllmain.cpp: определяет точку входа для приложения DLL.
-#include "stdafx.h"
-#include "setup.h"
-#include "windows.h"
+#ifndef WINVER
+#define WINVER 0x0600 // Build minimum is Vista 
+#endif
+
+#define WIN32_LEAN_AND_MEAN
+#define NOCOMM
+#include <windows.h>
+
+#ifdef DLL_EXPORTS
+#define DLL_API __declspec(dllexport)
+#else
+#define DLL_API __declspec(dllimport)
+#endif
 
 typedef void (*EventCallback)(void);
 
 EventCallback mouseCb = 0;
 EventCallback keyCb = 0;
 
-extern "C" AM_API LRESULT WINAPI MouseProc(int nCode, WPARAM wParam, LPARAM lParam)
+extern "C" DLL_API LRESULT WINAPI MouseProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
 	if (nCode < 0)
-		return CallNextHookEx(NULL, nCode, wParam, lParam); 
+		return CallNextHookEx(NULL, nCode, wParam, lParam);
 	
 	if (mouseCb)
 		mouseCb();
@@ -19,7 +28,7 @@ extern "C" AM_API LRESULT WINAPI MouseProc(int nCode, WPARAM wParam, LPARAM lPar
 	return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
 
-extern "C" AM_API LRESULT CALLBACK KeyProc(int nCode, WPARAM wParam, LPARAM lParam)
+extern "C" DLL_API LRESULT CALLBACK KeyProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
 	if (keyCb)
 		keyCb();
@@ -27,29 +36,18 @@ extern "C" AM_API LRESULT CALLBACK KeyProc(int nCode, WPARAM wParam, LPARAM lPar
 	return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
 
-extern "C" AM_API void SetupMouseCallback(EventCallback cb)
+extern "C" DLL_API void SetupMouseCallback(EventCallback cb)
 {
 	mouseCb = cb;
 }
 
-extern "C" AM_API void SetupKeyCallback(EventCallback cb)
+extern "C" DLL_API void SetupKeyCallback(EventCallback cb)
 {
 	keyCb = cb;
 }
 
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-					 )
+BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD /*ul_reason_for_call*/, LPVOID /*lpReserved*/)
 {
-	switch (ul_reason_for_call)
-	{
-	case DLL_PROCESS_ATTACH:
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
-	}
 	return TRUE;
 }
 

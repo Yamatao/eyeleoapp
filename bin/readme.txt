@@ -6,7 +6,7 @@
 
 * System Requirements *
 =======================
-OS: Windows XP, Vista or 7.
+OS: Windows XP, Vista, 7, 8, 10.
 
 
 * Authors *
@@ -17,7 +17,14 @@ Alexander Garustovich - (eyeleoapp@gmail.com)
 * Version history *
 ===================
 Version 1.3 (June, 2013)
-- 
+- Fixed many bugs, improved stability.
+- Now when you unlock Windows OS session EyeLeo doesn't go into long break right after that.
+- Added countdown popup, it appears before long breaks.
+- Now you may close notification windows by right mouse button.
+- Added option "Take long break now" to the popup menu.
+- Added option "Disable breaks 1 (or 3) hour" to the popup menu.
+- Added lot more options in the settings window.
+- Added support page.
 
 Version 1.2 (November, 2012)
 - Now when time left to break is less than 3 minutes the app shows seconds too ("2 minutes 24 seconds left to break").

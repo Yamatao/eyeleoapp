@@ -1568,23 +1568,23 @@ EyeTaskBarIcon::EyeTaskBarIcon() :
 	wxTaskBarIcon(),
 	_menu(0)
 {
-	_icon = new wxIcon(L"icon.ico", wxBITMAP_TYPE_ICO, 16, 16);
+	_icon = new wxIcon(L"Resources/icon.ico", wxBITMAP_TYPE_ICO, 16, 16);
 	if (!_icon->IsOk()) // case for larger fonts
 	{
 		delete _icon;
-		_icon = new wxIcon(L"icon.ico", wxBITMAP_TYPE_ICO);
+		_icon = new wxIcon(L"Resources/icon.ico", wxBITMAP_TYPE_ICO);
 	}
 
-	_iconGray = new wxIcon(L"icongray.ico", wxBITMAP_TYPE_ICO, 16, 16);
+	_iconGray = new wxIcon(L"Resources/icongray.ico", wxBITMAP_TYPE_ICO, 16, 16);
 	if (!_iconGray->IsOk()) // case for larger fonts
 	{
 		delete _iconGray;
-		_iconGray = new wxIcon(L"icongray.ico", wxBITMAP_TYPE_ICO);
+		_iconGray = new wxIcon(L"Resources/icongray.ico", wxBITMAP_TYPE_ICO);
 	}
 
-	_iconSettings = new wxIcon(L"settings.ico", wxBITMAP_TYPE_ICO, 16, 16);
-	_iconPause = new wxIcon(L"pause.ico", wxBITMAP_TYPE_ICO, 16, 16);
-	_iconResume = new wxIcon(L"resume.ico", wxBITMAP_TYPE_ICO, 16, 16);
+	_iconSettings = new wxIcon(L"Resources/settings.ico", wxBITMAP_TYPE_ICO, 16, 16);
+	_iconPause = new wxIcon(L"Resources/pause.ico", wxBITMAP_TYPE_ICO, 16, 16);
+	_iconResume = new wxIcon(L"Resources/resume.ico", wxBITMAP_TYPE_ICO, 16, 16);
 
 	if (!SetIcon(*_icon, langPack->Get("tb_popup_default")))
 		wxMessageBox(wxT("Could not set icon."));

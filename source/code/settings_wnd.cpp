@@ -31,15 +31,15 @@ END_EVENT_TABLE()
 
 SettingsWindow::SettingsWindow(const wxString& title) :
 	wxFrame(NULL, -1, title, wxDefaultPosition, wxDefaultSize, wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN),
-	_iconSettings(L"settings.ico", wxBITMAP_TYPE_ICO),
-	_iconInformation(L"information.ico", wxBITMAP_TYPE_ICO),
-	_iconLongBreak(L"long_break.ico", wxBITMAP_TYPE_ICO, 16, 16),
-	_iconShortBreak(L"short_break.ico", wxBITMAP_TYPE_ICO, 16, 16),
-	_iconSound(L"sound.ico", wxBITMAP_TYPE_ICO, 16, 16),
-	_iconStrictMode(L"strict_mode.ico", wxBITMAP_TYPE_ICO, 16, 16),
-	_iconWarning(L"notification.ico", wxBITMAP_TYPE_ICO, 16, 16),
-	_iconCanCloseNotifs(L"can-close-notifs.png", wxBITMAP_TYPE_PNG, 16, 16),
-	_iconWindow(L"window.png", wxBITMAP_TYPE_PNG, 16, 16),
+	_iconSettings(L"Resources/settings.ico", wxBITMAP_TYPE_ICO),
+	_iconInformation(L"Resources/information.ico", wxBITMAP_TYPE_ICO),
+	_iconLongBreak(L"Resources/long_break.ico", wxBITMAP_TYPE_ICO, 16, 16),
+	_iconShortBreak(L"Resources/short_break.ico", wxBITMAP_TYPE_ICO, 16, 16),
+	_iconSound(L"Resources/sound.ico", wxBITMAP_TYPE_ICO, 16, 16),
+	_iconStrictMode(L"Resources/strict_mode.ico", wxBITMAP_TYPE_ICO, 16, 16),
+	_iconWarning(L"Resources/notification.ico", wxBITMAP_TYPE_ICO, 16, 16),
+	_iconCanCloseNotifs(L"Resources/can-close-notifs.png", wxBITMAP_TYPE_PNG, 16, 16),
+	_iconWindow(L"Resources/window.png", wxBITMAP_TYPE_PNG, 16, 16),
 	_notebookImgList(16, 16, true, 2)
 {
 	if (!SettingsWindow::inited)
@@ -64,7 +64,7 @@ SettingsWindow::SettingsWindow(const wxString& title) :
 
 	SetInitialSize(wxSize(580, 420));
 
-	SetIcon(wxIcon(L"icon.ico", wxBITMAP_TYPE_ICO, 16, 16));
+	SetIcon(wxIcon(L"Resources/icon.ico", wxBITMAP_TYPE_ICO, 16, 16));
 
 	_notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_DEFAULT);
 	

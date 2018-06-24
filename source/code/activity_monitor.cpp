@@ -25,7 +25,7 @@ void ActivityMonitor_KeyCallback()
 
 void PrepareActivityMonitor()
 {
-	hDll = LoadLibrary(L"ActivityMonitor.dll");
+	hDll = LoadLibrary(L"activity-monitor.dll");
 	//SetupMouseCallback = (SetupCallback)GetProcAddress(hDll, "SetupMouseCallback");
 	SetupKeyCallback = (SetupCallback)GetProcAddress(hDll, "SetupKeyCallback");
 	//hookMouseProc = (HOOKPROC)GetProcAddress(hDll, "_MouseProc@12");
