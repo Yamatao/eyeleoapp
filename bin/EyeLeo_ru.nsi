@@ -17,7 +17,7 @@ InstallDir $PROGRAMFILES\${APPNAME}
 ; overwrite the old one automatically)
 InstallDirRegKey HKLM "Software\${APPNAME}" "Install_Dir"
 
-; Request application privileges for Windows Vista
+; Request application privileges
 RequestExecutionLevel admin
 
 ;--------------------------------
@@ -50,13 +50,14 @@ Section "Install EyeLeo (required)"
 
   SectionIn RO
   
-  ;SetDetailsPrint textonly
+  ; Install for all users
+  SetShellVarContext all
+  ; SetDetailsPrint textonly
   DetailPrint "Installing ${APPNAME} files..."
   
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR\Langpacks
   File "Langpacks\langpack.ru.xml"
-  File "Langpacks\langpack.en.xml"
   
   SetOutPath $INSTDIR\Personages\leopard
   File "Personages\leopard\leopard_blink.png"
@@ -67,14 +68,7 @@ Section "Install EyeLeo (required)"
   File "Personages\leopard\leopard_look_right.png"
   File "Personages\leopard\leopard_look_up.png"
   
-  SetOutPath $INSTDIR
-  File "activity-monitor.dll"
-  File "msvcp90.dll"
-  File "msvcr90.dll"
-  File "EyeLeo.exe"
-  File "EyeLeo.exe.manifest"
-  File "Microsoft.VC90.CRT.manifest"
-  
+  SetOutPath $INSTDIR\Resources
   File "Resources\icon.ico"
   File "Resources\icongray.ico"
   File "Resources\alarm-clock.png"
@@ -107,9 +101,14 @@ Section "Install EyeLeo (required)"
   File "Resources\sound.ico"
   File "Resources\strict_mode.ico"
   
+  SetOutPath $INSTDIR
+  File "activity-monitor.dll"
+  File "msvcp120.dll"
+  File "msvcr120.dll"
+  File "EyeLeo.exe"
   File "readme.txt"
   File "license.txt"
-  File "config.xml"
+  File "/oname=config.xml" "config.ru.xml"
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\${APPNAME} "Install_Dir" "$INSTDIR"
@@ -124,12 +123,14 @@ Section "Install EyeLeo (required)"
 SectionEnd
 
 Section "Start Menu Shortcuts"
+  SetShellVarContext all ;for all users
   CreateDirectory "$SMPROGRAMS\${APPNAME}"
   CreateShortCut "$SMPROGRAMS\${APPNAME}\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\EyeLeo.exe" "$INSTDIR\icon.ico" "$INSTDIR\EyeLeo.exe" 0
 SectionEnd
 
 Section "Add EyeLeo to Startup"
+  SetShellVarContext all ;for all users
   CreateShortCut "$SMSTARTUP\${APPNAME}.lnk" "$INSTDIR\EyeLeo.exe" "$INSTDIR\icon.ico" "$INSTDIR\EyeLeo.exe" 2 SW_SHOWNORMAL ALT|CTRL|SHIFT|F5 "Launch EyeLeo and start reducing your eye strain."
 SectionEnd
 

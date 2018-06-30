@@ -33,7 +33,7 @@
 	#include <VersionHelpers.h>
 #endif
 
-static EyeApp * g_eyeApp = 0;
+static EyeApp * g_eyeApp = nullptr;
 
 IMPLEMENT_APP(EyeApp);
 
@@ -53,7 +53,7 @@ END_EVENT_TABLE()
 
 
 EyeApp::EyeApp() : 
-	_settingsWnd(0),
+	_settingsWnd(nullptr),
 	_inactivityTime(0),
 	_timeLeftToBigPause(0),
 	_timeLeftToMiniPause(0),
@@ -61,7 +61,7 @@ EyeApp::EyeApp() :
 	_fullscreenBlockDuration(0),
 	_postponeCount(0),
 	_warningInterval(0),
-	_debugWindow(0),
+	_debugWindow(nullptr),
 	_firstLaunch(true),
 	_seenSettingsWindow(false),
 	_fastMode(false),
@@ -100,6 +100,10 @@ void EyeApp::ReadConfig()
 			_website.assign(node.attribute(L"website").value());
 		}
 	}
+	else
+	{
+		wxMessageBox(_("Could't load config.xml file."), _("EyeLeo"));
+	}
 }
 
 bool EyeApp::OnInit()
@@ -120,9 +124,15 @@ bool EyeApp::OnInit()
 
 	if (!LoadLanguagePack(_lang))
 	{
-		//wxMessageBox(_("Can't load '")+ _lang +_("' language pack."), _("EyeLeo"));
 		if (!LoadLanguagePack(L"en"))
+		{
+			wxMessageBox(_("Could't load nor '") + _lang + _("', nor 'en' language pack."), _("EyeLeo"));
 			return false;
+		}
+		else
+		{
+			wxMessageBox(_("Could't load '") + _lang + _("' language pack. Fell back to 'en' pack."), _("EyeLeo"));
+		}
 	}
 	
 	wxInitAllImageHandlers();

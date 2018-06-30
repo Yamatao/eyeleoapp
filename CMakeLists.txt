@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.2)
 add_subdirectory("libs/pugixml")
 add_subdirectory("libs/activity-monitor")
 
-project(EyeLeo VERSION 1.3.0)
+project(EyeLeo VERSION 1.3.3)
 
 set(SOURCE_FILES_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/source/code)
 add_executable(EyeLeo ${SOURCE_FILES_FOLDER}/main.cpp)
@@ -131,5 +131,5 @@ add_custom_command(TARGET EyeLeo POST_BUILD
 if(WIN32)
 	add_custom_command(TARGET EyeLeo POST_BUILD
 		COMMAND ${CMAKE_SOURCE_DIR}/tools/ReplaceVistaIcon.exe 
-		${CMAKE_SOURCE_DIR}/bin/EyeLeo.exe ${CMAKE_SOURCE_DIR}/bin/Resources/icon.ico)
+		${CMAKE_SOURCE_DIR}/bin/EyeLeo.exe ${CMAKE_SOURCE_DIR}/source/resource/icon.ico)
 endif()
