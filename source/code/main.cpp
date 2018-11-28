@@ -566,7 +566,7 @@ void EyeApp::ExecuteTask(float f, long time_went)
 		{
 			RepeatState();
 			
-			// для этого состояния исп-тся _inactivityTime с обратным отсчетом (хотя в обычном режиме он накапливается)
+			// РґР»СЏ СЌС‚РѕРіРѕ СЃРѕСЃС‚РѕСЏРЅРёСЏ РёСЃРї-С‚СЃСЏ _inactivityTime СЃ РѕР±СЂР°С‚РЅС‹Рј РѕС‚СЃС‡РµС‚РѕРј (С…РѕС‚СЏ РІ РѕР±С‹С‡РЅРѕРј СЂРµР¶РёРјРµ РѕРЅ РЅР°РєР°РїР»РёРІР°РµС‚СЃСЏ)
 			int multiplier = _fastMode ? 2 : 1;
 			_inactivityTime -= time_went * multiplier;
 			if (_inactivityTime <= 0)
@@ -637,7 +637,7 @@ void EyeApp::ExecuteTask(float f, long time_went)
 					{
 						if (!NotificationWindow::hasAnyInstance() && !_showedLongBreakCountdown)
 						{
-							// открыть countdown окно, но только не поверх fullscreen приложения
+							// РѕС‚РєСЂС‹С‚СЊ countdown РѕРєРЅРѕ, РЅРѕ С‚РѕР»СЊРєРѕ РЅРµ РїРѕРІРµСЂС… fullscreen РїСЂРёР»РѕР¶РµРЅРёСЏ
 							int fullscreenDisplay = -1;
 							bool isFullscreen = IsFullscreenAppRunning(&fullscreenDisplay);
 

@@ -6,7 +6,7 @@ add_subdirectory("libs/activity-monitor")
 project(EyeLeo VERSION 1.3.3)
 
 set(SOURCE_FILES_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/source/code)
-add_executable(EyeLeo ${SOURCE_FILES_FOLDER}/main.cpp)
+add_executable(EyeLeo WIN32 ${SOURCE_FILES_FOLDER}/main.cpp)
 
 add_dependencies(EyeLeo activity-monitor)
 
@@ -16,62 +16,35 @@ if(MSVC)
 		-D_CRT_SECURE_NO_WARNINGS
 		-D_UNICODE
 		-DUNICODE)
-endif()
 
-if(MSVC)
 	target_compile_options(EyeLeo PRIVATE /W4)
+    string(REGEX REPLACE "/W3" "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS}) # remove /W3, because we add /W4
+
+    # Multithreaded dll CRT
+    target_compile_options(EyeLeo PRIVATE $<$<CONFIG:DEBUG>:/MDd>)
+    target_compile_options(EyeLeo PRIVATE $<$<CONFIG:RELEASE>:/MD>)
 else()
 	target_compile_options(EyeLeo PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
-# CRT - multithreaded dll
-target_compile_options(EyeLeo PRIVATE $<$<CONFIG:DEBUG>:/MDd>)
-target_compile_options(EyeLeo PRIVATE $<$<CONFIG:RELEASE>:/MD>)
-
 # wxWidgets dependency
-if(NOT DEFINED ENV{WXWIN})
-	message(FATAL_ERROR "WXWIN environment variable is not set")
-endif()
+find_package(wxWidgets REQUIRED COMPONENTS core base adv)
 
-target_include_directories(EyeLeo PRIVATE "$ENV{WXWIN}/include")
-target_compile_definitions(EyeLeo PRIVATE
-	-D__WXMSW__
-	-DwxUSE_TASKBARICON_BALLOONS)
+target_include_directories(EyeLeo PRIVATE ${wxWidgets_INCLUDE_DIRS})
+target_link_libraries(EyeLeo PRIVATE ${wxWidgets_LIBRARIES})
 
 target_compile_definitions(EyeLeo PRIVATE
-		-D$<$<CONFIG:DEBUG>:__WXDEBUG__>)
+        -D__WXMSW__
+        -DwxUSE_TASKBARICON_BALLOONS)
 
-# wxWidgets debug libs
-foreach(LIB_NAME wxbase30ud wxmsw30ud_core wxmsw30ud_adv wxtiffd wxjpegd wxpngd wxzlibd)
-	find_library(LIB_PATH ${LIB_NAME} HINTS $ENV{WXWIN}/lib/vc_lib)
-	if(NOT LIB_PATH)
-		message(FATAL_ERROR "Can't find wxWidgets library ${LIB_NAME}")
-	endif()
-	target_link_libraries(EyeLeo debug ${LIB_PATH})
-	unset(LIB_PATH CACHE)
-endforeach()
-
-# wxWidgets release libs
-foreach(LIB_NAME wxbase30u wxmsw30u_core wxmsw30u_adv wxtiff wxjpeg wxpng wxzlib)
-	find_library(LIB_PATH ${LIB_NAME} HINTS $ENV{WXWIN}/lib/vc_lib)
-	if(NOT LIB_PATH)
-		message(FATAL_ERROR "Can't find wxWidgets library ${LIB_NAME}")
-	endif()
-	target_link_libraries(EyeLeo optimized ${LIB_PATH})
-	unset(LIB_PATH CACHE)
-endforeach()
+target_compile_definitions(EyeLeo PRIVATE
+        -D$<$<CONFIG:DEBUG>:__WXDEBUG__>)
 
 # PugiXml dependency
-target_include_directories(EyeLeo PRIVATE "libs/pugixml/src/")
-
-target_compile_definitions(EyeLeo PRIVATE
-	-DPUGIXML_WCHAR_MODE)
-
-target_link_libraries(EyeLeo ${PROJECT_BINARY_DIR}/libs/pugixml/${CMAKE_CFG_INTDIR}/pugixml.lib)
-add_dependencies(EyeLeo pugixml)
+target_link_libraries(EyeLeo PRIVATE pugixml)
 
 target_compile_definitions(pugixml PUBLIC
-	-DPUGIXML_WCHAR_MODE)
+        -DPUGIXML_WCHAR_MODE)
 
 # Source files
 target_sources(EyeLeo PRIVATE 
@@ -109,23 +82,20 @@ target_sources(EyeLeo PRIVATE
 	${SOURCE_FILES_FOLDER}/waiting_wnd.cpp
 	${SOURCE_FILES_FOLDER}/waiting_wnd.h)
 
-target_link_libraries(EyeLeo 
-	comctl32.lib
-	winmm.lib
-	rpcrt4.lib
-	Wtsapi32.lib)
-
-if(MSVC)
-	set(CMAKE_EXE_LINKER_FLAGS
-		"${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
+if(WIN32)
+	target_link_libraries(EyeLeo PRIVATE
+		comctl32.lib
+		winmm.lib
+		rpcrt4.lib
+		Wtsapi32.lib)
 endif()
 
 # post-build copy
 add_custom_command(TARGET EyeLeo POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy 
-	${CMAKE_BINARY_DIR}/$<CONFIGURATION>/EyeLeo.exe ${CMAKE_SOURCE_DIR}/bin/EyeLeo.exe
+	$<TARGET_FILE:EyeLeo> ${CMAKE_SOURCE_DIR}/bin/EyeLeo.exe
 	COMMAND ${CMAKE_COMMAND} -E copy
-	${CMAKE_BINARY_DIR}/libs/activity-monitor/$<CONFIGURATION>/activity-monitor.dll ${CMAKE_SOURCE_DIR}/bin/activity-monitor.dll)
+	$<TARGET_FILE:activity-monitor> ${CMAKE_SOURCE_DIR}/bin/activity-monitor.dll)
 
 # set icon
 if(WIN32)

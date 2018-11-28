@@ -10,7 +10,7 @@ wxDECLARE_EVENT(EXECUTE_TASK_EVENT, wxCommandEvent);
 class ITask
 {
 public:
-	virtual ~ITask() {};
+	virtual ~ITask() {}
 	virtual void ExecuteTask(float f, long time_went) = 0; // 1st - correction coef, 2nd - time went
 };
 

@@ -7,6 +7,14 @@
 
 class WaitingFullscreenWindow : public wxFrame, public ITask
 {
+	enum class State
+	{
+		Showing,
+		Active,
+		Hiding,
+		Dead
+	};
+
 public:
 	WaitingFullscreenWindow();
 	virtual ~WaitingFullscreenWindow();
@@ -20,8 +28,8 @@ private:
 	void ExecuteTask(float f, long time_went);
 	void OnClose(wxCloseEvent& event);
 
-	bool _showing;
-	bool _hiding;
+	State _state;
+
 	float _alpha;
 	bool _preventClosing;
 	

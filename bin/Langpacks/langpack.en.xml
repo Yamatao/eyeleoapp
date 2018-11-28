@@ -109,11 +109,11 @@
 	<string id="mini_pause_text_3_4" text="Time for a break!{n}Move eyes left and right." />
 	<string id="mini_pause_text_3_5" text="Short break!{n}Move eyes left and right." />
 	
-	<string id="mini_pause_text_4_1" text="Take a short break!{n}Close your eyes tightly." />
-	<string id="mini_pause_text_4_2" text="Take a break!{n}Close your eyes tightly." />
-	<string id="mini_pause_text_4_3" text="Time for a short break!{n}Close your eyes tightly." />
-	<string id="mini_pause_text_4_4" text="Time for a break!{n}Close your eyes tightly." />
-	<string id="mini_pause_text_4_5" text="Short break!{n}Close your eyes tightly." />
+	<string id="mini_pause_text_4_1" text="Take a short break!{n}Close your eyes for a few seconds." />
+	<string id="mini_pause_text_4_2" text="Take a break!{n}Close your eyes for a few seconds." />
+	<string id="mini_pause_text_4_3" text="Time for a short break!{n}Close your eyes for a few seconds." />
+	<string id="mini_pause_text_4_4" text="Time for a break!{n}Close your eyes for a few seconds." />
+	<string id="mini_pause_text_4_5" text="Short break!{n}Close your eyes for a few seconds." />
 	
 	<string id="mini_pause_text_5_1" text="Take a short break!{n}Blink your eyes." />
 	<string id="mini_pause_text_5_2" text="Take a break!{n}Blink your eyes." />

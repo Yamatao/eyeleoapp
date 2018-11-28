@@ -13,7 +13,9 @@ END_EVENT_TABLE()
 
 WaitingFullscreenWindow::WaitingFullscreenWindow() :
 	wxFrame(NULL, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_SHAPED | wxNO_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP),
-	_preventClosing(true)
+	_preventClosing(true),
+	_state(State::Showing),
+	_alpha(0.0f)
 {
 }
 
@@ -25,10 +27,6 @@ void WaitingFullscreenWindow::Init(int displayInd)
 
 	wxRegion region(*_backBitmap_long, *wxWHITE);
 	SetShape(region);
-
-	_showing = true;
-	_hiding = false;
-	_alpha = 0.0f;
 
 	SetTransparent((int)_alpha);
 
@@ -61,24 +59,17 @@ WaitingFullscreenWindow::~WaitingFullscreenWindow()
 	assert(!getApp()->getWindow(GetName()));
 }
 
-void WaitingFullscreenWindow::ExecuteTask(float f, long time_went)
+void WaitingFullscreenWindow::ExecuteTask(float f, long /*time_went*/)
 {
-	(void)time_went;
-
-	if (!_showing && !_hiding)
-	{
-		g_TaskMgr->AddTask(GetName(), 20);
-		_hiding = true;
-	}
-	else if (_showing)
+	if (_state == State::Showing)
 	{
 		_alpha += 11.0f * f;
 		if (_alpha >= 220.0f)
 		{
 			_alpha = 220.0f;
-			_showing = false;
+			_state = State::Active;
 			
-			g_TaskMgr->AddTask(GetName(), 60 * 1000); // 1 min
+			g_TaskMgr->AddTask(GetName(), 10 * 1000); // 10 seconds
 		}
 		else
 		{
@@ -86,13 +77,18 @@ void WaitingFullscreenWindow::ExecuteTask(float f, long time_went)
 		}
 		SetTransparent(_alpha);
 	}
-	else if (_hiding)
+	else if (_state == State::Active)
+	{
+		g_TaskMgr->AddTask(GetName(), 20);
+		_state = State::Hiding;
+	}
+	else if (_state == State::Hiding)
 	{
 		_alpha -= 15.0f * f;
 		if (_alpha <= 0.0f)
 		{
 			_alpha = 0.0f;
-			_hiding = false;
+			_state = State::Dead;
 			_preventClosing = false;
 			
 			Close();
@@ -107,13 +103,12 @@ void WaitingFullscreenWindow::ExecuteTask(float f, long time_went)
 
 void WaitingFullscreenWindow::Hide()
 {
-	if ( _hiding )
+	if (_state == State::Hiding)
 		return;
 
 	logging::msg("WaitingFullscreenWindow::Hide");
 
-	_hiding = true;
-	_showing = false;
+	_state = State::Hiding;
 	_preventClosing = false;
 	
 	g_TaskMgr->AddTask(GetName(), 20);

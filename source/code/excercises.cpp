@@ -73,7 +73,7 @@ void ExcerciseAnim::Update()
 				else
 					_personageImg->SetBitmap(*g_Personage->_lookRight);
 				_state = _state == 1 ? 0 : 1;
-				_time = 900;
+				_time = 1200;
 			}
 			break;
 		case EXCERCISE_LOOK_VERT:
@@ -83,7 +83,7 @@ void ExcerciseAnim::Update()
 				else
 					_personageImg->SetBitmap(*g_Personage->_lookDown);
 				_state = _state == 1 ? 0 : 1;
-				_time = 900;
+				_time = 1200;
 			}
 			break;
 		case EXCERCISE_ROLL:
@@ -98,7 +98,7 @@ void ExcerciseAnim::Update()
 					_personageImg->SetBitmap(*g_Personage->_lookDown);
 				if (++_state == 4)
 					_state = 0;
-				_time = 700;
+				_time = 1200;
 			}
 			break;
 		case EXCERCISE_BLINK:
