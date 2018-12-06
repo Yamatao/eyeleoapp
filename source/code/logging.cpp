@@ -1,13 +1,6 @@
-/***
-* Copyright 2008 by iWin, Inc.
-* All rights reserved
-* 
-* This software is the confidential and proprietary information of iWin, Inc.
-* You shall not disclose such Confidential Information and shall use it only 
-* in accordance with the terms of the license agreement you entered into with iWin.
-*/ 
 #include <stdarg.h>
 #include "logging.h"
+#include <wx/filefn.h>
 #ifdef WIN32
 	#include <stdio.h>
 	#include <windows.h>
@@ -16,7 +9,7 @@
 	#include <direct.h>
 #endif
 
-static FILE * dataLog;
+static FILE * logFile;
 
 wxString GetSavePath()
 {
@@ -53,36 +46,40 @@ namespace logging
 {
 	void Init()
 	{
-#ifndef MASTER_RELEASE
+
 #ifdef WIN32
-		_wfopen_s(&dataLog, GetSavePath() + L"log.txt", L"w");
+		_wfopen_s(&logFile, GetSavePath() + L"log.txt", L"r");
 #else
-		dataLog = fopen("log.txt", "w");
+		logFile = fopen("log.txt", "w");
 #endif
-		if (dataLog)
-			fclose(dataLog);
-		dataLog = 0;
-#endif
+		if (logFile) {
+			fseek(logFile, 0, SEEK_END);
+			long size = ftell(logFile);
+			fseek(logFile, 0, SEEK_SET);
+
+			fclose(logFile);
+			logFile = 0;
+
+			if (size > 1024 * 1024 * 3) // remove the log, if's larger than 3 megs
+			{
+				wxRemoveFile(GetSavePath() + L"log.txt");
+			}
+		}
 	}
 
-	void logging::msg(wxString const & msg)
-	{
-#ifndef MASTER_RELEASE
-		bool writeNewLine = true;
-
+	void msg(wxString const & msg) {
 #ifdef WIN32
-		_wfopen_s(&dataLog, (GetSavePath() + L"log.txt").c_str(), L"a");
+		_wfopen_s(&logFile, (GetSavePath() + L"log.txt").c_str(), L"a");
 #else
-		dataLog = fopen("log.txt", "a");
+		logFile = fopen("log.txt", "a");
 #endif
 
-		fwrite((const char*)msg.mb_str(wxConvUTF8), 1, msg.size(), dataLog);
+		if (logFile) {
+			fwrite((const char *) msg.mb_str(wxConvUTF8), 1, msg.size(), logFile);
+			fwrite("\n", 1, 1, logFile);
 
-		if (writeNewLine)
-			fwrite("\n", 1, 1, dataLog);
-
-		fclose(dataLog);
-		dataLog = 0;
-#endif
+			fclose(logFile);
+		}
+		logFile = 0;
 	}
 }

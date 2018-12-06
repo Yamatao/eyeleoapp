@@ -27,6 +27,10 @@ else()
 	target_compile_options(EyeLeo PRIVATE -Wall -Wextra -Wpedantic)
 endif()
 
+set_target_properties(EyeLeo PROPERTIES
+        CXX_STANDARD 14
+        CXX_STANDARD_REQUIRED ON)
+
 # wxWidgets dependency
 find_package(wxWidgets REQUIRED COMPONENTS core base adv)
 

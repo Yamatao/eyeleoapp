@@ -39,7 +39,7 @@ public:
 	void ResetSettings();
 	void ApplySettings();
 	void CheckSettings();
-	
+
 	virtual bool OnInit();
 	bool IsOnlyInstance() const;
 
@@ -54,6 +54,7 @@ public:
 	void OnMiniPauseWindowClosed(MiniPauseWindow * ptr);
 	void OnBigPauseWindowClosed(BigPauseWindow *);
 	void OnNotificationWindowClosed();
+	void OnDebugWindowClosed();
 	void OnCloseWaitingWnd(WaitingFullscreenWindow * ptr);
 	void OnCloseBeforePauseWnd(BeforePauseWindow * ptr);
 	void OnSkipBigPauseClicked();
@@ -173,7 +174,6 @@ private:
 	long _lastBigPauseTimeLeft; // time left when last shutdown happened
 	long _lastMiniPauseTimeLeft;
 	wxDateTime _lastShutdown;
-	bool _wasInPausedMode;
 
 	// current state
 	long _timeLeftToBigPause; // ms
@@ -181,6 +181,7 @@ private:
 	
 	long _relaxingTimeLeft;
 	long _fullscreenBlockDuration;
+	long _timeUntilWaitingWnd;
 	long _inactivityTime;
 	int _postponeCount;
 

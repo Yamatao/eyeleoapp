@@ -128,7 +128,7 @@
 	<string id="before_pause_accept_button" text="Перерыв! (%d)" />
 	
 	<!-- Waiting Fullscreen window -->
-	<string id="waiting_text" text="Пожалуйста, сверните или закройте полноэкранное приложение, чтобы начать перерыв." />
+	<string id="waiting_text" text="Сверните полноэкранное приложение, чтобы начать перерыв." />
 	
 	<!-- Big Pause window -->
 	<string id="big_pause_text_1" text="Сейчас время большого перерыва.{n}Отдохните от монитора несколько минут." />

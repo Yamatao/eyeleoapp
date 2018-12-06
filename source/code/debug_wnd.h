@@ -12,6 +12,11 @@ public:
 	wxStaticText * _timeLeftToMiniPause;
 	wxStaticText * _inactivityTime;
 	wxStaticText * _relaxingTimeLeft;
+
+private:
+	void OnClose(wxCloseEvent& event);
+
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

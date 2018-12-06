@@ -1,4 +1,10 @@
 #include "debug_wnd.h"
+#include "main.h"
+
+BEGIN_EVENT_TABLE(DebugWindow, wxFrame)
+EVT_CLOSE(DebugWindow::OnClose)
+END_EVENT_TABLE()
+
 
 DebugWindow::DebugWindow() :
 	wxFrame(NULL, -1, L"DebugWindow", wxDefaultPosition, wxDefaultSize, wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN)
@@ -40,4 +46,10 @@ DebugWindow::DebugWindow() :
 
 	SetSizerAndFit(valuesSizer);
 	SetSize(GetSize().x + 60, GetSize().y);
+}
+
+void DebugWindow::OnClose(wxCloseEvent& event)
+{
+	event.Skip(true);
+	getApp()->OnDebugWindowClosed();
 }

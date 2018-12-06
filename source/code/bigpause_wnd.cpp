@@ -170,10 +170,8 @@ void BigPauseWindow::UpdateTimeLabel()
 	}
 }
 
-void BigPauseWindow::ExecuteTask(float f, long time_went)
+void BigPauseWindow::ExecuteTask(float f, long /*time_went*/)
 {
-	(void)time_went;
-
 	if (!_showing && !_hiding)
 	{
 		_breakTimeLeft -= 0.1f * f;

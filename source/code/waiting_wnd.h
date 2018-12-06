@@ -22,11 +22,14 @@ public:
 	void Init(int displayInd = 0);
 
 	void Hide();
+	void HideQuick();
 
 private:
 	virtual void OnPaint(wxPaintEvent& evt);
 	void ExecuteTask(float f, long time_went);
 	void OnClose(wxCloseEvent& event);
+
+	void OnMouseTap(wxMouseEvent &);
 
 	State _state;
 

@@ -45,6 +45,9 @@ void WaitingFullscreenWindow::Init(int displayInd)
 	txt->SetPosition(wxPoint(0, 25));
 	txt->SetSize(wxSize(550, 30));
 
+	txt->Bind(wxEVT_RIGHT_UP, &WaitingFullscreenWindow::OnMouseTap, this);
+	Bind(wxEVT_RIGHT_UP, &WaitingFullscreenWindow::OnMouseTap, this);
+
 	g_TaskMgr->AddTask(GetName(), 20);
 }
 
@@ -69,7 +72,7 @@ void WaitingFullscreenWindow::ExecuteTask(float f, long /*time_went*/)
 			_alpha = 220.0f;
 			_state = State::Active;
 			
-			g_TaskMgr->AddTask(GetName(), 10 * 1000); // 10 seconds
+			g_TaskMgr->AddTask(GetName(), 7 * 1000); // 7 seconds
 		}
 		else
 		{
@@ -114,6 +117,20 @@ void WaitingFullscreenWindow::Hide()
 	g_TaskMgr->AddTask(GetName(), 20);
 }
 
+void WaitingFullscreenWindow::HideQuick()
+{
+	_state = State::Dead;
+	_preventClosing = false;
+	wxFrame::Close();
+
+	g_TaskMgr->RemoveTasks(GetName());
+}
+
+void WaitingFullscreenWindow::OnMouseTap(wxMouseEvent &)
+{
+	Hide();
+}
+
 void WaitingFullscreenWindow::OnClose(wxCloseEvent& event)
 {
 	if (!_preventClosing)
@@ -122,6 +139,6 @@ void WaitingFullscreenWindow::OnClose(wxCloseEvent& event)
 
 void WaitingFullscreenWindow::OnPaint(wxPaintEvent& WXUNUSED(evt))
 {
-    wxPaintDC dc(this);
-    dc.DrawBitmap(*_backBitmap_long, 0, 0, true);
+	wxPaintDC dc(this);
+	dc.DrawBitmap(*_backBitmap_long, 0, 0, true);
 }
