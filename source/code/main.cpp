@@ -163,11 +163,9 @@ bool EyeApp::OnInit()
 		wxMessageBox(_("Can't start timer thread!"));
 		return false;
 	}
-	
-#ifndef MASTER_RELEASE
-	_fastMode = true;
-#endif
-	
+
+	//_fastMode = true;
+
 	ResetSettings();
 
 	if (!LoadSettings())
@@ -231,8 +229,8 @@ bool EyeApp::OnInit()
 	g_Personage = new PersonageData(L"leopard");
 	
 #ifndef RELEASE
-	_debugWindow = new DebugWindow();
-	_debugWindow->Show(true);
+	//_debugWindow = new DebugWindow();
+	//_debugWindow->Show(true);
 #endif
 
 	int big_pause_seconds = _timeLeftToBigPause / 1000;
@@ -302,8 +300,6 @@ void EyeApp::RestartBigPauseInterval()
 		_timeLeftToBigPause = 0;
 	
 	ChangeState(STATE_IDLE, 1000);
-	
-	UpdateDebugWindow();
 }
 
 void EyeApp::SetBigPauseTime(long ms)
@@ -329,8 +325,6 @@ void EyeApp::SetBigPauseTime(long ms)
 		_timeLeftToBigPause = 0;
 	
 	ChangeState(STATE_IDLE, 1000);
-	
-	UpdateDebugWindow();
 }
 
 void EyeApp::RestartMiniPauseInterval()
@@ -341,8 +335,6 @@ void EyeApp::RestartMiniPauseInterval()
 		_timeLeftToMiniPause = _miniPauseInterval * 1000 * 60;
 	else
 		_timeLeftToMiniPause = 0;
-	
-	UpdateDebugWindow();
 }
 
 void EyeApp::SetMiniPauseTime(long ms)
@@ -366,9 +358,7 @@ void EyeApp::OnUserActivity()
 		return;
 
 	_inactivityTime = 0;
-	
-	UpdateDebugWindow();
-	
+
 	if (GetNextState() == STATE_AUTO_RELAX)
 	{
 		logging::msg("OnUserActivity ended auto-relax");
@@ -638,7 +628,7 @@ void EyeApp::ExecuteTask(float, long time_went)
 
 			if (_enableBigPause && _timeLeftToBigPause > 0)
 			{
-				int multiplier = _fastMode ? 3 : 1;
+				int multiplier = _fastMode ? 8 : 1;
 				_timeLeftToBigPause -= time_went * multiplier;
 				
 				if (_warningInterval > 0.0f)
@@ -688,8 +678,6 @@ void EyeApp::ExecuteTask(float, long time_went)
 				int multiplier = _fastMode ? 2 : 1;
 				_timeLeftToMiniPause -= time_went * multiplier;
 				
-				UpdateDebugWindow();
-				
 				if (_timeLeftToBigPause == 0 || _timeLeftToBigPause > _miniPauseInterval * 1000 * 60 / 2) // don't show mini-pause if big pause is about to start
 				{
 					if (_timeLeftToMiniPause <= 0)
@@ -705,7 +693,6 @@ void EyeApp::ExecuteTask(float, long time_went)
 		{
 			ChangeState(STATE_SUSPENDED, 300);
 		}
-		UpdateDebugWindow();
 		break;
 	
 	case STATE_WAITING_SCREEN:
@@ -794,9 +781,6 @@ void EyeApp::ExecuteTask(float, long time_went)
 		{
 			OnUserActivity();
 		}
-		//UninstallActivityMonitor();
-		//InstallActivityMonitor();
-		
 		break;
 	
 	case STATE_RELAXING:
@@ -805,8 +789,6 @@ void EyeApp::ExecuteTask(float, long time_went)
 
 			int multiplier = _fastMode ? 1 : 1;
 			_relaxingTimeLeft -= time_went * multiplier;
-			
-			UpdateDebugWindow();
 			
 			if (_relaxingTimeLeft < 0)
 			{
@@ -831,10 +813,7 @@ void EyeApp::ExecuteTask(float, long time_went)
 		break;
 	}
 
-	if (_nextState == 0) {
-		logging::msg("Error! No next state set");
-		ChangeState(STATE_FIRST_LAUNCH, 1000); // just in case something goes wrong
-	}
+	UpdateDebugWindow();
 }
 
 void EyeApp::UpdateDebugWindow()
@@ -878,7 +857,6 @@ void EyeApp::PostponeBigPause()
 	_timeLeftToMiniPause = 0;
 	ChangeState(STATE_IDLE, 1000);
 	
-	UpdateDebugWindow();
 	UpdateTaskbarText();
 }
 
@@ -904,8 +882,6 @@ void EyeApp::AutoRelax()
 	_userAutoBreakCount++;
 	ChangeState(STATE_AUTO_RELAX, 500);
 	UpdateTaskbarText();
-	
-	UpdateDebugWindow();
 }
 
 void EyeApp::StartBigPause()
@@ -947,8 +923,6 @@ void EyeApp::StartBigPause()
 		
 		_relaxingTimeLeft = _bigPauseDuration * 1000 * 60;
 		ChangeState(STATE_RELAXING, 1000);
-		
-		UpdateDebugWindow();
 	}
 	else
 	{

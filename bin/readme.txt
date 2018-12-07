@@ -1,5 +1,5 @@
 =========================================================
-                     EyeLeo v1.3
+                     EyeLeo v1.34
            Copyright (c) 2010-2018 EyeLeo.com
 =========================================================
 
@@ -16,6 +16,10 @@ Alexander Garustovich - (eyeleoapp@gmail.com)
 
 * Version history *
 ===================
+Version 1.34 (December 2018)
+- Several bug fixes
+- Made EyeLeo open-source at https://github.com/Yamatao/eyeleoapp
+
 Version 1.3 (June, 2013)
 - Fixed many bugs, improved stability.
 - Now when you unlock Windows OS session EyeLeo doesn't go into long break right after that.
