@@ -67,7 +67,7 @@
 	
 	<string id="settings_mini_pause_duration_value_1" text="8 секунд" />
 	<string id="settings_mini_pause_duration_value_2" text="15 секунд" />
-	<string id="settings_mini_pause_duration_value_2" text="20 секунд" />
+	<string id="settings_mini_pause_duration_value_3" text="20 секунд" />
 	
 	<string id="settings_enable_sounds_label" text="Включить звуки" />
 	<string id="settings_enable_strict_mode_label" text="Включить строгий режим" />
