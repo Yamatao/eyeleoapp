@@ -558,7 +558,7 @@ void EyeApp::ExecuteTask(float, long time_went)
 	_currentState = _nextState;
 	_nextState = 0;
 
-	if (_settingInactivityTracking)
+	if (_settingInactivityTracking && _currentState != STATE_SUSPENDED)
 	{
 		if (CheckInactivity()) {
 			_inactivityTime += time_went * (_fastMode ? 1 : 1);
