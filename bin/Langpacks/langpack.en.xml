@@ -57,7 +57,7 @@
 	<string id="settings_big_pause_warning_tooltip" text="Preliminary notification will help you gradually prepare for a long Break." />
 	
 	<string id="settings_mini_pause_label" text="Take a short break every" />
-	<string id="settings_mini_pause_tooltip" text="Short breaks happen more often than long breaks, but they are shorter. During that time you need to perform a short eye excercise." />
+	<string id="settings_mini_pause_tooltip" text="Short breaks happen more often than long breaks, but they are shorter. During that time you need to perform a short eye exercise." />
 	<string id="settings_mini_pause_value_1" text="5 minutes" />
 	<string id="settings_mini_pause_value_2" text="8 minutes" />
 	<string id="settings_mini_pause_value_3" text="10 minutes" />
@@ -71,13 +71,13 @@
 	
 	<string id="settings_enable_sounds_label" text="Enable sounds" />
 	<string id="settings_enable_strict_mode_label" text="Enable strict mode" />
-	<string id="settings_enable_strict_mode_tooltip" text="The Strict mode is designed for those who find it really hard to tear away from the computer. In this mode you can't ingore or postpone the Long Break" />
+	<string id="settings_enable_strict_mode_tooltip" text="The Strict mode is designed for those who find it really hard to tear away from the computer. In this mode you can't ignore or postpone the Long Break" />
 	<string id="settings_have_window_nearby" text="I have a window nearby" />
-	<string id="settings_have_window_nearby_tooltip" text="If this option is disabled, then the excercise 'look at the window' won't be shown." />
+	<string id="settings_have_window_nearby_tooltip" text="If this option is disabled, then the exercise 'look at the window' won't be shown." />
 	<string id="settings_can_close_notifications_label" text="Let me close notifications with the right mouse button" />
 	<string id="settings_can_close_notifications_tooltip" text="Enable this option if you want to have a possibility to close notification windows with the right mouse button" />
 	<string id="settings_can_enable_inactivity_tracking" text="Enable inactivity tracking" />
-	<string id="settings_can_enable_inactivity_tracking_tooltip" text="Tracks mouse/keyboard inactivity and automaticly considers a rest taken" />
+	<string id="settings_can_enable_inactivity_tracking_tooltip" text="Tracks mouse/keyboard inactivity and automatically considers a rest taken" />
 	<string id="settings_save_and_close_button" text="Save and Close" />
 	<string id="settings_try_short_break_button" text="Try short break" />
 	<string id="settings_try_long_break_button" text="Try long break" />
