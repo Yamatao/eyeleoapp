@@ -884,7 +884,7 @@ void EyeApp::AutoRelax()
 	UpdateTaskbarText();
 }
 
-void EyeApp::StartBigPause()
+void EyeApp::StartBigPause(bool demo)
 {
 	if (!_bigPauseWnds.empty())
 	{
@@ -901,7 +901,10 @@ void EyeApp::StartBigPause()
 		_notificationWnd->Hide();
 		_notificationWnd = nullptr;
 	}
-	
+
+	bool shortDemoPause = demo && _enableStrictMode;
+	static const int ShortDemoPauseDurationSec = 5;
+
 	bool fullscreenBlock = IsFullscreenAppRunning();
 	if (!fullscreenBlock)
 	{
@@ -915,14 +918,18 @@ void EyeApp::StartBigPause()
 			BigPauseWindow * wnd = new BigPauseWindow(displayInd);
 			logging::msg(wxString::Format("_bigPauseDuration = %d", _bigPauseDuration * 60));
 			wnd->Init();
-			wnd->SetBreakDuration(_bigPauseDuration * 60);
+
+			int seconds = !shortDemoPause ? _bigPauseDuration * 60 : ShortDemoPauseDurationSec;
+
+			wnd->SetBreakDuration(seconds);
 			wnd->Show(true);
 			_bigPauseWnds.push_back(wnd);
 		}
 		_bigPauseWnds[0]->SetFocus();
 		
-		_relaxingTimeLeft = _bigPauseDuration * 1000 * 60;
-		ChangeState(STATE_RELAXING, 1000);
+		_relaxingTimeLeft = !shortDemoPause ? _bigPauseDuration * 1000 * 60 : ShortDemoPauseDurationSec * 1000;
+
+		ChangeState(STATE_RELAXING, 300);
 	}
 	else
 	{

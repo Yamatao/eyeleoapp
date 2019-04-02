@@ -66,7 +66,7 @@ public:
 
 	void OnSessionUnlock();
 
-	void StartBigPause();
+	void StartBigPause(bool demo = false); // demo is true when 'long pause' is called from Settings window for demo purpose
 	void StartMiniPause();
 	void StopMiniPause();
 	void PostponeBigPause();

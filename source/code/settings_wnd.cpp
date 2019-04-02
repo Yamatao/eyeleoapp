@@ -302,7 +302,7 @@ void SettingsWindow::OnTryShortBreakClicked(wxCommandEvent &)
 
 void SettingsWindow::OnTryLongBreakClicked(wxCommandEvent &)
 {
-	getApp()->StartBigPause();
+	getApp()->StartBigPause(/*demo*/true);
 }
 
 void SettingsWindow::OnBigPauseEnabledClicked(wxCommandEvent &)
