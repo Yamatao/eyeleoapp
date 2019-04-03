@@ -783,7 +783,7 @@ void EyeApp::ExecuteTask(float, long time_went)
 		}
 		break;
 	
-	case STATE_RELAXING:
+	case STATE_RELAXING: // in 'long pause'
 		{
 			logging::msg(wxString::Format("State: Relaxing: _relaxingTimeLeft=%d", _relaxingTimeLeft));
 
@@ -1644,6 +1644,11 @@ void EyeTaskBarIcon::OnLeftButtonDown(wxMouseEvent /*wxTaskBarIconEvent*/& WXUNU
 
 wxMenu * EyeTaskBarIcon::CreatePopupMenu()
 {
+    // don't allow to open context menu while being in 'long break' in strict mode, because
+    // a user may close the application from the context menu
+    if (getApp()->GetStrictModeEnabled() && getApp()->GetNextState() == STATE_RELAXING)
+        return nullptr;
+
 	_menu = new wxMenu();
 	
 	wxMenuItem *item = new wxMenuItem(_menu, ID_TASKBAR_MENU_SETTINGS, langPack->Get("tb_menu_settings"), langPack->Get("tb_menu_settings_tip"));
