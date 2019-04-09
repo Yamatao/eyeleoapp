@@ -2,17 +2,18 @@
 #define EXCERCISES_H
 #include "wx/string.h"
 
-#define NUM_EXCERCISES 6
-
-enum
+enum EExercise
 {
-	EXCERCISE_NONE,
-	EXCERCISE_ROLL,
-	EXCERCISE_LOOK_VERT,
-	EXCERCISE_LOOK_HORZ,
-	EXCERCISE_CLOSE_TIGHTLY,
-	EXCERCISE_BLINK,
-	EXCERCISE_WINDOW
+	EXERCISE_NONE = 0,
+	EXERCISE_ROLL,
+	EXERCISE_LOOK_VERT,
+	EXERCISE_LOOK_HORZ,
+	EXERCISE_CLOSE_TIGHTLY,
+	EXERCISE_BLINK,
+	EXERCISE_WINDOW,
+	EXERCISE_LOOK_FAR,
+
+	NUM_EXERCISES
 };
 
 class wxStaticBitmap;
@@ -28,7 +29,7 @@ struct PersonageData
 	wxBitmap * _lookDown;
 	wxBitmap * _blink;
 	wxBitmap * _closeTightly;
-	
+
 	PersonageData(wxString const & name);
 	~PersonageData();
 };
@@ -39,9 +40,9 @@ class ExcerciseAnim
 {
 public:
 	ExcerciseAnim(wxStaticBitmap * img, int excerciseNum);
-	
+
 	void Update();
-	
+
 private:
 	wxStaticBitmap * _personageImg;
 	int _excercise;

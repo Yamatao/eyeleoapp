@@ -43,7 +43,7 @@ ExcerciseAnim::ExcerciseAnim(wxStaticBitmap * img, int excerciseNum) :
 	_excercise(excerciseNum),
 	_state(0)
 {
-	if (_excercise == EXCERCISE_WINDOW)
+	if (_excercise == EXERCISE_WINDOW)
 	{
 		_personageImg->SetBitmap(*_bmpWindow);
 	}
@@ -57,7 +57,7 @@ ExcerciseAnim::ExcerciseAnim(wxStaticBitmap * img, int excerciseNum) :
 
 void ExcerciseAnim::Update()
 {
-	if (_excercise == EXCERCISE_WINDOW)
+	if (_excercise == EXERCISE_WINDOW || _excercise == EXERCISE_LOOK_FAR)
 		return;
 	
 	_time -= 100;
@@ -66,7 +66,7 @@ void ExcerciseAnim::Update()
 	{
 		switch(_excercise)
 		{
-		case EXCERCISE_LOOK_HORZ:
+		case EXERCISE_LOOK_HORZ:
 			{
 				if (_state)
 					_personageImg->SetBitmap(*g_Personage->_lookLeft);
@@ -76,7 +76,7 @@ void ExcerciseAnim::Update()
 				_time = 1200;
 			}
 			break;
-		case EXCERCISE_LOOK_VERT:
+		case EXERCISE_LOOK_VERT:
 			{
 				if (_state)
 					_personageImg->SetBitmap(*g_Personage->_lookUp);
@@ -86,7 +86,7 @@ void ExcerciseAnim::Update()
 				_time = 1200;
 			}
 			break;
-		case EXCERCISE_ROLL:
+		case EXERCISE_ROLL:
 			{
 				if (_state == 0)
 					_personageImg->SetBitmap(*g_Personage->_lookLeft);
@@ -101,7 +101,7 @@ void ExcerciseAnim::Update()
 				_time = 1200;
 			}
 			break;
-		case EXCERCISE_BLINK:
+		case EXERCISE_BLINK:
 			{
 				if (_state)
 					_personageImg->SetBitmap(*g_Personage->_blink);
@@ -111,7 +111,7 @@ void ExcerciseAnim::Update()
 				_time = 200;
 			}
 			break;
-		case EXCERCISE_CLOSE_TIGHTLY:
+		case EXERCISE_CLOSE_TIGHTLY:
 			{
 				if (_state)
 					_personageImg->SetBitmap(*g_Personage->_closeTightly);

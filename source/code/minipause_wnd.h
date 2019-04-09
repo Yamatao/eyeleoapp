@@ -4,6 +4,7 @@
 #include "wx/wx.h"
 #include "wx/timer.h"
 #include "task_mgr.h"
+#include "excercises.h"
 
 class MiniPauseControls;
 class MiniPauseWindow : public wxFrame, public ITask
@@ -62,9 +63,9 @@ public:
 
 	void Update();
 
-	static int _excercise;
+	static EExercise _exercise;
+	static EExercise _lastExercise;
 	static int _line;
-	static int _lastExcercise;
 
 	void UpdateTimeLabel(int msLeft);
 

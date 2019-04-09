@@ -35,14 +35,14 @@ static SpecialMessage specialMessages[] =
 };
 
 ////////////////////////////////////////////////////////////////////////
-int MiniPauseControls::_excercise = 0;
+EExercise MiniPauseControls::_exercise = EXERCISE_NONE;
+EExercise MiniPauseControls::_lastExercise = EXERCISE_NONE;
 int MiniPauseControls::_line = 0;
-int MiniPauseControls::_lastExcercise = 0;
 
 MiniPauseWindow::MiniPauseWindow(int displayInd, unsigned int showCount) :
 	wxFrame(NULL, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_SHAPED | wxNO_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP),
 	_preventClosing(true),
-	_controlsWnd(0),
+	_controlsWnd(nullptr),
 	_showCount(showCount),
 	_displayInd(displayInd),
 	_state(STATE_SHOWING),
@@ -81,16 +81,14 @@ MiniPauseWindow::~MiniPauseWindow()
 {
 	if (!getApp()->isFinished())
 		g_TaskMgr->RemoveTasks(GetName());
-	_controlsWnd = 0;
+	_controlsWnd = nullptr;
 
 	getApp()->OnMiniPauseWindowClosed(this);
 	assert(!getApp()->getWindow(GetName()));
 }
 
-void MiniPauseWindow::ExecuteTask(float f, long time_went)
+void MiniPauseWindow::ExecuteTask(float f, long /*time_went*/)
 {
-	(void)time_went;
-
 	switch (_state)
 	{
 		case MiniPauseWindow::STATE_SHOWING:
@@ -119,7 +117,7 @@ void MiniPauseWindow::ExecuteTask(float f, long time_went)
 
 		case MiniPauseWindow::STATE_ACTIVE:
 		{
-			_timeLeft -= 100.0f * f;
+			_timeLeft -= (int)(100.0f * f);
 			
 			_controlsWnd->Update();
 			
@@ -193,8 +191,8 @@ void MiniPauseWindow::OnClose(wxCloseEvent& event)
 MiniPauseControls::MiniPauseControls(wxWindow * parent) :
 	wxFrame(parent, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_SHAPED | wxNO_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP),
 	_preventClosing(true),
-	_excerciseAnim(0),
-	_excerciseImg(0)
+	_excerciseAnim(nullptr),
+	_excerciseImg(nullptr)
 {
 	
 }
@@ -229,23 +227,23 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount)
 	wxStaticBitmap * title = new wxStaticBitmap(this, ID_MINIPAUSE_LOGO, *_bmpTitle);
 	title->SetPosition(wxPoint(40, 12));
 
-	if (MiniPauseControls::_excercise == 0)
+	if (MiniPauseControls::_exercise == EXERCISE_NONE)
 	{
-		for (int tries = 0; tries < 8; ++tries)
+		for (int tries = 0; tries < 32; ++tries)
 		{
-			MiniPauseControls::_excercise = rand() % NUM_EXCERCISES + 1;
-			if (getApp()->GetWindowNearbySetting() == false && MiniPauseControls::_excercise == EXCERCISE_WINDOW)
+			MiniPauseControls::_exercise = (EExercise)(rand() % NUM_EXERCISES);
+			if (getApp()->GetWindowNearbySetting() == false && MiniPauseControls::_exercise == EXERCISE_WINDOW)
 				continue;
-			if (MiniPauseControls::_excercise != MiniPauseControls::_lastExcercise)
+			if (MiniPauseControls::_exercise != MiniPauseControls::_lastExercise)
 				break;
 		}
 
-		MiniPauseControls::_lastExcercise = MiniPauseControls::_excercise;
+		MiniPauseControls::_lastExercise = MiniPauseControls::_exercise;
 
 		int ind = 1;
 		while (ind < 20)
 		{
-			wxString id = wxString::Format(L"mini_pause_text_%d_%d", _excercise, ind);
+			wxString id = wxString::Format(L"mini_pause_text_%d_%d", _exercise, ind);
 			if (!langPack->Has(id))
 			{
 				ind--;
@@ -258,7 +256,7 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount)
 			MiniPauseControls::_line = rand() % ind + 1;
 	}
 
-	if (_excercise > 0 && _line > 0)
+	if (MiniPauseControls::_exercise != EXERCISE_NONE && _line > 0)
 	{
 		wxString text;
 		int numSpecMsgs = sizeof(specialMessages) / sizeof(specialMessages[0]);
@@ -274,7 +272,7 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount)
 
 		if ( text.empty() )
 		{
-			wxString id = wxString::Format(L"mini_pause_text_%d_%d", MiniPauseControls::_excercise, MiniPauseControls::_line);
+			wxString id = wxString::Format(L"mini_pause_text_%d_%d", MiniPauseControls::_exercise, MiniPauseControls::_line);
 			text = langPack->Get(id);
 			txt->SetForegroundColour(wxColour(255, 255, 255));
 		}
@@ -282,7 +280,7 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount)
 		txt->SetLabel(text);
 	}
 
-	_excerciseAnim = new ExcerciseAnim(_excerciseImg, _excercise);
+	_excerciseAnim = new ExcerciseAnim(_excerciseImg, _exercise);
 
 	txt->SetSize(wxSize(250, 80));
 
@@ -297,7 +295,7 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount)
 MiniPauseControls::~MiniPauseControls()
 {
 	delete _excerciseAnim;
-	MiniPauseControls::_excercise = 0;
+	MiniPauseControls::_exercise = EXERCISE_NONE;
 	MiniPauseControls::_line = 0;
 }
 
