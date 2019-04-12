@@ -13,44 +13,39 @@ SetupCallback SetupKeyCallback = 0;
 HOOKPROC hookMouseProc = 0;
 HOOKPROC hookKeyProc = 0;
 
-void ActivityMonitor_MouseCallback()
-{
-	getApp()->OnUserActivity();
+void ActivityMonitor_MouseCallback() {
+    getApp()->OnUserActivity();
 }
 
-void ActivityMonitor_KeyCallback()
-{
-	getApp()->OnUserActivity();
+void ActivityMonitor_KeyCallback() {
+    getApp()->OnUserActivity();
 }
 
-void PrepareActivityMonitor()
-{
-	hDll = LoadLibrary(L"activity-monitor.dll");
-	SetupMouseCallback = (SetupCallback)GetProcAddress(hDll, "SetupMouseCallback");
-	SetupKeyCallback = (SetupCallback)GetProcAddress(hDll, "SetupKeyCallback");
-	hookMouseProc = (HOOKPROC)GetProcAddress(hDll, "_MouseProc@12");
-	hookKeyProc = (HOOKPROC)GetProcAddress(hDll, "_KeyProc@12");
+void PrepareActivityMonitor() {
+    hDll = LoadLibrary(L"activity-monitor.dll");
+    SetupMouseCallback = (SetupCallback)GetProcAddress(hDll, "SetupMouseCallback");
+    SetupKeyCallback = (SetupCallback)GetProcAddress(hDll, "SetupKeyCallback");
+    hookMouseProc = (HOOKPROC)GetProcAddress(hDll, "_MouseProc@12");
+    hookKeyProc = (HOOKPROC)GetProcAddress(hDll, "_KeyProc@12");
 }
 
-void InstallActivityMonitor()
-{
-	hMouseHook = SetWindowsHookEx(WH_MOUSE_LL, hookMouseProc, hDll, 0); 
-	hKeyHook = SetWindowsHookEx(WH_KEYBOARD_LL, hookKeyProc, hDll, 0); 
-	
-	if (hMouseHook)
-		SetupMouseCallback(ActivityMonitor_MouseCallback);
-	if (hKeyHook)
-		SetupKeyCallback(ActivityMonitor_KeyCallback);
+void InstallActivityMonitor() {
+    hMouseHook = SetWindowsHookEx(WH_MOUSE_LL, hookMouseProc, hDll, 0);
+    hKeyHook = SetWindowsHookEx(WH_KEYBOARD_LL, hookKeyProc, hDll, 0);
+
+    if (hMouseHook)
+        SetupMouseCallback(ActivityMonitor_MouseCallback);
+    if (hKeyHook)
+        SetupKeyCallback(ActivityMonitor_KeyCallback);
 }
 
-void UninstallActivityMonitor()
-{
-	if (hKeyHook)
-		UnhookWindowsHookEx(hKeyHook);
+void UninstallActivityMonitor() {
+    if (hKeyHook)
+        UnhookWindowsHookEx(hKeyHook);
 
-	if (hMouseHook)
-		UnhookWindowsHookEx(hMouseHook);
+    if (hMouseHook)
+        UnhookWindowsHookEx(hMouseHook);
 
-	hKeyHook = 0;
-	hMouseHook = 0;
+    hKeyHook = 0;
+    hMouseHook = 0;
 }

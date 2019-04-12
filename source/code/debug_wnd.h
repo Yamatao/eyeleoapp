@@ -3,20 +3,19 @@
 
 #include "wx/wx.h"
 
-class DebugWindow : public wxFrame
-{
+class DebugWindow : public wxFrame {
 public:
-	DebugWindow();
+    DebugWindow();
 
-	wxStaticText * _timeLeftToBigPause;
-	wxStaticText * _timeLeftToMiniPause;
-	wxStaticText * _inactivityTime;
-	wxStaticText * _relaxingTimeLeft;
+    wxStaticText *_timeLeftToBigPause;
+    wxStaticText *_timeLeftToMiniPause;
+    wxStaticText *_inactivityTime;
+    wxStaticText *_relaxingTimeLeft;
 
 private:
-	void OnClose(wxCloseEvent& event);
+    void OnClose(wxCloseEvent &event);
 
-	DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

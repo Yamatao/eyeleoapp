@@ -1,64 +1,63 @@
 #ifndef BEFOREPAUSE_WND_H
 #define BEFOREPAUSE_WND_H
 
-#include "wx/wx.h"
-#include "wx/timer.h"
 #include "task_mgr.h"
+#include "wx/timer.h"
+#include "wx/wx.h"
 
 enum
 {
-	ID_BEFORE_PAUSE_NO_THANKS = 1,
-	ID_BEFORE_PAUSE_IAM_READY = 2,
-	ID_BEFORE_PAUSE_GIVE_ME_TIME = 3
+    ID_BEFORE_PAUSE_NO_THANKS = 1,
+    ID_BEFORE_PAUSE_IAM_READY = 2,
+    ID_BEFORE_PAUSE_GIVE_ME_TIME = 3
 };
 
 enum EResult
 {
-	RESULT_NONE,
-	RESULT_REFUSE,
-	RESULT_POSTPONE,
-	RESULT_ACCEPT,
+    RESULT_NONE,
+    RESULT_REFUSE,
+    RESULT_POSTPONE,
+    RESULT_ACCEPT,
 };
 
-class BeforePauseWindow : public wxFrame, public ITask
-{
+class BeforePauseWindow : public wxFrame, public ITask {
 public:
-	BeforePauseWindow(int displayInd = 0, int postponeCount = 0);
-	virtual ~BeforePauseWindow();
+    BeforePauseWindow(int displayInd = 0, int postponeCount = 0);
+    virtual ~BeforePauseWindow();
 
-	void Init();
+    void Init();
 
-	void Hide();
+    void Hide();
 
 private:
-	void OnPaint(wxPaintEvent& evt);
-	void OnErase(wxEraseEvent& evt);
-	void ExecuteTask(float f, long time_went);
-	void OnClose(wxCloseEvent& event);
-	
-	void OnRefuseClicked(wxCommandEvent &);
-	void OnReadyClicked(wxCommandEvent &);
-	void OnPostponeClicked(wxCommandEvent &);
+    void OnPaint(wxPaintEvent &evt);
+    void OnErase(wxEraseEvent &evt);
+    void ExecuteTask(float f, long time_went);
+    void OnClose(wxCloseEvent &event);
 
-	void UpdateReadyTimer();
+    void OnRefuseClicked(wxCommandEvent &);
+    void OnReadyClicked(wxCommandEvent &);
+    void OnPostponeClicked(wxCommandEvent &);
 
-	int _displayInd;
-	int _postponeCount;
+    void UpdateReadyTimer();
 
-	bool _showing;
-	bool _hiding;
-	float _alpha;
-	bool _preventClosing;
+    int _displayInd;
+    int _postponeCount;
 
-	float _readyTimer;
+    bool _showing;
+    bool _hiding;
+    float _alpha;
+    bool _preventClosing;
 
-	EResult _result;
+    float _readyTimer;
 
-	wxButton * _btnReady;
-	
-	DECLARE_EVENT_TABLE()
+    EResult _result;
 
-	static bool bitmapInitialized;
+    wxButton *_btnReady;
+
+    DECLARE_EVENT_TABLE()
+
+    static bool bitmapInitialized;
 };
 
 #endif

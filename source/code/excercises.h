@@ -4,50 +4,48 @@
 
 enum EExercise
 {
-	EXERCISE_NONE = 0,
-	EXERCISE_ROLL,
-	EXERCISE_LOOK_VERT,
-	EXERCISE_LOOK_HORZ,
-	EXERCISE_CLOSE_TIGHTLY,
-	EXERCISE_BLINK,
-	EXERCISE_WINDOW,
-	EXERCISE_LOOK_FAR,
+    EXERCISE_NONE = 0,
+    EXERCISE_ROLL,
+    EXERCISE_LOOK_VERT,
+    EXERCISE_LOOK_HORZ,
+    EXERCISE_CLOSE_TIGHTLY,
+    EXERCISE_BLINK,
+    EXERCISE_WINDOW,
+    EXERCISE_LOOK_FAR,
 
-	NUM_EXERCISES
+    NUM_EXERCISES
 };
 
 class wxStaticBitmap;
 class wxBitmap;
 
-struct PersonageData
-{
-	wxString _name;
-	wxBitmap * _default;
-	wxBitmap * _lookLeft;
-	wxBitmap * _lookRight;
-	wxBitmap * _lookUp;
-	wxBitmap * _lookDown;
-	wxBitmap * _blink;
-	wxBitmap * _closeTightly;
+struct PersonageData {
+    wxString _name;
+    wxBitmap *_default;
+    wxBitmap *_lookLeft;
+    wxBitmap *_lookRight;
+    wxBitmap *_lookUp;
+    wxBitmap *_lookDown;
+    wxBitmap *_blink;
+    wxBitmap *_closeTightly;
 
-	PersonageData(wxString const & name);
-	~PersonageData();
+    PersonageData(wxString const &name);
+    ~PersonageData();
 };
 
-extern PersonageData * g_Personage;
+extern PersonageData *g_Personage;
 
-class ExcerciseAnim
-{
+class ExcerciseAnim {
 public:
-	ExcerciseAnim(wxStaticBitmap * img, int excerciseNum);
+    ExcerciseAnim(wxStaticBitmap *img, int excerciseNum);
 
-	void Update();
+    void Update();
 
 private:
-	wxStaticBitmap * _personageImg;
-	int _excercise;
-	int _time;
-	int _state;
+    wxStaticBitmap *_personageImg;
+    int _excercise;
+    int _time;
+    int _state;
 };
 
 #endif
