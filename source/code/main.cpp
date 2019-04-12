@@ -129,8 +129,6 @@ bool EyeApp::OnInit()
 	
 	srand((unsigned)time(0));
 	
-	fillOSCapabilities();
-
 	_lang = L"en";
 	_version = L"(?)";
 	_website = L"eyeleo.com";
@@ -676,7 +674,7 @@ void EyeApp::ExecuteTask(float, long time_went)
 			if (_enableMiniPause && _timeLeftToMiniPause > 0)
 			{
 				int multiplier = _fastMode ? 2 : 1;
-				_timeLeftToMiniPause -= time_went * multiplier;
+				_timeLeftToMiniPause -= time_went * multipliers;
 				
 				if (_timeLeftToBigPause == 0 || _timeLeftToBigPause > _miniPauseInterval * 1000 * 60 / 2) // don't show mini-pause if big pause is about to start
 				{

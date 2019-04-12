@@ -7,17 +7,12 @@
 
 OSCapabilities osCaps;
 
-void fillOSCapabilities()
-{
-	// retrieve monitor count
-	osCaps.numDisplays = wxDisplay::GetCount();
-	osCaps.multiDisplay = osCaps.numDisplays > 1;
-	
-	refillResolutionParams();
-}
-
 void refillResolutionParams()
 {
+	// retrieve display count
+	osCaps.numDisplays = wxDisplay::GetCount();
+	osCaps.multiDisplay = osCaps.numDisplays > 1;
+
 	osCaps.displays.clear();
 	
 	for (int ind = 0; ind < osCaps.numDisplays; ++ind)
