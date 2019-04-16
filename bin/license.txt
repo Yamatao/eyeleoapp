@@ -1,5 +1,5 @@
-                     EyeLeo v1.34
-           Copyright (c) 2010-2018 EyeLeo.com
+                     EyeLeo v1.35
+           Copyright (c) 2010-2019 EyeLeo.com
 
 1. Terms
 This End-User License Agreement ("EULA") is a legal agreement between you (either an individual or a single entity) and EyeLeo.com. SOFTWARE identified above, which includes associated SOFTWARE components. By downloading, installing, copying, or otherwise using the SOFTWARE, you agree to be bound by the terms of this EULA. If you do not agree to the terms of this EULA, do not install or use the SOFTWARE.

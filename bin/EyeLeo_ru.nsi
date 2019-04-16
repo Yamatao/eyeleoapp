@@ -2,7 +2,7 @@
 ShowInstDetails show
 
 !define APPNAME "EyeLeo"
-!define VERSION "1.34"
+!define VERSION "1.35"
 
 ; The name of the installer
 Name "${APPNAME} Installer"

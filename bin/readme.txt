@@ -1,6 +1,6 @@
 =========================================================
-                     EyeLeo v1.34
-           Copyright (c) 2010-2018 EyeLeo.com
+                     EyeLeo v1.35
+           Copyright (c) 2010-2019 EyeLeo.com
 =========================================================
 
 
@@ -16,6 +16,15 @@ Alexander Garustovich - (eyeleoapp@gmail.com)
 
 * Version history *
 ===================
+Version 1.35 (April 2019)
+- Fixed issue when connecting to a machine with installed EyeLeo via RDP.
+- Disabled context menu when in "long break" state with a strict mode on.
+- Added a new exercise.
+Thanks to community for the fixes:
+- Github/CommenterOfComments: Fixed some typos in the English language file.
+- Github/HenryDukart: A few English text corrections.
+- Github/dmikheev: Inactivity tracking is now disabled in suspended state.
+
 Version 1.34 (December 2018)
 - Several bug fixes
 - Made EyeLeo open-source at https://github.com/Yamatao/eyeleoapp
