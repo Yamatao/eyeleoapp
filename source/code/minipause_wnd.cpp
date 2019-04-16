@@ -203,7 +203,7 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount) {
 
     if (MiniPauseControls::_exercise == EXERCISE_NONE) {
         for (int tries = 0; tries < 32; ++tries) {
-            MiniPauseControls::_exercise = (EExercise)(rand() % NUM_EXERCISES);
+            MiniPauseControls::_exercise = (EExercise)(rand() % NUM_EXERCISES + 1);
             if (getApp()->GetWindowNearbySetting() == false && MiniPauseControls::_exercise == EXERCISE_WINDOW)
                 continue;
             if (MiniPauseControls::_exercise != MiniPauseControls::_lastExercise)
