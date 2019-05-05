@@ -50,7 +50,7 @@ ExcerciseAnim::ExcerciseAnim(wxStaticBitmap *img, int excerciseNum)
 }
 
 void ExcerciseAnim::Update() {
-    if (_excercise == EXERCISE_WINDOW || _excercise == EXERCISE_LOOK_FAR)
+    if (_excercise == EXERCISE_WINDOW || _excercise == EXERCISE_STRETCH)
         return;
 
     _time -= 100;

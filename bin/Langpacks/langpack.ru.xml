@@ -115,6 +115,10 @@
 	<string id="mini_pause_text_6_2" text="Время для короткого перерыва.{n}Посмотрите вдаль в окно." />
 	<string id="mini_pause_text_6_3" text="Короткий перерыв!{n}Посмотрите вдаль в окно." />
 	
+	<string id="mini_pause_text_7_1" text="Сделайте мини-перерыв{n}и потянитесь." />
+	<string id="mini_pause_text_7_2" text="Время для короткого перерыва.{n} Потянитесь." />
+	<string id="mini_pause_text_7_3" text="Короткий перерыв!{n}Потянитесь." />
+	
 	<string id="mini_pause_text_settings" text="А вы знали, что можно менять настройки EyeLeo?" />
 	<string id="mini_pause_text_donate" text="Если вам нравится EyeLeo, поддержите проект пожертвованием на сайте." />
 	<string id="mini_pause_text_tell_friend" text="Если вам нравится EyeLeo, расскажите о нем другу." />

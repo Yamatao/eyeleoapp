@@ -126,6 +126,12 @@
 	<string id="mini_pause_text_6_3" text="Time for a short break!{n}Look at distant objects through the window." />
 	<string id="mini_pause_text_6_4" text="Time for a break!{n}Look at distant objects through the window." />
 	<string id="mini_pause_text_6_5" text="Short break!{n}Look at distant objects through the window." />
+    
+    <string id="mini_pause_text_7_1" text="Take a short break{n}and stretch your body." />
+	<string id="mini_pause_text_7_2" text="Take a break{n}and stretch your body." />
+	<string id="mini_pause_text_7_3" text="Time for a short break!{n}Stretch your body." />
+	<string id="mini_pause_text_7_4" text="Time for a break!{n}Stretch your body." />
+	<string id="mini_pause_text_7_5" text="Short break!{n}Stretch your body." />
 	
 	<string id="mini_pause_text_settings" text="Did you know that you could change EyeLeo preferences?" />
 	<string id="mini_pause_text_donate" text="If you like EyeLeo, consider making a donation on eyeleo.com" />
