@@ -39,16 +39,16 @@ int MiniPauseControls::_excercise = 0;
 int MiniPauseControls::_line = 0;
 int MiniPauseControls::_lastExcercise = 0;
 
-MiniPauseWindow::MiniPauseWindow(int displayInd, unsigned int showCount) :
+MiniPauseWindow::MiniPauseWindow(const DisplayData& displayData, unsigned int showCount) :
 	wxFrame(NULL, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_SHAPED | wxNO_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP),
 	_preventClosing(true),
 	_controlsWnd(0),
 	_showCount(showCount),
-	_displayInd(displayInd),
+	_displayData(displayData),
 	_state(STATE_SHOWING),
 	_alpha(0.0f)
 {
-	SetName(std::string("MiniPauseWindow") + (char)('0' + displayInd));
+	SetName(std::string("MiniPauseWindow") + (char)('0' + displayData.ind));
 }
 
 void MiniPauseWindow::Init()
@@ -62,8 +62,7 @@ void MiniPauseWindow::Init()
 	SetTransparent(0);
 
 	SetSize(_backBitmap->GetSize());
-	assert(_displayInd < osCaps.numDisplays);
-	wxRect displayRect = osCaps.displays[_displayInd].clientArea;
+	wxRect displayRect = _displayData.clientArea;
 	SetPosition(wxPoint(displayRect.GetX() + displayRect.GetWidth() / 2 - GetSize().GetX() / 2, displayRect.GetY() + displayRect.GetHeight() / 2 - GetSize().GetY() / 2));
 
 	_state = MiniPauseWindow::STATE_SHOWING;
@@ -73,7 +72,7 @@ void MiniPauseWindow::Init()
 	Show(true);
 
 	_controlsWnd = new MiniPauseControls(this);
-	_controlsWnd->Init(_displayInd, _showCount);
+	_controlsWnd->Init(_displayData, _showCount);
 	_controlsWnd->Show(true);
 }
 
@@ -199,7 +198,7 @@ MiniPauseControls::MiniPauseControls(wxWindow * parent) :
 	
 }
 
-void MiniPauseControls::Init(int displayInd, unsigned int showCount)
+void MiniPauseControls::Init(const DisplayData& displayData, unsigned int showCount)
 {
 	if ((GetExtraStyle() & WS_EX_LAYERED) == 0 )
 		SetWindowLong(GetHWND(), GWL_EXSTYLE, GetExtraStyle() | WS_EX_LAYERED);
@@ -208,8 +207,7 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount)
 
 	// Set position to center of the screen
 	SetSize(wxSize(_backBitmap->GetWidth(), _backBitmap->GetHeight()));
-	assert(displayInd < osCaps.numDisplays);
-	wxRect displayRect = osCaps.displays[displayInd].clientArea;
+	wxRect displayRect = displayData.clientArea;
 	SetPosition(wxPoint(displayRect.GetX() + displayRect.GetWidth() / 2 - GetSize().GetX() / 2, displayRect.GetY() + displayRect.GetHeight() / 2 - GetSize().GetY() / 2));
 
 	wxStaticText * txt = new wxStaticText(this, ID_MINIPAUSE_TEXT, L"", wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);

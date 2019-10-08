@@ -4,6 +4,7 @@
 #include "wx/wx.h"
 #include "wx/timer.h"
 #include "task_mgr.h"
+#include "oscapabilities.h"
 
 class NotificationWindowLook;
 class NotificationWindow : public wxFrame, public ITask
@@ -34,7 +35,7 @@ public:
 	NotificationWindow(unsigned int showCount = 0);
 	virtual ~NotificationWindow();
 
-	void Init(int displayInd = 0);
+	void Init(const DisplayData& displayData);
 	void SetTime(int timeBeforeLongBreakMs); // сколько времени осталось до большого перерыва
 
 	virtual bool Hide();
@@ -52,7 +53,7 @@ public:
 	NotificationWindowLook(wxWindow * parent = 0);
 	virtual ~NotificationWindowLook();
 
-	void Init(int displayInd, unsigned int showCount);
+	void Init(const DisplayData& displayData, unsigned int showCount);
 
 	void Update();
 	

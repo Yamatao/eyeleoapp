@@ -129,7 +129,7 @@ bool EyeApp::OnInit()
 	
 	srand((unsigned)time(0));
 	
-	fillOSCapabilities();
+    refillResolutionParams();
 
 	_lang = L"en";
 	_version = L"(?)";
@@ -371,13 +371,19 @@ void EyeApp::OnUserActivity()
 }
 
 // Check if full screen app is running, returns display number or -1 as 'display'
-bool EyeApp::IsFullscreenAppRunning(int * display, HWND * fullscreenWndHandle) const
+bool EyeApp::IsFullscreenAppRunning(HWND * fullscreenWndHandle) const
 {
+	return GetFullScreenAppRunningDisplay(fullscreenWndHandle) != -1;
+}
+
+int EyeApp::GetFullScreenAppRunningDisplay(HWND * fullscreenWndHandle) const
+{
+	int display = -1;
 	HWND hWnd = GetForegroundWindow();
 	if (!hWnd)
 	{
 		//logging::msg("IsFullscreenAppRunning failed 0");
-		return false;
+		return display;
 	}
 
 	HWND hDesktop = GetDesktopWindow();
@@ -385,47 +391,46 @@ bool EyeApp::IsFullscreenAppRunning(int * display, HWND * fullscreenWndHandle) c
 	if (hWnd == hDesktop || hWnd == hShell)
 	{
 		logging::msg("IsFullscreenAppRunning failed 1");
-		return false;
+		return display;
 	}
 
 	if (!IsWindowVisible(hWnd) || IsIconic(hWnd))
 	{
 		logging::msg("IsFullscreenAppRunning failed 2");
-		return false;
+		return display;
 	}
-	
+
 	RECT wndArea;
 	if (!GetWindowRect(hWnd, &wndArea))
 	{
 		logging::msg("IsFullscreenAppRunning failed 3");
-		return false;
+		return display;
 	}
 
 	refillResolutionParams();
 
 	//logging::msg(wxString::Format("wndArea (%d, %d), (%d, %d)", wndArea.left, wndArea.right, wndArea.top, wndArea.bottom));
 
-	for (int d = 0; d < osCaps.numDisplays; ++d)
+	for (const auto& displayData : getDisplays())
 	{
-		wxRect displayArea = osCaps.displays[d].geometry;
-		
+		wxRect displayArea = displayData.geometry;
+
 		//logging::msg(wxString::Format("%d) displayArea (%d, %d, %d, %d)", d, displayArea.x, displayArea.y, displayArea.width, displayArea.height));
-		
+
 		if (wndArea.left == displayArea.x &&
 			wndArea.top == displayArea.y &&
 			wndArea.right - wndArea.left == displayArea.width &&
 			wndArea.bottom - wndArea.top == displayArea.height)
 		{
-			if (display)
-				*display = d;
+			display = displayData.ind;
 			if (fullscreenWndHandle)
 				*fullscreenWndHandle = hWnd;
 			//logging::msg(wxString::Format("Fullscreen app is at disp %d", d));
-			return true;
+			return display;
 		}
 	}
 	//logging::msg("No fullscreen app running");
-	return false;
+	return display;
 }
 
 void EyeApp::UpdateTaskbarText()
@@ -639,18 +644,17 @@ void EyeApp::ExecuteTask(float, long time_went)
 						if (!NotificationWindow::hasAnyInstance() && !_showedLongBreakCountdown)
 						{
 							// открыть countdown окно, но только не поверх fullscreen приложения
-							int fullscreenDisplay = -1;
-							bool isFullscreen = IsFullscreenAppRunning(&fullscreenDisplay);
+							int fullscreenDisplay = GetFullScreenAppRunningDisplay();
 
-							for (int displayInd = 0; displayInd < osCaps.numDisplays; ++displayInd)
+							for (const auto& displayData : getDisplays())
 							{
-								if (isFullscreen && fullscreenDisplay == displayInd)
+								if (fullscreenDisplay == displayData.ind)
 									continue;
 
 								_timeLeftToBigPause = (long)(_warningInterval * 60 * 1000);
 
 								NotificationWindow * wnd = new NotificationWindow();
-								wnd->Init();
+								wnd->Init(displayData);
 								wnd->SetTime(_timeLeftToBigPause);
 								wnd->Show(true);
 								_notificationWnd = wnd;
@@ -741,7 +745,7 @@ void EyeApp::ExecuteTask(float, long time_went)
 			if (_enableStrictMode)
 			{
 				HWND hwnd;
-				bool fullscreenBlock = IsFullscreenAppRunning(0, &hwnd);
+				bool fullscreenBlock = IsFullscreenAppRunning(&hwnd);
 				if (fullscreenBlock && hwnd)
 				{
 					ShowWindow(hwnd, SW_FORCEMINIMIZE);
@@ -830,7 +834,8 @@ void EyeApp::AskForBigPause()
 {
 	logging::msg("AskForBigPause()");
 
-	BeforePauseWindow * wnd = new BeforePauseWindow(0, _postponeCount);
+	assert(!getDisplays().empty());
+	BeforePauseWindow * wnd = new BeforePauseWindow(getDisplays()[0], _postponeCount);
 	wnd->Init();
 	wnd->Show(true);
 
@@ -905,17 +910,16 @@ void EyeApp::StartBigPause(bool demo)
 	bool shortDemoPause = demo && _enableStrictMode;
 	static const int ShortDemoPauseDurationSec = 5;
 
-	bool fullscreenBlock = IsFullscreenAppRunning();
-	if (!fullscreenBlock)
+	if (!IsFullscreenAppRunning())
 	{
 		_userLongBreakCount++;
 		
 		StopMiniPause();
 		
 		assert(_bigPauseWnds.empty());
-		for (int displayInd = 0; displayInd < osCaps.numDisplays; ++displayInd)
+		for (const auto& displayData : getDisplays())
 		{
-			BigPauseWindow * wnd = new BigPauseWindow(displayInd);
+			BigPauseWindow * wnd = new BigPauseWindow(displayData);
 			logging::msg(wxString::Format("_bigPauseDuration = %d", _bigPauseDuration * 60));
 			wnd->Init();
 
@@ -951,18 +955,17 @@ void EyeApp::ShowWaitingWnd()
 
 	logging::msg(wxString::Format("ShowWaitingWnd()"));
 
-	int fullscreenDisplay = -1;
-	IsFullscreenAppRunning(&fullscreenDisplay);
+	int fullscreenDisplay = GetFullScreenAppRunningDisplay();
 
-	for (int displayInd = 0; displayInd < osCaps.numDisplays; ++displayInd)
+	for (const auto& displayData : getDisplays())
 	{
-		if (fullscreenDisplay == displayInd)
+		if (fullscreenDisplay == displayData.ind)
 			continue;
 		
-		logging::msg(wxString::Format("ShowWaitingWnd shows wnd at disp %d", displayInd));
+		logging::msg(wxString::Format("ShowWaitingWnd shows wnd at disp %d", displayData.ind));
 
 		WaitingFullscreenWindow * wnd = new WaitingFullscreenWindow();
-		wnd->Init(displayInd);
+		wnd->Init(displayData);
 		wnd->Show();
 		
 		_waitWnds.push_back(wnd);
@@ -1051,19 +1054,18 @@ void EyeApp::StartMiniPause()
 {
 	logging::msg("StartMiniPause");
 	
-	int fullscreenDisplay = -1;
-	IsFullscreenAppRunning(&fullscreenDisplay);
+	int fullscreenDisplay = GetFullScreenAppRunningDisplay();
 	
 	if (_miniPauseWnds.empty())
 	{
 		_userShortBreakCount++;
 
-		for (int displayInd = 0; displayInd < osCaps.numDisplays; ++displayInd)
+		for (const auto& displayData : getDisplays())
 		{
-			if (fullscreenDisplay == displayInd)
+			if (fullscreenDisplay == displayData.ind)
 				continue;
 			
-			MiniPauseWindow * wnd = new MiniPauseWindow(displayInd, _userShortBreakCount);
+			MiniPauseWindow * wnd = new MiniPauseWindow(displayData, _userShortBreakCount);
 			wnd->Init();
 			wnd->Show(true);
 			

@@ -4,6 +4,7 @@
 #include "wx/wx.h"
 #include "wx/timer.h"
 #include "task_mgr.h"
+#include "oscapabilities.h"
 
 class WaitingFullscreenWindow : public wxFrame, public ITask
 {
@@ -19,7 +20,7 @@ public:
 	WaitingFullscreenWindow();
 	virtual ~WaitingFullscreenWindow();
 
-	void Init(int displayInd = 0);
+	void Init(const DisplayData& displayData);
 
 	void Hide();
 	void HideQuick();

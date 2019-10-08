@@ -1,36 +1,36 @@
 #include "oscapabilities.h"
 #include <wx/display.h>
+#include <mutex>
 
 #ifdef WIN32
 #include "windows.h"
 #endif
 
-OSCapabilities osCaps;
-
-void fillOSCapabilities()
-{
-	// retrieve monitor count
-	osCaps.numDisplays = wxDisplay::GetCount();
-	osCaps.multiDisplay = osCaps.numDisplays > 1;
-	
-	refillResolutionParams();
-}
+std::vector<DisplayData> displays;
+std::mutex displaysVectorMutex;
 
 void refillResolutionParams()
 {
-	osCaps.displays.clear();
+	std::lock_guard<std::mutex> displaysVectorLock(displaysVectorMutex);
+	displays.clear();
 	
-	for (int ind = 0; ind < osCaps.numDisplays; ++ind)
+	for (unsigned ind = 0; ind < wxDisplay::GetCount(); ++ind)
 	{
-		osCaps.displays.push_back(DisplayData());
-		DisplayData & disp = osCaps.displays[ind];
-		
 		wxDisplay display(ind);
 		//display.ReinitializeImpl();
-		disp.primary = display.IsPrimary();
-		disp.clientArea = display.GetClientArea();
-		disp.geometry = display.GetGeometry();
-		if (disp.primary)
-			osCaps.primaryDisplayInd = ind;
+		DisplayData data = {
+			static_cast<int>(ind),
+			display.IsPrimary(),
+			display.GetClientArea(),
+			display.GetGeometry()
+		};
+
+		displays.push_back(std::move(data));
 	}
+}
+
+std::vector<DisplayData> getDisplays()
+{
+	std::lock_guard<std::mutex> displaysVectorLock(displaysVectorMutex);
+	return displays;
 }

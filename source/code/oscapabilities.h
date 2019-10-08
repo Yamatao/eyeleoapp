@@ -6,26 +6,13 @@
 
 struct DisplayData
 {
+    int ind;
 	bool primary;
 	wxRect clientArea;
 	wxRect geometry;
 };
 
-struct OSCapabilities
-{
-	bool transparent_windows;
-	bool semi_transparent_windows;
-
-	int numDisplays;
-	bool multiDisplay;
-	int primaryDisplayInd;
-
-	std::vector<DisplayData> displays;
-};
-
-extern OSCapabilities osCaps;
-
-void fillOSCapabilities();
+std::vector<DisplayData> getDisplays();
 void refillResolutionParams();
 
 #endif

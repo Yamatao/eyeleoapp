@@ -13,13 +13,13 @@ BEGIN_EVENT_TABLE(BeforePauseWindow, wxFrame)
 END_EVENT_TABLE()
 
 
-BeforePauseWindow::BeforePauseWindow(int displayInd, int postponeCount) :
+BeforePauseWindow::BeforePauseWindow(const DisplayData& displayData, int postponeCount) :
 	wxFrame(NULL, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_SHAPED | wxNO_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP),
 	_preventClosing(true),
 	_readyTimer((float)eyeleo::settings::timeForLongBreakConfirmation),
 	_result(RESULT_NONE),
 	_postponeCount(postponeCount),
-	_displayInd(displayInd),
+	_displayData(displayData),
 	_btnReady(nullptr),
 	_showing(true),
 	_hiding(false),
@@ -43,8 +43,7 @@ void BeforePauseWindow::Init()
 
 	// Set position to center of the screen
 	SetSize(wxSize(_backBitmap->GetWidth(), _backBitmap->GetHeight()));
-	assert(_displayInd < osCaps.numDisplays);
-	wxRect displayRect = osCaps.displays[_displayInd].clientArea;
+	wxRect displayRect = _displayData.clientArea;
 	SetPosition(wxPoint(displayRect.GetX() + displayRect.GetWidth() / 2 - GetSize().GetX() / 2, displayRect.GetY() + displayRect.GetHeight() / 2 - GetSize().GetY() / 2));
 
 	wxStaticText * txt = new wxStaticText(this, wxID_ANY, langPack->Get("before_pause_text"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE);

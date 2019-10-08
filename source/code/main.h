@@ -106,7 +106,8 @@ public:
 	void SetInactivityTrackingEnabled(bool enabled) { _settingInactivityTracking = enabled; }
 	void SetCanCloseNotificationsSetting(bool enabled) { _settingCanCloseNotifications = enabled; }
 
-	bool IsFullscreenAppRunning(int * display = 0, HWND * fullscreenWndHandle = 0) const;
+	bool IsFullscreenAppRunning(HWND * fullscreenWndHandle = nullptr) const;
+	int GetFullScreenAppRunningDisplay(HWND * fullscreenWndHandle = nullptr) const;
 	
 	void TogglePausedMode(int minites = 0);
 	bool isPausedMode() const;

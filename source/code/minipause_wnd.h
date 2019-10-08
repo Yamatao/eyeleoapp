@@ -4,6 +4,7 @@
 #include "wx/wx.h"
 #include "wx/timer.h"
 #include "task_mgr.h"
+#include "oscapabilities.h"
 
 class MiniPauseControls;
 class MiniPauseWindow : public wxFrame, public ITask
@@ -17,7 +18,7 @@ class MiniPauseWindow : public wxFrame, public ITask
 	};
 
 public:
-	MiniPauseWindow(int displayInd = 0, unsigned int showCount = 0);
+	MiniPauseWindow(const DisplayData& displayData, unsigned int showCount = 0);
 	virtual ~MiniPauseWindow();
 
 	virtual void Init();
@@ -35,7 +36,7 @@ private:
 
 	int _timeLeft;
 	int _showCount;
-	int _displayInd;
+    DisplayData _displayData;
 
 	float _alpha;
 	bool _preventClosing;
@@ -58,7 +59,7 @@ public:
 	MiniPauseControls(wxWindow * parent = 0);
 	virtual ~MiniPauseControls();
 
-	void Init(int displayInd = 0, unsigned int showCount = 0);
+	void Init(const DisplayData& displayData, unsigned int showCount = 0);
 
 	void Update();
 

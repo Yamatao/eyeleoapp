@@ -4,6 +4,7 @@
 #include "wx/wx.h"
 #include "wx/timer.h"
 #include "task_mgr.h"
+#include "oscapabilities.h"
 
 enum
 {
@@ -13,7 +14,7 @@ enum
 class BigPauseWindow : public wxFrame, public ITask
 {
 public:
-	BigPauseWindow(int displayInd = 0);
+	BigPauseWindow(const DisplayData& displayData);
 	virtual ~BigPauseWindow();
 
 	virtual void Init();
@@ -42,7 +43,7 @@ private:
 	float _breakTimeFull;
 	bool _primary;
 
-	int _displayInd;
+	DisplayData _displayData;
 
 	wxStaticText * _timeText;
 	wxBoxSizer * _sizer;

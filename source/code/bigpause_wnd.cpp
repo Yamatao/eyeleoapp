@@ -18,21 +18,21 @@ BEGIN_EVENT_TABLE(BigPauseWindow, wxFrame)
 	EVT_KILL_FOCUS(BigPauseWindow::OnKillFocus)
 END_EVENT_TABLE()
 
-BigPauseWindow::BigPauseWindow(int displayInd) :
+BigPauseWindow::BigPauseWindow(const DisplayData& displayData) :
 	wxFrame(NULL, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_SHAPED | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP),
 	_preventClosing(true),
 	_breakTimeLeft(0),
 	_breakTimeFull(0),
 	_timeText(0),
 	_restoreFocus(false),
-	_displayInd(displayInd),
+	_displayData(displayData),
 	_showing(true),
 	_hiding(false),
 	_alpha(0.0f),
 	_primary(false),
 	_sizer(nullptr)
 {
-	SetName(std::string("BigPauseWindow") + (char)('0' + displayInd));
+	SetName(std::string("BigPauseWindow") + (char)('0' + displayData.ind));
 
 	logging::msg("BigPauseWindow::BigPauseWindow");
 }
@@ -41,8 +41,7 @@ void BigPauseWindow::Init()
 {
 	refillResolutionParams();
 
-	assert(_displayInd < osCaps.numDisplays);
-	wxRect displayRect = osCaps.displays[_displayInd].geometry;
+	wxRect displayRect = _displayData.geometry;
 
 	SetPosition(displayRect.GetPosition());
 
@@ -51,7 +50,7 @@ void BigPauseWindow::Init()
 	_showing = true;
 	_hiding = false;
 	_alpha = 0.0f;
-	_primary = _displayInd == osCaps.primaryDisplayInd;
+	_primary = _displayData.primary;
 
 	SetBackgroundColour(wxColour(0, 0, 0));
 	SetTransparent((int)_alpha);

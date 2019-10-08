@@ -4,6 +4,7 @@
 #include "wx/wx.h"
 #include "wx/timer.h"
 #include "task_mgr.h"
+#include "oscapabilities.h"
 
 enum
 {
@@ -23,7 +24,7 @@ enum EResult
 class BeforePauseWindow : public wxFrame, public ITask
 {
 public:
-	BeforePauseWindow(int displayInd = 0, int postponeCount = 0);
+	BeforePauseWindow(const DisplayData& displayData, int postponeCount = 0);
 	virtual ~BeforePauseWindow();
 
 	void Init();
@@ -32,7 +33,6 @@ public:
 
 private:
 	void OnPaint(wxPaintEvent& evt);
-	void OnErase(wxEraseEvent& evt);
 	void ExecuteTask(float f, long time_went);
 	void OnClose(wxCloseEvent& event);
 	
@@ -42,7 +42,7 @@ private:
 
 	void UpdateReadyTimer();
 
-	int _displayInd;
+	DisplayData _displayData;
 	int _postponeCount;
 
 	bool _showing;

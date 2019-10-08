@@ -19,9 +19,9 @@ WaitingFullscreenWindow::WaitingFullscreenWindow() :
 {
 }
 
-void WaitingFullscreenWindow::Init(int displayInd)
+void WaitingFullscreenWindow::Init(const DisplayData& displayData)
 {
-	SetName(wxString("WaitingFullscreenWindow") + (char)('0' + displayInd));
+	SetName(wxString("WaitingFullscreenWindow") + (char)('0' + displayData.ind));
 
 	refillResolutionParams();
 
@@ -32,8 +32,7 @@ void WaitingFullscreenWindow::Init(int displayInd)
 
 	// Set position to center of the screen
 	SetSize(wxSize(_backBitmap_long->GetWidth(), _backBitmap_long->GetHeight()));
-	assert(displayInd < osCaps.numDisplays);
-	wxRect displayRect = osCaps.displays[displayInd].clientArea;
+	wxRect displayRect = displayData.clientArea;
 	SetPosition(wxPoint(displayRect.GetX() + displayRect.GetWidth() / 2 - GetSize().GetX() / 2, displayRect.GetY() + displayRect.GetHeight() / 2 - GetSize().GetY() / 2));
 
 	wxStaticText * txt = new wxStaticText(this, wxID_ANY, langPack->Get("waiting_text"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER);

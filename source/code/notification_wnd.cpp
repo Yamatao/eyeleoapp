@@ -31,7 +31,7 @@ NotificationWindow::NotificationWindow(unsigned int showCount) :
 	SetName("NotificationWindow");
 }
 
-void NotificationWindow::Init(int displayInd)
+void NotificationWindow::Init(const DisplayData& displayData)
 {
 	assert(!NotificationWindow::isInstanceExist);
 	NotificationWindow::isInstanceExist = true;
@@ -45,8 +45,7 @@ void NotificationWindow::Init(int displayInd)
 	SetTransparent(0);
 
 	SetSize(_backBitmap_notification->GetSize());
-	assert(displayInd < osCaps.numDisplays);
-	wxRect displayRect = osCaps.displays[displayInd].clientArea;
+	wxRect displayRect = displayData.clientArea;
 	SetPosition(wxPoint(displayRect.GetRight() - GetSize().GetX(), 
 		displayRect.GetBottom() - GetSize().GetY()));
 
@@ -57,7 +56,7 @@ void NotificationWindow::Init(int displayInd)
 	Show(true);
 
 	_controlsWnd = new NotificationWindowLook(this);
-	_controlsWnd->Init(displayInd, _showCount);
+	_controlsWnd->Init(displayData, _showCount);
 	_controlsWnd->Show(true);
 }
 
@@ -177,7 +176,7 @@ NotificationWindowLook::NotificationWindowLook(wxWindow * parent) :
 {
 }
 
-void NotificationWindowLook::Init(int displayInd, unsigned int showCount)
+void NotificationWindowLook::Init(const DisplayData& displayData, unsigned int showCount)
 {
 	(void)showCount;
 
@@ -188,8 +187,7 @@ void NotificationWindowLook::Init(int displayInd, unsigned int showCount)
 
 	// Set position to right bottom side of the screen
 	SetSize(_backBitmap_notification->GetSize());
-	assert(displayInd < osCaps.numDisplays);
-	wxRect displayRect = osCaps.displays[displayInd].clientArea;
+	wxRect displayRect = displayData.clientArea;
 	SetPosition(wxPoint(displayRect.GetRight() - GetSize().GetX(), 
 		displayRect.GetBottom() - GetSize().GetY()));
 
