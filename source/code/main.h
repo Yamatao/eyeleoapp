@@ -118,6 +118,9 @@ public:
     bool HasSeenSettings() const {
         return _seenSettingsWindow;
     }
+    bool GetShowNotificationsEnabled() const {
+        return _showNotificationsEnabled;
+    }
 
     void SetBigPauseEnabled(bool enabled) {
         _enableBigPause = enabled;
@@ -157,6 +160,9 @@ public:
     }
     void SetCanCloseNotificationsSetting(bool enabled) {
         _settingCanCloseNotifications = enabled;
+    }
+    void SetShowNotificationsEnabled(bool enabled) {
+        _showNotificationsEnabled = enabled;
     }
 
     bool IsFullscreenAppRunning(int *display = 0, HWND *fullscreenWndHandle = 0) const;
@@ -227,6 +233,7 @@ private:
     bool _settingCanCloseNotifications;
     bool _seenSettingsWindow;
     bool _firstLaunch;
+    bool _showNotificationsEnabled;
 
     // statistics
     unsigned int _userShortBreakCount;
@@ -288,7 +295,7 @@ public:
 
     virtual wxMenu *CreatePopupMenu();
 
-    bool ShowBalloonToolip(wxString const &text);
+    void ShowBalloonToolip(const wxString &text, unsigned msec = 1000 * 10);
     void UpdateTooltip(wxString const &text);
 
     void OnQuit(wxCommandEvent &);

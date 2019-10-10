@@ -81,6 +81,8 @@
 	<string id="settings_save_and_close_button" text="Сохранить и Выйти" />
 	<string id="settings_try_short_break_button" text="Попробовать короткий перерыв" />
 	<string id="settings_try_long_break_button" text="Попробовать большой перерыв" />
+	<string id="settings_show_notifications" text="Отображать уведомления об изменении статуса" />
+	<string id="settings_show_notifications_tooltip" text="Если эта опция выключена, вы не будете получать уведомления об изменении статуса (Конец перерыва, первый запуск и т.п.)" />
 	
 	<string id="information_info_1" text="Это приложение, помогающее вам заботиться о своем здоровье при работе за компьютером.{n}Оно регулярно напоминает вам делать перерывы, чтобы вы могли отвлечься от монитора и снять напряжение с глаз, подвигать телом или просто расслабиться." />
 	<string id="information_author" text="Автор: Александр Гарустович" />

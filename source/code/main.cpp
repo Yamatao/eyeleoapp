@@ -208,7 +208,7 @@ bool EyeApp::OnInit() {
 
     int big_pause_seconds = _timeLeftToBigPause / 1000;
     wxString text = wxString::Format(langPack->Get("tb_notification_first_launch"), getTimeStr(big_pause_seconds, SECONDS, _lang));
-    _taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), text, 1000 * 10, wxICON_INFORMATION);
+    _taskBarIcon->ShowBalloonToolip(text);
 
     return true;
 }
@@ -327,7 +327,7 @@ void EyeApp::OnUserActivity() {
 
         int big_pause_seconds = _timeLeftToBigPause / 1000;
         wxString text = wxString::Format(langPack->Get("tb_notification_auto_relax_ended"), getTimeStr(big_pause_seconds, SECONDS, _lang));
-        _taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), text, 1000 * 8, wxICON_INFORMATION);
+        _taskBarIcon->ShowBalloonToolip(text, 1000 * 8);
     }
 }
 
@@ -506,7 +506,7 @@ void EyeApp::ExecuteTask(float, long time_went) {
         int multiplier = _fastMode ? 2 : 1;
         _inactivityTime -= time_went * multiplier;
         if (_inactivityTime <= 0) {
-            _taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), langPack->Get("tb_notification_start_after_pause"), 1000 * 10, wxICON_INFORMATION);
+            _taskBarIcon->ShowBalloonToolip(langPack->Get("tb_notification_start_after_pause"));
             RestartBigPauseInterval();
             RestartMiniPauseInterval();
 
@@ -518,7 +518,7 @@ void EyeApp::ExecuteTask(float, long time_went) {
 
     case STATE_FIRST_LAUNCH: {
         wxString text = wxString::Format(langPack->Get("tb_notification_first_launch"), getTimeStr(_bigPauseInterval, MINUTES, _lang));
-        _taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), text, 1000 * 10, wxICON_INFORMATION);
+        _taskBarIcon->ShowBalloonToolip(text);
 
         _firstLaunch = false;
 
@@ -581,7 +581,7 @@ void EyeApp::ExecuteTask(float, long time_went) {
                             }
 
                             if (!_showedLongBreakCountdown)
-                                logging::msg("Couldn't show a coundown because of fullscreen app");
+                                logging::msg("Couldn't show a countdown because of fullscreen app");
                         }
                     }
                 }
@@ -1053,6 +1053,9 @@ bool EyeApp::LoadSettings() {
         } else if (wcscmp(name, L"inactivity_tracking") == 0) {
             bool enabled = node.attribute(L"enabled").as_bool();
             _settingInactivityTracking = enabled;
+        } else if (wcscmp(name, L"show_notifications") == 0) {
+            bool enabled = node.attribute(L"enabled").as_bool();
+            _showNotificationsEnabled = enabled;
         }
     }
     return true;
@@ -1181,6 +1184,10 @@ void EyeApp::SaveSettings() {
     nodeCanCloseNotifications.set_name(L"can_close_notifications");
     nodeCanCloseNotifications.append_attribute(L"enabled") = GetCanCloseNotificationsSetting();
 
+    pugi::xml_node nodeShowNotifications = node.append_child(pugi::node_element);
+    nodeShowNotifications.set_name(L"show_notifications");
+    nodeShowNotifications.append_attribute(L"enabled") = GetShowNotificationsEnabled();
+
     doc.save_file((GetSavePath() + L"settings.xml").wchar_str(), L"\t");
 }
 
@@ -1200,6 +1207,7 @@ void EyeApp::ResetSettings() {
     _firstLaunch = true;
     _seenSettingsWindow = false;
     _settingInactivityTracking = true;
+    _showNotificationsEnabled = true;
 }
 
 void EyeApp::ApplySettings() {
@@ -1358,7 +1366,7 @@ void EyeApp::OnEndSession(wxCloseEvent &evt) {
 void EyeApp::OnSessionUnlock() {
     logging::msg("EyeApp::OnSessionUnlock");
 
-    _taskBarIcon->ShowBalloon(langPack->Get("tb_popup_default"), langPack->Get("tb_notification_start_after_pause"), 1000 * 10, wxICON_INFORMATION);
+    _taskBarIcon->ShowBalloonToolip(langPack->Get("tb_notification_start_after_pause"));
 
     RestartBigPauseInterval();
     RestartMiniPauseInterval();
@@ -1410,6 +1418,12 @@ void EyeTaskBarIcon::OnLeftButtonDown(wxMouseEvent /*wxTaskBarIconEvent*/ &WXUNU
     if (menu) {
         PopupMenu(menu);
         delete menu;
+    }
+}
+
+void EyeTaskBarIcon::ShowBalloonToolip(const wxString &text, unsigned msec) {
+    if (getApp()->GetShowNotificationsEnabled()) {
+        ShowBalloon(langPack->Get("tb_popup_default"), text, msec, wxICON_INFORMATION);
     }
 }
 

@@ -81,6 +81,8 @@
 	<string id="settings_save_and_close_button" text="Save and Close" />
 	<string id="settings_try_short_break_button" text="Try short break" />
 	<string id="settings_try_long_break_button" text="Try long break" />
+	<string id="settings_show_notifications" text="Show status notifications" />
+	<string id="settings_show_notifications_tooltip" text="If this option is disabled, you won't get any status notifications (End of pause, first launch, etc.)" />
 	
 	<string id="information_info_1" text="It helps you to care about your health when you are sitting in front of a computer.{n}It reminds you to have regular breaks so that you could take a rest for your eyes, move your body and relax." />
 	<string id="information_author" text="Author: Alexander Garustovich" />
