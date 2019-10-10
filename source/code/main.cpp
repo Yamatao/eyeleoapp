@@ -1421,7 +1421,7 @@ void EyeTaskBarIcon::OnLeftButtonDown(wxMouseEvent /*wxTaskBarIconEvent*/ &WXUNU
     }
 }
 
-void EyeTaskBarIcon::ShowBalloonToolip(const wxString &text, unsigned msec) {
+void EyeTaskBarIcon::ShowBalloonToolip(wxString const &text, unsigned msec) {
     if (getApp()->GetShowNotificationsEnabled()) {
         ShowBalloon(langPack->Get("tb_popup_default"), text, msec, wxICON_INFORMATION);
     }

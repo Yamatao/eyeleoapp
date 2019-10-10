@@ -295,7 +295,7 @@ public:
 
     virtual wxMenu *CreatePopupMenu();
 
-    void ShowBalloonToolip(const wxString &text, unsigned msec = 1000 * 10);
+    void ShowBalloonToolip(wxString const &text, unsigned msec = 1000 * 10);
     void UpdateTooltip(wxString const &text);
 
     void OnQuit(wxCommandEvent &);

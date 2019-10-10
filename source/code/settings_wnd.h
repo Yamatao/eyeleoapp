@@ -128,7 +128,7 @@ private:
     bool GetCanCloseNotifications() const;
     bool GetWindowNearbySetting() const;
     bool GetInactivityTrackingEnabled() const;
-	bool GetShowNotificationsEnabled() const;
+    bool GetShowNotificationsEnabled() const;
 
     static bool inited;
 
