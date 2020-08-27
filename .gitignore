@@ -13,7 +13,7 @@ bin/*.exe
 bin/*.dll
 
 # Build folders
-build/
+build-*/
 libs/pugixml/build
 libs/pugixml/scripts/vs2010
 libs/pugixml/scripts/vs2013
