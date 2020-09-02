@@ -602,6 +602,8 @@ void EyeApp::ExecuteTask(float, long time_went) {
 
                         SaveSettings();
                     }
+                } else {
+                    RestartMiniPauseInterval();
                 }
             }
         } else {
@@ -721,8 +723,6 @@ void EyeApp::AskForBigPause() {
     wnd->Show(true);
 
     _beforePauseWnds.push_back(wnd);
-
-    StopMiniPause();
 }
 
 void EyeApp::CloseBeforePauseWnds() {
@@ -737,7 +737,6 @@ void EyeApp::PostponeBigPause() {
     _postponeCount++;
     _inactivityTime = 0;
     _timeLeftToBigPause = 3000 * 60; // 3 mins
-    _timeLeftToMiniPause = 0;
     ChangeState(STATE_IDLE, 1000);
 
     UpdateTaskbarText();
