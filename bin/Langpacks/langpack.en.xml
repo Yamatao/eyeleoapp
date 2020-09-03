@@ -58,9 +58,9 @@
 	
 	<string id="settings_mini_pause_label" text="Take a short break every" />
 	<string id="settings_mini_pause_tooltip" text="Short breaks happen more often than long breaks, but they are shorter. During that time you need to perform a short eye exercise." />
-	<string id="settings_mini_pause_fullscreen" text="Show Mini Pauses in Fullscreen mode"/>
-  <string id="settings_mini_pause_fullscreen_tooltip" text="When Fullscreen mode is enabled mini pauses will be displayed like big pauses - with semitransparent background. Otherwise it will be displayed as little window in center of the screen." />
-  <string id="settings_mini_pause_value_1" text="5 minutes" />
+	<string id="settings_mini_pause_fullscreen" text="Show mini pauses in fullscreen mode"/>
+	<string id="settings_mini_pause_fullscreen_tooltip" text="When fullscreen mode is enabled mini pauses will be displayed like big pauses - with semitransparent background. Otherwise it will be displayed as little window in center of the screen." />
+	<string id="settings_mini_pause_value_1" text="5 minutes" />
 	<string id="settings_mini_pause_value_2" text="8 minutes" />
 	<string id="settings_mini_pause_value_3" text="10 minutes" />
 	<string id="settings_mini_pause_value_4" text="15 minutes" />

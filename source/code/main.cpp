@@ -1215,7 +1215,7 @@ void EyeApp::ResetSettings() {
     _seenSettingsWindow = false;
     _settingInactivityTracking = true;
     _showNotificationsEnabled = true;
-    _miniPauseFullscreenEnabled = true;
+    _miniPauseFullscreenEnabled = false;
 }
 
 void EyeApp::ApplySettings() {
