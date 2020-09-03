@@ -340,6 +340,25 @@ SettingsWindow::SettingsWindow(const wxString &title)
     wxToolTip *toolShowNotifications = new wxToolTip(langPack->Get("settings_show_notifications_tooltip"));
     toolShowNotifications->SetDelay(800);
     _chkShowNotifications->SetToolTip(toolShowNotifications);
+    
+    imgIcon = new wxStaticBitmap(pageSettings, wxID_ANY, _iconWindow);
+    _chkMiniPauseFullscreenSizer = new wxCheckBox(pageSettings,
+                                                  ID_SETTINGS_CHK_ENABLE_MINI_PAUSE_FULLSCREEN,
+                                                  langPack->Get("settings_mini_pause_fullscreen"),
+                                                  wxDefaultPosition,
+                                                  wxDefaultSize,
+                                                  wxCHK_2STATE,
+                                                  wxDefaultValidator,
+                                                  _("chkMinipauseFullscreenSizer"));
+    wxBoxSizer *sizerMiniPauseFullscreenSizer = new wxBoxSizer(wxHORIZONTAL);
+
+    sizerMiniPauseFullscreenSizer->Add(imgIcon, wxSizerFlags().Center());
+    sizerMiniPauseFullscreenSizer->AddSpacer(3);
+    sizerMiniPauseFullscreenSizer->Add(_chkMiniPauseFullscreenSizer, wxSizerFlags().Center().Border(wxALL, 3));
+
+    wxToolTip *toolMiniPauseFullscreenSizer = new wxToolTip(langPack->Get("settings_mini_pause_fullscreen_tooltip"));
+    toolMiniPauseFullscreenSizer->SetDelay(800);
+    _chkMiniPauseFullscreenSizer->SetToolTip(toolMiniPauseFullscreenSizer);
 
     //
     sizerPanel->Add(sizerBigPauses, wxSizerFlags().Left().Border(wxALL, 4));
@@ -354,6 +373,8 @@ SettingsWindow::SettingsWindow(const wxString &title)
     sizerPanel->Add(sizerInactivityTracking, wxSizerFlags().Left().Border(wxLEFT, 4));
     sizerPanel->AddSpacer(8);
     sizerPanel->Add(sizerShowNotifications, wxSizerFlags().Left().Border(wxLEFT, 4));
+    sizerPanel->AddSpacer(8);
+    sizerPanel->Add(sizerMiniPauseFullscreenSizer, wxSizerFlags().Left().Border(wxLEFT, 4));
     sizerPanel->AddSpacer(8);
     sizerPanel->Add(sizerTryButtons, wxSizerFlags().Left().Border(wxALL, 4));
 
@@ -405,6 +426,7 @@ SettingsWindow::SettingsWindow(const wxString &title)
     Connect(ID_SETTINGS_CHK_ENABLE_SOUNDS, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(SettingsWindow::OnSoundsEnabledClicked));
     Connect(ID_SETTINGS_CHK_ENABLE_STRICT_MODE, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(SettingsWindow::OnStrictModeEnabledClicked));
     Connect(ID_SETTINGS_CHK_CAN_CLOSE_NOTIFICATIONS, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(SettingsWindow::OnStrictModeEnabledClicked));
+    Connect(ID_SETTINGS_CHK_ENABLE_MINI_PAUSE_FULLSCREEN, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(SettingsWindow::OnMiniPauseFullscreenSizerClicked));
 
     Connect(ID_SETTINGS_BTN_SAVE_AND_QUIT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SettingsWindow::OnSaveAndCloseClicked));
     Connect(ID_SETTINGS_BTN_TRY_SHORT_BREAK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SettingsWindow::OnTryShortBreakClicked));
@@ -455,6 +477,9 @@ void SettingsWindow::OnStrictModeEnabledClicked(wxCommandEvent &) {
 }
 
 void SettingsWindow::OnCanCloseNotificationsClicked(wxCommandEvent &) {
+}
+
+void SettingsWindow::OnMiniPauseFullscreenSizerClicked(wxCommandEvent &) {
 }
 
 void SettingsWindow::OnGiveFeedbackClicked(wxCommandEvent &) {
@@ -575,6 +600,10 @@ void SettingsWindow::SetCanCloseNotifications(bool value) {
     _chkCanCloseNotifications->SetValue(value);
 }
 
+void SettingsWindow::SetMiniPauseFullscreenSizerEnabled(bool value) {
+    _chkMiniPauseFullscreenSizer->SetValue(value);
+}
+
 bool SettingsWindow::GetBigPauseEnabled() const {
     return _chkBigPauses->GetValue();
 }
@@ -636,6 +665,10 @@ bool SettingsWindow::GetShowNotificationsEnabled() const {
     return _chkShowNotifications->GetValue();
 }
 
+bool SettingsWindow::GetMiniPauseFullscreenSizerEnabled() const {
+    return _chkMiniPauseFullscreenSizer->GetValue();
+}
+
 void SettingsWindow::PullSettings() {
     SetBigPauseEnabled(getApp()->GetBigPauseEnabled());
     SetBigPauseInterval(getApp()->GetBigPauseInterval());
@@ -650,7 +683,8 @@ void SettingsWindow::PullSettings() {
     SetWindowNearbySetting(getApp()->GetWindowNearbySetting());
     SetCanCloseNotifications(getApp()->GetCanCloseNotificationsSetting());
     SetInactivityTrackingEnabled(getApp()->GetInactivityTrackingEnabled());
-    SetShowNotificationsEnabled(getApp()->GetShowNotificationsEnabled());    
+    SetShowNotificationsEnabled(getApp()->GetShowNotificationsEnabled());   
+    SetMiniPauseFullscreenSizerEnabled(getApp()->GetMiniPauseFullscreenEnabled());
 }
 
 void SettingsWindow::PushSettings() {
@@ -668,6 +702,7 @@ void SettingsWindow::PushSettings() {
     getApp()->SetCanCloseNotificationsSetting(GetCanCloseNotifications());
     getApp()->SetInactivityTrackingEnabled(GetInactivityTrackingEnabled());
     getApp()->SetShowNotificationsEnabled(GetShowNotificationsEnabled());
+    getApp()->SetMiniPauseFullscreenEnabled(GetMiniPauseFullscreenSizerEnabled());
     getApp()->SaveSettings();
 }
 

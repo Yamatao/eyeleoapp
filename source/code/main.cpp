@@ -918,7 +918,7 @@ void EyeApp::StartMiniPause() {
                 continue;
 
             MiniPauseWindow *wnd = new MiniPauseWindow(displayInd, _userShortBreakCount);
-            wnd->Init();
+            wnd->Init(_miniPauseFullscreenEnabled);
             wnd->Show(true);
 
             _miniPauseWnds.push_back(wnd);
@@ -1055,6 +1055,9 @@ bool EyeApp::LoadSettings() {
         } else if (wcscmp(name, L"show_notifications") == 0) {
             bool enabled = node.attribute(L"enabled").as_bool();
             _showNotificationsEnabled = enabled;
+        } else if (wcscmp(name, L"mini_pause_fullscreen_mode") == 0) {
+            bool enabled = node.attribute(L"enabled").as_bool();
+            _miniPauseFullscreenEnabled = enabled;
         }
     }
     return true;
@@ -1187,6 +1190,10 @@ void EyeApp::SaveSettings() {
     nodeShowNotifications.set_name(L"show_notifications");
     nodeShowNotifications.append_attribute(L"enabled") = GetShowNotificationsEnabled();
 
+    pugi::xml_node nodeMiniPauseFullscreenMode = node.append_child(pugi::node_element);
+    nodeMiniPauseFullscreenMode.set_name(L"mini_pause_fullscreen_mode");
+    nodeMiniPauseFullscreenMode.append_attribute(L"enabled") = GetMiniPauseFullscreenEnabled();
+
     doc.save_file((GetSavePath() + L"settings.xml").wchar_str(), L"\t");
 }
 
@@ -1207,6 +1214,7 @@ void EyeApp::ResetSettings() {
     _seenSettingsWindow = false;
     _settingInactivityTracking = true;
     _showNotificationsEnabled = true;
+    _miniPauseFullscreenEnabled = false;
 }
 
 void EyeApp::ApplySettings() {

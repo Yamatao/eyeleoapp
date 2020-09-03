@@ -36,7 +36,7 @@ EExercise MiniPauseControls::_lastExercise = EXERCISE_NONE;
 int MiniPauseControls::_line = 0;
 
 MiniPauseWindow::MiniPauseWindow(int displayInd, unsigned int showCount)
-    : wxFrame(NULL, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxFRAME_SHAPED | wxNO_BORDER | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP)
+    : wxFrame(NULL, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_SHAPED | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP)
     , _preventClosing(true)
     , _controlsWnd(nullptr)
     , _showCount(showCount)
@@ -46,20 +46,32 @@ MiniPauseWindow::MiniPauseWindow(int displayInd, unsigned int showCount)
     SetName(std::string("MiniPauseWindow") + (char)('0' + displayInd));
 }
 
-void MiniPauseWindow::Init() {
+void MiniPauseWindow::Init(bool fullscreenEnabled) {
     refillResolutionParams();
 
-    wxRegion region(*_backBitmap, *wxWHITE);
-    SetShape(region);
+    if (!fullscreenEnabled) {
+        wxRegion region(*_backBitmap, *wxWHITE);
+        SetShape(region);
 
-    SetBackgroundColour(wxColour(0, 0, 0));
-    SetTransparent(0);
+        SetBackgroundColour(wxColour(0, 0, 0));
+        SetTransparent(0);
 
-    SetSize(_backBitmap->GetSize());
-    assert(_displayInd < osCaps.numDisplays);
-    wxRect displayRect = osCaps.displays[_displayInd].clientArea;
-    SetPosition(wxPoint(displayRect.GetX() + displayRect.GetWidth() / 2 - GetSize().GetX() / 2,
-                        displayRect.GetY() + displayRect.GetHeight() / 2 - GetSize().GetY() / 2));
+        SetSize(_backBitmap->GetSize());
+        assert(_displayInd < osCaps.numDisplays);
+        wxRect displayRect = osCaps.displays[_displayInd].clientArea;
+        SetPosition(wxPoint(displayRect.GetX() + displayRect.GetWidth() / 2 - GetSize().GetX() / 2,
+                            displayRect.GetY() + displayRect.GetHeight() / 2 - GetSize().GetY() / 2));
+    } else {
+        SetBackgroundColour(wxColour(0, 0, 0));
+        SetTransparent((int)_alpha);
+
+        assert(_displayInd < osCaps.numDisplays);
+        wxRect displayRect = osCaps.displays[_displayInd].geometry;
+        SetPosition(displayRect.GetPosition());
+        SetSize(displayRect.GetSize());
+
+        Bind(wxEVT_RIGHT_UP, &MiniPauseWindow::OnMouseTap, this);
+    }
 
     _state = MiniPauseWindow::STATE_SHOWING;
     g_TaskMgr->AddTask(GetName(), 20);
@@ -133,6 +145,14 @@ void MiniPauseWindow::ExecuteTask(float f, long /*time_went*/) {
         }
         break;
     }
+    }
+}
+
+void MiniPauseWindow::OnMouseTap(wxMouseEvent &) {
+    if (getApp()->GetCanCloseNotificationsSetting()) {
+        MiniPauseWindow *wnd = dynamic_cast<MiniPauseWindow *>(GetParent());
+        if (wnd)
+            wnd->HideQuick();
     }
 }
 
