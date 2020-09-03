@@ -58,7 +58,9 @@
 	
 	<string id="settings_mini_pause_label" text="Делать короткие перерывы каждые" />
 	<string id="settings_mini_pause_tooltip" text="Короткие перерывы проводятся чаще больших перерывов, но их длительность - всего несколько секунд. За это время вы можете снять немного напряжения с глаз." />
-	<string id="settings_mini_pause_value_1" text="5 минут" />
+	<string id="settings_mini_pause_fullscreen" text="Показывать короткие перерывы в Полноэкранном Режиме"/>
+  <string id="settings_mini_pause_fullscreen_tooltip" text="Когда Полноэкранный Режим активирован короткие перерывы отображаются также, как и большие перерывы - в виде полупрозрачного окна на весь экран. В противном случае они будут отображены как небольшие окна в центре экрана." />
+  <string id="settings_mini_pause_value_1" text="5 минут" />
 	<string id="settings_mini_pause_value_2" text="8 минут" />
 	<string id="settings_mini_pause_value_3" text="10 минут" />
 	<string id="settings_mini_pause_value_4" text="15 минут" />

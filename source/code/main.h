@@ -121,6 +121,9 @@ public:
     bool GetShowNotificationsEnabled() const {
         return _showNotificationsEnabled;
     }
+    bool GetMiniPauseFullscreenEnabled() const {
+        return _miniPauseFullscreenEnabled;
+    }
 
     void SetBigPauseEnabled(bool enabled) {
         _enableBigPause = enabled;
@@ -163,6 +166,9 @@ public:
     }
     void SetShowNotificationsEnabled(bool enabled) {
         _showNotificationsEnabled = enabled;
+    }
+    void SetMiniPauseFullscreenEnabled(bool enabled) {
+        _miniPauseFullscreenEnabled = enabled;
     }
 
     bool IsFullscreenAppRunning(int *display = 0, HWND *fullscreenWndHandle = 0) const;
@@ -234,6 +240,7 @@ private:
     bool _seenSettingsWindow;
     bool _firstLaunch;
     bool _showNotificationsEnabled;
+    bool _miniPauseFullscreenEnabled;
 
     // statistics
     unsigned int _userShortBreakCount;

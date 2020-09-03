@@ -18,6 +18,7 @@ enum
     ID_SETTINGS_SEL_WARN_BEFORE_TIME,
 
     ID_SETTINGS_CHK_MINI_PAUSES,
+    ID_SETTINGS_CHK_ENABLE_MINI_PAUSE_FULLSCREEN,
     ID_SETTINGS_SEL_MINI_PAUSE_INTERVAL,
     ID_SETTINGS_SEL_MINI_PAUSE_DURATION,
 
@@ -53,6 +54,7 @@ public:
     void OnSoundsEnabledClicked(wxCommandEvent &event);
     void OnStrictModeEnabledClicked(wxCommandEvent &event);
     void OnCanCloseNotificationsClicked(wxCommandEvent &event);
+    void OnMiniPauseFullscreenSizerClicked(wxCommandEvent &event);
     void OnSaveAndCloseClicked(wxCommandEvent &event);
     void OnTryShortBreakClicked(wxCommandEvent &);
     void OnTryLongBreakClicked(wxCommandEvent &);
@@ -96,6 +98,8 @@ private:
 
     wxCheckBox *_chkShowNotifications;
 
+    wxCheckBox *_chkMiniPauseFullscreenSizer;
+
     wxString GetInformation() const;
 
 public:
@@ -113,6 +117,7 @@ public:
     void SetInactivityTrackingEnabled(bool value);
     void SetCanCloseNotifications(bool value);
     void SetShowNotificationsEnabled(bool value);
+    void SetMiniPauseFullscreenSizerEnabled(bool value);
 
 private:
     bool GetBigPauseEnabled() const;
@@ -129,6 +134,7 @@ private:
     bool GetWindowNearbySetting() const;
     bool GetInactivityTrackingEnabled() const;
     bool GetShowNotificationsEnabled() const;
+    bool GetMiniPauseFullscreenSizerEnabled() const;
 
     static bool inited;
 

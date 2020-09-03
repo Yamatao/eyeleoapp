@@ -20,7 +20,7 @@ public:
     MiniPauseWindow(int displayInd = 0, unsigned int showCount = 0);
     virtual ~MiniPauseWindow();
 
-    virtual void Init();
+    virtual void Init(bool fullscreenEnabled);
 
     virtual void Hide();
     void HideQuick();
@@ -28,6 +28,7 @@ public:
 private:
     void ExecuteTask(float f, long time_went);
     void OnClose(wxCloseEvent &event);
+    void OnMouseTap(wxMouseEvent &event);
 
     EState _state;
 
