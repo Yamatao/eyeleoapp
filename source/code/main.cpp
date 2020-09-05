@@ -528,15 +528,6 @@ void EyeApp::ExecuteTask(float, long time_went) {
 
     case STATE_IDLE:
         if (_enableBigPause || _enableMiniPause) {
-            static int skipCounter = 0;
-            if (++skipCounter == 3) {
-                logging::msg(wxString::Format("State: Idle: _timeLeftToBigPause=%ld, _timeLeftToMiniPause=%ld, _inactivityTime=%ld",
-                                              _timeLeftToBigPause,
-                                              _timeLeftToMiniPause,
-                                              _inactivityTime));
-                skipCounter = 0;
-            }
-
             RepeatState();
 
             UpdateTaskbarText();
