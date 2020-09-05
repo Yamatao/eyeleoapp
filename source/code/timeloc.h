@@ -10,7 +10,7 @@ enum ETimeUnit
     HOURS
 };
 
-wxString getTimeStr(int value, ETimeUnit unit, wxString const &lang);
+wxString getTimeStr(int value, ETimeUnit unit, wxString const &lang, bool preserveSeconds = false);
 void splitTime(int value, ETimeUnit unit, int *pHours, int *pMinutes, int *pSeconds, int *pMilliseconds);
 
 #endif

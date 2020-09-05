@@ -151,7 +151,7 @@ void BigPauseWindow::UpdateTimeLabel() {
     if (fabsf(_breakTimeLeft) < 0.000001f) {
         _timeText->SetLabel(L"");
     } else {
-        wxString str = wxString::Format(langPack->Get("big_pause_time_left_text"), getTimeStr(_breakTimeLeft, SECONDS, getApp()->getLang()));
+        wxString str = wxString::Format(langPack->Get("big_pause_time_left_text"), getTimeStr(_breakTimeLeft, SECONDS, getApp()->getLang(), true));
         if (str != _timeText->GetLabel()) {
             _timeText->SetLabel(str);
             _sizer->Layout();

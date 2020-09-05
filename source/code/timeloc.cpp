@@ -24,7 +24,7 @@ wxString getSecondStr(int seconds, wxString const &lang) {
     return wxString();
 }
 
-wxString getTimeStr(int value, ETimeUnit unit, wxString const &lang) {
+wxString getTimeStr(int value, ETimeUnit unit, wxString const &lang, bool preserveSeconds) {
     int hours = 0;
     int minutes = 0;
     int seconds = 0;
@@ -43,7 +43,7 @@ wxString getTimeStr(int value, ETimeUnit unit, wxString const &lang) {
             else
                 return wxString::Format(L"1 %s", langPack->Get("hour"));
         } else if (minutes > 1) {
-            if (minutes > 3) {
+            if (minutes > 4 && !preserveSeconds) {
                 return wxString::Format(L"%d %s", minutes, langPack->Get("minutes"));
             } else // show seconds too
             {
@@ -72,7 +72,7 @@ wxString getTimeStr(int value, ETimeUnit unit, wxString const &lang) {
         }
         ////////////////////////////////////////////////////////////////////////
         else if (minutes_mod_10 >= 2 && minutes_mod_10 <= 4 && minutes / 10 != 1) {
-            if (minutes > 3)
+            if (minutes > 4 && !preserveSeconds)
                 return wxString::Format(L"%d %s", minutes, langPack->Get("minutes_"));
             else
                 return wxString::Format(L"%d %s %s", minutes, langPack->Get("minutes_"), getSecondStr(seconds, lang).c_str());
