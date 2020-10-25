@@ -7,7 +7,7 @@ endif()
 add_subdirectory("libs/pugixml")
 add_subdirectory("libs/activity-monitor")
 
-project(EyeLeo VERSION 1.3.3)
+project(EyeLeo VERSION 1.3.6)
 
 set(SOURCE_FILES_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/source/code)
 add_executable(EyeLeo WIN32 ${SOURCE_FILES_FOLDER}/main.cpp)
