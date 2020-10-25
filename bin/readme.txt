@@ -1,22 +1,32 @@
 =========================================================
-                     EyeLeo v1.35
-           Copyright (c) 2010-2019 EyeLeo.com
+                     EyeLeo v1.3.6
+           Copyright (c) 2010-2020 EyeLeo.com
 =========================================================
 
 
 * System Requirements *
 =======================
-OS: Windows XP, Vista, 7, 8, 10.
+OS: Windows 7, 8, 10.
 
 
 * Authors *
 ==============
 Alexander Garustovich - (eyeleoapp@gmail.com)
-
+Website: http://eyeleo.com
+Email: eyeleoapp@gmail.com
+Support the author at patreon.com/eyeleo
 
 * Version history *
 ===================
-Version 1.35 (April 2019)
+Version 1.3.6 (October 2020)
+- Added a setting to show the short break as full screen.
+- Now seconds are always showed in the long break screen.
+- Fixed issue when postponing long breaks prevented short breaks from appearing.
+- Added a setting to disable Windows notifications (in case you consider them annoying).
+- Reduced possible size of the log.txt file.
+- Dropped support for Windows XP.
+
+Version 1.3.5 (April 2019)
 - Fixed issue when connecting to a machine with installed EyeLeo via RDP.
 - Disabled context menu when in "long break" state with a strict mode on.
 - Added a new exercise.
@@ -25,9 +35,9 @@ Thanks to community for the fixes:
 - Github/HenryDukart: A few English text corrections.
 - Github/dmikheev: Inactivity tracking is now disabled in suspended state.
 
-Version 1.34 (December 2018)
+Version 1.3.4 (December 2018)
 - Several bug fixes
-- Made EyeLeo open-source at https://github.com/Yamatao/eyeleoapp
+- Made EyeLeo open-source at https://github.com/Yamatao/eyeleoapp (pull requests are welcome)
 
 Version 1.3 (June, 2013)
 - Fixed many bugs, improved stability.
@@ -60,20 +70,14 @@ Version 1.1 (March 9, 2011)
 - Now left mouse button click on taskbar icon opens popup menu too.
 - Now if you click "Skip" in Big Pause Screen in 3 first seconds, the screen will fade out immediately.
 
-Version 1.025 (January 3, 2011)
+Version 1.0.2 (January 3, 2011)
 - Fixed two serious bugs:
   - Crash when shutting down computer.
   - Incorrect EyeLeo windows layout after changing display resolution.
 - Added text to this 'readme.txt' file.
 
-Version 1.021 (December 28, 2010)
+Version 1.0.1 (December 28, 2010)
 - Updated old text in the Settings window, Information tab.
 - Removed "Donate" button, since EyeLeo is freeware now (was planned as donateware before).
 - Fixed URL which is opened when you click "Go to Forum".
 - Replaced outdated "EyeCoach" image with new "EyeLeo".
-
-
-* Contact *
-===========
-Website: http://eyeleo.com
-Email: eyeleoapp@gmail.com
