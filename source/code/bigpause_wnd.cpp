@@ -9,8 +9,8 @@
 #include "wx/statbmp.h"
 
 #ifdef WIN32
-#include <Wtsapi32.h>
 #include <VersionHelpers.h>
+#include <Wtsapi32.h>
 #endif
 
 BEGIN_EVENT_TABLE(BigPauseWindow, wxFrame)
@@ -201,7 +201,7 @@ void BigPauseWindow::ExecuteTask(float f, long wentMs) {
             _preventClosing = false;
             Close();
 
-            //logging::msg(wxString::Format("BigPauseWindow (%s)::Update -> Close", GetName()));
+            // logging::msg(wxString::Format("BigPauseWindow (%s)::Update -> Close", GetName()));
         } else {
             SetTransparent((int)_alpha);
             g_TaskMgr->AddTask(GetName(), 20);

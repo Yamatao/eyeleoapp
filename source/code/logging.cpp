@@ -2,11 +2,11 @@
 #include <stdarg.h>
 #include <wx/filefn.h>
 #ifdef WIN32
-#include <stdio.h>
-#include <windows.h>
-#include <shellapi.h>
 #include "shlobj.h"
 #include <direct.h>
+#include <shellapi.h>
+#include <stdio.h>
+#include <windows.h>
 #endif
 
 static FILE *logFile;
