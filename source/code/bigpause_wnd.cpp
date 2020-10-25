@@ -140,18 +140,18 @@ BigPauseWindow::~BigPauseWindow() {
 }
 
 void BigPauseWindow::SetBreakDuration(int seconds) {
-    _breakTimeLeft = seconds;
-    _breakTimeFull = seconds;
+    _breakTimeLeft = seconds * 1000;
+    _breakTimeFull = seconds * 1000;
 }
 
 void BigPauseWindow::UpdateTimeLabel() {
     if (!_timeText)
         return;
 
-    if (fabsf(_breakTimeLeft) < 0.000001f) {
+    if (_breakTimeLeft <= 0) {
         _timeText->SetLabel(L"");
     } else {
-        wxString str = wxString::Format(langPack->Get("big_pause_time_left_text"), getTimeStr(_breakTimeLeft, SECONDS, getApp()->getLang(), true));
+        wxString str = wxString::Format(langPack->Get("big_pause_time_left_text"), getTimeStr(_breakTimeLeft, MILLISECONDS, getApp()->getLang(), true));
         if (str != _timeText->GetLabel()) {
             _timeText->SetLabel(str);
             _sizer->Layout();
@@ -159,11 +159,11 @@ void BigPauseWindow::UpdateTimeLabel() {
     }
 }
 
-void BigPauseWindow::ExecuteTask(float f, long /*time_went*/) {
+void BigPauseWindow::ExecuteTask(float f, long wentMs) {
     if (!_showing && !_hiding) {
-        _breakTimeLeft -= 0.1f * f;
-        if (_breakTimeLeft < 0.0f)
-            _breakTimeLeft = 0.0f;
+        _breakTimeLeft -= wentMs;
+        if (_breakTimeLeft < 0)
+            _breakTimeLeft = 0;
         UpdateTimeLabel();
 
         g_TaskMgr->AddTask(GetName(), 100);
@@ -201,7 +201,7 @@ void BigPauseWindow::ExecuteTask(float f, long /*time_went*/) {
             _preventClosing = false;
             Close();
 
-            logging::msg(wxString::Format("BigPauseWindow (%s)::Update -> Close", GetName()));
+            //logging::msg(wxString::Format("BigPauseWindow (%s)::Update -> Close", GetName()));
         } else {
             SetTransparent((int)_alpha);
             g_TaskMgr->AddTask(GetName(), 20);

@@ -36,7 +36,7 @@ EExercise MiniPauseControls::_lastExercise = EXERCISE_NONE;
 int MiniPauseControls::_line = 0;
 
 MiniPauseWindow::MiniPauseWindow(int displayInd, unsigned int showCount)
-    : wxFrame(NULL, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_SHAPED | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP)
+    : wxFrame(NULL, -1, L"", wxDefaultPosition, wxDefaultSize, wxFRAME_TOOL_WINDOW | wxNO_BORDER | wxFRAME_SHAPED | wxFRAME_NO_TASKBAR | wxSTAY_ON_TOP)
     , _preventClosing(true)
     , _controlsWnd(nullptr)
     , _showCount(showCount)
@@ -93,7 +93,7 @@ MiniPauseWindow::~MiniPauseWindow() {
     assert(!getApp()->getWindow(GetName()));
 }
 
-void MiniPauseWindow::ExecuteTask(float f, long /*time_went*/) {
+void MiniPauseWindow::ExecuteTask(float f, long wentMs) {
     switch (_state) {
     case MiniPauseWindow::STATE_SHOWING: {
         _alpha += 11.0f * f;
@@ -101,9 +101,7 @@ void MiniPauseWindow::ExecuteTask(float f, long /*time_went*/) {
             _alpha = 210.0f;
             _state = MiniPauseWindow::STATE_ACTIVE;
 
-            int base_duration = getApp()->GetMiniPauseDuration();
-
-            _timeLeft = 1000 * base_duration;
+            _timeLeft = 1000 * getApp()->GetMiniPauseDuration();
 
             _controlsWnd->UpdateTimeLabel(_timeLeft);
 
@@ -116,7 +114,7 @@ void MiniPauseWindow::ExecuteTask(float f, long /*time_went*/) {
     }
 
     case MiniPauseWindow::STATE_ACTIVE: {
-        _timeLeft -= (int)(100.0f * f);
+        _timeLeft -= wentMs;
 
         _controlsWnd->Update();
 
