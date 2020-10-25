@@ -335,6 +335,8 @@ void EyeApp::OnUserActivity() {
 
 // Check if full screen app is running, returns display number or -1 as 'display'
 bool EyeApp::IsFullscreenAppRunning(int *display, HWND *fullscreenWndHandle) const {
+    refillResolutionParams();
+
     HWND hWnd = GetForegroundWindow();
     if (!hWnd) {
         // logging::msg("IsFullscreenAppRunning failed 0");
@@ -358,8 +360,6 @@ bool EyeApp::IsFullscreenAppRunning(int *display, HWND *fullscreenWndHandle) con
         logging::msg("IsFullscreenAppRunning failed 3");
         return false;
     }
-
-    refillResolutionParams();
 
     // logging::msg(wxString::Format("wndArea (%d, %d), (%d, %d)", wndArea.left, wndArea.right, wndArea.top, wndArea.bottom));
 
@@ -673,8 +673,7 @@ void EyeApp::ExecuteTask(float, long time_went) {
 
     case STATE_RELAXING: // in 'long pause'
     {
-        logging::msg(wxString::Format("State: Relaxing: _relaxingTimeLeft=%d", _relaxingTimeLeft));
-
+        //logging::msg(wxString::Format("State: Relaxing: _relaxingTimeLeft=%d", _relaxingTimeLeft));
         int multiplier = _fastMode ? 1 : 1;
         _relaxingTimeLeft -= time_went * multiplier;
 
