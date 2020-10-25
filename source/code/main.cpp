@@ -57,6 +57,7 @@ EyeApp::EyeApp()
     , _inactivityTime(0)
     , _timeLeftToBigPause(0)
     , _timeLeftToMiniPause(0)
+    , _bigPauseInterval(0)
     , _relaxingTimeLeft(0)
     , _fullscreenBlockDuration(0)
     , _timeUntilWaitingWnd(0)
@@ -220,7 +221,8 @@ bool EyeApp::IsOnlyInstance() const {
     HANDLE hMutex = CreateMutexA(NULL, TRUE, "EyeLeo_mutex_d");
 #endif
     if (GetLastError()) {
-        ReleaseMutex(hMutex);
+        if (hMutex)
+            ReleaseMutex(hMutex);
         return false;
     }
     return true;
@@ -490,7 +492,7 @@ void EyeApp::ExecuteTask(float, long time_went) {
     _currentState = _nextState;
     _nextState = 0;
 
-    if (_settingInactivityTracking && _currentState != STATE_SUSPENDED) {
+    if (_settingInactivityTracking && _currentState != STATE_SUSPENDED && _currentState != STATE_AUTO_RELAX) {
         if (CheckInactivity()) {
             _inactivityTime += time_went * (_fastMode ? 1 : 1);
         } else {
@@ -538,6 +540,7 @@ void EyeApp::ExecuteTask(float, long time_went) {
                 if (_inactivityTime >= 8 * 60 * 1000) // 8 mins
                 {
                     AutoRelax();
+                    break;
                 }
             }
 
@@ -579,22 +582,20 @@ void EyeApp::ExecuteTask(float, long time_went) {
 
                 if (_timeLeftToBigPause <= eyeleo::settings::timeForLongBreakConfirmation * 1000) {
                     ChangeState(STATE_START_BIG_PAUSE, 100);
+                    break;
                 }
             }
-            if (_enableMiniPause && _timeLeftToMiniPause > 0) {
-                int multiplier = _fastMode ? 2 : 1;
-                _timeLeftToMiniPause -= time_went * multiplier;
-
-                if (_timeLeftToBigPause == 0 ||
-                    _timeLeftToBigPause > _miniPauseInterval * 1000 * 60 / 2) // don't show mini-pause if big pause is about to start
+            if (_enableMiniPause) {
+                if (_timeLeftToMiniPause > 0) {
+                    int multiplier = _fastMode ? 2 : 1;
+                    _timeLeftToMiniPause -= time_went * multiplier;
+                }
+                if (!NotificationWindow::hasAnyInstance() && !_showedLongBreakCountdown) // don't show mini-pause if big pause is about to start
                 {
                     if (_timeLeftToMiniPause <= 0) {
                         StartMiniPause();
-
                         SaveSettings();
                     }
-                } else {
-                    RestartMiniPauseInterval();
                 }
             }
         } else {
@@ -730,13 +731,16 @@ void EyeApp::PostponeBigPause() {
     _timeLeftToBigPause = 3000 * 60; // 3 mins
     ChangeState(STATE_IDLE, 1000);
 
+    if (_timeLeftToMiniPause <= 3000) { // 3 seconds
+        _timeLeftToMiniPause = 3000;    // postpone upcoming mini-pause just a little bit
+    }
+
     UpdateTaskbarText();
 }
 
 void EyeApp::RefuseBigPause() {
     _userRefuseCount++;
     RestartBigPauseInterval();
-    RestartMiniPauseInterval();
 
     SaveSettings();
 }
@@ -918,9 +922,7 @@ void EyeApp::StartMiniPause() {
         logging::msg("(!) _miniPauseWnds is not empty");
     }
 
-    // play sound
-
-    RestartMiniPauseInterval(); // little flaw
+    RestartMiniPauseInterval();
 }
 
 void EyeApp::StopMiniPause() {

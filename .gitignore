@@ -9,16 +9,17 @@
 *.ilk
 
 # Binaries
-bin/*.exe
-bin/*.dll
+/bin/*.exe
+/bin/*.dll
 
 # Build folders
+cmake-*/
 build-*/
+buildvs/
 libs/pugixml/build
 libs/pugixml/scripts/vs2010
 libs/pugixml/scripts/vs2013
 libs/pugixml/scripts/vs2015
-cmake-*/
 .idea/
 source/project/Debug
 source/project/Release

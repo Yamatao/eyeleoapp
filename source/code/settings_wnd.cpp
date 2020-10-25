@@ -321,16 +321,15 @@ SettingsWindow::SettingsWindow(const wxString &title)
     tooltip6->SetDelay(800);
     _chkInactivityTracking->SetToolTip(tooltip6);
 
-
     imgIcon = new wxStaticBitmap(pageSettings, wxID_ANY, _iconWarning);
     _chkShowNotifications = new wxCheckBox(pageSettings,
-                                            ID_SETTINGS_CHK_ENABLE_INACTIVITY_TRACKING,
-                                            langPack->Get("settings_show_notifications"),
-                                            wxDefaultPosition,
-                                            wxDefaultSize,
-                                            wxCHK_2STATE,
-                                            wxDefaultValidator,
-                                            _("_chkShowNotifications"));
+                                           ID_SETTINGS_CHK_ENABLE_INACTIVITY_TRACKING,
+                                           langPack->Get("settings_show_notifications"),
+                                           wxDefaultPosition,
+                                           wxDefaultSize,
+                                           wxCHK_2STATE,
+                                           wxDefaultValidator,
+                                           _("_chkShowNotifications"));
     wxBoxSizer *sizerShowNotifications = new wxBoxSizer(wxHORIZONTAL);
 
     sizerShowNotifications->Add(imgIcon, wxSizerFlags().Center());
@@ -340,7 +339,7 @@ SettingsWindow::SettingsWindow(const wxString &title)
     wxToolTip *toolShowNotifications = new wxToolTip(langPack->Get("settings_show_notifications_tooltip"));
     toolShowNotifications->SetDelay(800);
     _chkShowNotifications->SetToolTip(toolShowNotifications);
-    
+
     imgIcon = new wxStaticBitmap(pageSettings, wxID_ANY, _iconWindow);
     _chkMiniPauseFullscreenSizer = new wxCheckBox(pageSettings,
                                                   ID_SETTINGS_CHK_ENABLE_MINI_PAUSE_FULLSCREEN,
@@ -426,7 +425,8 @@ SettingsWindow::SettingsWindow(const wxString &title)
     Connect(ID_SETTINGS_CHK_ENABLE_SOUNDS, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(SettingsWindow::OnSoundsEnabledClicked));
     Connect(ID_SETTINGS_CHK_ENABLE_STRICT_MODE, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(SettingsWindow::OnStrictModeEnabledClicked));
     Connect(ID_SETTINGS_CHK_CAN_CLOSE_NOTIFICATIONS, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(SettingsWindow::OnStrictModeEnabledClicked));
-    Connect(ID_SETTINGS_CHK_ENABLE_MINI_PAUSE_FULLSCREEN, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(SettingsWindow::OnMiniPauseFullscreenSizerClicked));
+    Connect(
+        ID_SETTINGS_CHK_ENABLE_MINI_PAUSE_FULLSCREEN, wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(SettingsWindow::OnMiniPauseFullscreenSizerClicked));
 
     Connect(ID_SETTINGS_BTN_SAVE_AND_QUIT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SettingsWindow::OnSaveAndCloseClicked));
     Connect(ID_SETTINGS_BTN_TRY_SHORT_BREAK, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(SettingsWindow::OnTryShortBreakClicked));
@@ -683,7 +683,7 @@ void SettingsWindow::PullSettings() {
     SetWindowNearbySetting(getApp()->GetWindowNearbySetting());
     SetCanCloseNotifications(getApp()->GetCanCloseNotificationsSetting());
     SetInactivityTrackingEnabled(getApp()->GetInactivityTrackingEnabled());
-    SetShowNotificationsEnabled(getApp()->GetShowNotificationsEnabled());   
+    SetShowNotificationsEnabled(getApp()->GetShowNotificationsEnabled());
     SetMiniPauseFullscreenSizerEnabled(getApp()->GetMiniPauseFullscreenEnabled());
 }
 

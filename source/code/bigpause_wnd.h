@@ -37,8 +37,8 @@ private:
     float _alpha;
     bool _preventClosing;
     bool _restoreFocus;
-    float _breakTimeLeft;
-    float _breakTimeFull;
+    long _breakTimeLeft; // in milliseconds
+    long _breakTimeFull;
     bool _primary;
 
     int _displayInd;

@@ -72,8 +72,6 @@ void NotificationWindow::SetTime(int timeBeforeLongBreakMs) {
 }
 
 void NotificationWindow::ExecuteTask(float f, long time_went) {
-    (void)time_went;
-
     switch (_state) {
     case NotificationWindow::STATE_SHOWING: {
         _alpha += 11.0f * f;
@@ -92,7 +90,7 @@ void NotificationWindow::ExecuteTask(float f, long time_went) {
     }
 
     case NotificationWindow::STATE_ACTIVE: {
-        _timeLeft -= 100.0f * f;
+        _timeLeft -= time_went;
 
         _controlsWnd->Update();
 
