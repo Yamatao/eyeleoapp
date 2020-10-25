@@ -221,7 +221,8 @@ bool EyeApp::IsOnlyInstance() const {
     HANDLE hMutex = CreateMutexA(NULL, TRUE, "EyeLeo_mutex_d");
 #endif
     if (GetLastError()) {
-        ReleaseMutex(hMutex);
+        if (hMutex)
+            ReleaseMutex(hMutex);
         return false;
     }
     return true;
@@ -491,7 +492,7 @@ void EyeApp::ExecuteTask(float, long time_went) {
     _currentState = _nextState;
     _nextState = 0;
 
-    if (_settingInactivityTracking && _currentState != STATE_SUSPENDED) {
+    if (_settingInactivityTracking && _currentState != STATE_SUSPENDED && _currentState != STATE_AUTO_RELAX) {
         if (CheckInactivity()) {
             _inactivityTime += time_went * (_fastMode ? 1 : 1);
         } else {
@@ -539,6 +540,7 @@ void EyeApp::ExecuteTask(float, long time_went) {
                 if (_inactivityTime >= 8 * 60 * 1000) // 8 mins
                 {
                     AutoRelax();
+                    break;
                 }
             }
 
@@ -580,6 +582,7 @@ void EyeApp::ExecuteTask(float, long time_went) {
 
                 if (_timeLeftToBigPause <= eyeleo::settings::timeForLongBreakConfirmation * 1000) {
                     ChangeState(STATE_START_BIG_PAUSE, 100);
+                    break;
                 }
             }
             if (_enableMiniPause) {
