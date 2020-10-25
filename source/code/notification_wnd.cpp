@@ -130,9 +130,12 @@ bool NotificationWindow::Hide() {
         return false;
 
     _state = NotificationWindow::STATE_HIDING;
+    
+    _controlsWnd->Show(false);
+    _controlsWnd->Destroy();
 
-    _controlsWnd->Hide();
-    return wxFrame::Hide();
+    Close();
+    return true;
 }
 
 void NotificationWindow::OnClose(wxCloseEvent &event) {
