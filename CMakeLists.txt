@@ -46,8 +46,14 @@ find_package(wxWidgets REQUIRED COMPONENTS core base adv)
 target_include_directories(EyeLeo PRIVATE ${wxWidgets_INCLUDE_DIRS})
 target_link_libraries(EyeLeo PRIVATE ${wxWidgets_LIBRARIES})
 
+if(WIN32)
+    set_property(GLOBAL PROPERTY PLATFORM_SPECIFIC_DEFINITION -D__WXMSW__)
+elseif(UNIX)
+    set_property(GLOBAL PROPERTY PLATFORM_SPECIFIC_DEFINITION -D__WXGTK__)
+endif()
+
 target_compile_definitions(EyeLeo PRIVATE
-        -D__WXMSW__
+        ${PLATFORM_SPECIFIC_DEFINITION}
         -DwxUSE_TASKBARICON_BALLOONS)
 
 target_compile_definitions(EyeLeo PRIVATE
