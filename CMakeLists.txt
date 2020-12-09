@@ -51,9 +51,9 @@ target_include_directories(EyeLeo PRIVATE ${GTK_INCLUDE_DIRS} ${wxWidgets_INCLUD
 target_link_libraries(EyeLeo PRIVATE ${GTK_LIBRARIES} ${wxWidgets_LIBRARIES})
 
 if(WIN32)
-    set_property(GLOBAL PROPERTY PLATFORM_SPECIFIC_DEFINITION -D__WXMSW__)
+    set(PLATFORM_SPECIFIC_DEFINITION -D__WXMSW__)
 else()
-    set_property(GLOBAL PROPERTY PLATFORM_SPECIFIC_DEFINITION "-D__WXGTK__ -D__WXGTK3__")
+    set(PLATFORM_SPECIFIC_DEFINITION -D__WXGTK__ -D__WXGTK3__)
 endif()
 
 target_compile_definitions(EyeLeo PRIVATE
@@ -116,9 +116,9 @@ if(WIN32)
 endif()
 
 if(WIN32)
-    set_property(GLOBAL PROPERTY TARGET_OUTPUT "eyeleo.exe")
+    set(TARGET_OUTPUT eyeleo.exe)
 elseif(UNIX)
-    set_property(GLOBAL PROPERTY TARGET_OUTPUT "eyeleo")
+    set(TARGET_OUTPUT eyeleo)
 endif()
 
 # post-build copy
