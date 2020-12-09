@@ -1,5 +1,4 @@
 #include "main.h"
-#include "activity_monitor.h"
 #include "beforepause_wnd.h"
 #include "bigpause_wnd.h"
 #include "debug_wnd.h"
@@ -27,6 +26,7 @@
 #include <wx/tipwin.h>
 
 #ifdef WIN32
+#include "activity_monitor.h"
 #include "shlobj.h"
 #include <VersionHelpers.h>
 #include <Wtsapi32.h>
@@ -197,8 +197,10 @@ bool EyeApp::OnInit() {
         }
     }
 
+#ifdef WIN32
     PrepareActivityMonitor();
     InstallActivityMonitor();
+#endif
 
     g_Personage = new PersonageData(L"leopard");
 

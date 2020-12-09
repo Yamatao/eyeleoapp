@@ -5,14 +5,16 @@ if(POLICY CMP0074)
 endif()
 
 add_subdirectory("libs/pugixml")
-add_subdirectory("libs/activity-monitor")
 
 project(EyeLeo VERSION 1.3.6)
 
 set(SOURCE_FILES_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/source/code)
 add_executable(EyeLeo WIN32 ${SOURCE_FILES_FOLDER}/main.cpp)
 
-add_dependencies(EyeLeo activity-monitor)
+if(WIN32)
+    add_subdirectory("libs/activity-monitor")
+    add_dependencies(EyeLeo activity-monitor)
+endif()
 
 # Common compilation defines/options
 if(MSVC)
@@ -59,8 +61,6 @@ target_compile_definitions(pugixml PUBLIC
 
 # Source files
 target_sources(EyeLeo PRIVATE 
-    ${SOURCE_FILES_FOLDER}/activity_monitor.cpp
-    ${SOURCE_FILES_FOLDER}/activity_monitor.h
     ${SOURCE_FILES_FOLDER}/beforepause_wnd.cpp
     ${SOURCE_FILES_FOLDER}/beforepause_wnd.h
     ${SOURCE_FILES_FOLDER}/bigpause_wnd.cpp
@@ -94,6 +94,10 @@ target_sources(EyeLeo PRIVATE
     ${SOURCE_FILES_FOLDER}/waiting_wnd.h)
 
 if(WIN32)
+    target_sources(EyeLeo PRIVATE
+        ${SOURCE_FILES_FOLDER}/activity_monitor.cpp
+        ${SOURCE_FILES_FOLDER}/activity_monitor.h)
+
     target_link_libraries(EyeLeo PRIVATE
         comctl32.lib
         winmm.lib
@@ -101,12 +105,23 @@ if(WIN32)
         Wtsapi32.lib)
 endif()
 
+if(WIN32)
+    set_property(GLOBAL PROPERTY TARGET_FORMAT "exe")
+elseif(UNIX)
+    set_property(GLOBAL PROPERTY TARGET_FORMAT "so")
+endif()
+
 # post-build copy
 add_custom_command(TARGET EyeLeo POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    $<TARGET_FILE:EyeLeo> ${CMAKE_SOURCE_DIR}/bin/EyeLeo.exe
-    COMMAND ${CMAKE_COMMAND} -E copy
-    $<TARGET_FILE:activity-monitor> ${CMAKE_SOURCE_DIR}/bin/activity-monitor.dll)
+    $<TARGET_FILE:EyeLeo> ${CMAKE_SOURCE_DIR}/bin/eyeleo.${TARGET_FORMAT})
+
+# post-build activity-monitor copy
+if(WIN32)
+    add_custom_command(TARGET EyeLeo POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        $<TARGET_FILE:activity-monitor> ${CMAKE_SOURCE_DIR}/bin/activity-monitor.dll)
+endif()
 
 # set icon
 if(WIN32)
