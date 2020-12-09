@@ -43,8 +43,13 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 find_package(wxWidgets REQUIRED COMPONENTS core base adv)
 
-target_include_directories(EyeLeo PRIVATE ${wxWidgets_INCLUDE_DIRS})
-target_link_libraries(EyeLeo PRIVATE ${wxWidgets_LIBRARIES})
+if(UNIX)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GTK REQUIRED gtk+-3.0)
+endif()
+
+target_include_directories(EyeLeo PRIVATE ${wxWidgets_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS})
+target_link_libraries(EyeLeo PRIVATE ${wxWidgets_LIBRARIES} ${GTK3_LIBRARIES})
 
 if(WIN32)
     set_property(GLOBAL PROPERTY PLATFORM_SPECIFIC_DEFINITION -D__WXMSW__)
