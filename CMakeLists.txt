@@ -44,12 +44,11 @@ endif()
 find_package(wxWidgets REQUIRED COMPONENTS core base adv)
 
 if(UNIX)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(GTK REQUIRED gtk+-3.0)
+    find_package(GTK REQUIRED)
 endif()
 
-target_include_directories(EyeLeo PRIVATE ${wxWidgets_INCLUDE_DIRS} ${GTK3_INCLUDE_DIRS})
-target_link_libraries(EyeLeo PRIVATE ${wxWidgets_LIBRARIES} ${GTK3_LIBRARIES})
+target_include_directories(EyeLeo PRIVATE ${GTK_INCLUDE_DIRS} ${wxWidgets_INCLUDE_DIRS})
+target_link_libraries(EyeLeo PRIVATE ${GTK_LIBRARIES} ${wxWidgets_LIBRARIES})
 
 if(WIN32)
     set_property(GLOBAL PROPERTY PLATFORM_SPECIFIC_DEFINITION -D__WXMSW__)
@@ -117,15 +116,15 @@ if(WIN32)
 endif()
 
 if(WIN32)
-    set_property(GLOBAL PROPERTY TARGET_FORMAT "exe")
+    set_property(GLOBAL PROPERTY TARGET_OUTPUT "eyeleo.exe")
 elseif(UNIX)
-    set_property(GLOBAL PROPERTY TARGET_FORMAT "so")
+    set_property(GLOBAL PROPERTY TARGET_OUTPUT "eyeleo")
 endif()
 
 # post-build copy
 add_custom_command(TARGET EyeLeo POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    $<TARGET_FILE:EyeLeo> ${CMAKE_SOURCE_DIR}/bin/eyeleo.${TARGET_FORMAT})
+    $<TARGET_FILE:EyeLeo> ${CMAKE_SOURCE_DIR}/bin/eyeleo${TARGET_OUTPUT})
 
 # post-build activity-monitor copy
 if(WIN32)
