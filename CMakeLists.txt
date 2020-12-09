@@ -52,8 +52,8 @@ target_link_libraries(EyeLeo PRIVATE ${GTK_LIBRARIES} ${wxWidgets_LIBRARIES})
 
 if(WIN32)
     set_property(GLOBAL PROPERTY PLATFORM_SPECIFIC_DEFINITION -D__WXMSW__)
-elseif(UNIX)
-    set_property(GLOBAL PROPERTY PLATFORM_SPECIFIC_DEFINITION -D__WXGTK__)
+else()
+    set_property(GLOBAL PROPERTY PLATFORM_SPECIFIC_DEFINITION "-D__WXGTK__ -D__WXGTK3__")
 endif()
 
 target_compile_definitions(EyeLeo PRIVATE
