@@ -209,6 +209,7 @@ void BigPauseWindow::ExecuteTask(float f, long wentMs) {
     }
 }
 
+#ifdef WIN32
 WXLRESULT BigPauseWindow::MSWWindowProc(WXUINT message, WXWPARAM wParam, WXLPARAM lParam) {
     if (message == WM_WTSSESSION_CHANGE) {
         if (wParam == WTS_SESSION_LOGON) {
@@ -229,6 +230,7 @@ WXLRESULT BigPauseWindow::MSWWindowProc(WXUINT message, WXWPARAM wParam, WXLPARA
 
     return wxFrame::MSWWindowProc(message, wParam, lParam);
 }
+#endif
 
 void BigPauseWindow::Hide() {
     logging::msg("BigPauseWindow::Hide");

@@ -171,7 +171,10 @@ public:
         _miniPauseFullscreenEnabled = enabled;
     }
 
-    bool IsFullscreenAppRunning(int *display = 0, HWND *fullscreenWndHandle = 0) const;
+    bool IsFullscreenAppRunning(int *display = nullptr) const;
+#ifdef WIN32
+    HWND GetFullscreenAppHwnd() const;
+#endif
 
     void TogglePausedMode(int minites = 0);
     bool isPausedMode() const;
@@ -264,7 +267,9 @@ private:
     long _inactivityTime;
     int _postponeCount;
 
+#ifdef WIN32
     POINT _cursorPos;
+#endif
 
     std::vector<BigPauseWindow *> _bigPauseWnds;
     std::vector<MiniPauseWindow *> _miniPauseWnds;

@@ -1,7 +1,7 @@
 #ifndef SETTINGS_WND_H
 #define SETTINGS_WND_H
 #include "wx/wx.h"
-
+#include <wx/imaglist.h>
 enum
 {
     ID_TASKBAR_MENU_QUIT = 1,

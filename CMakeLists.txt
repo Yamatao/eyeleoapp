@@ -30,7 +30,7 @@ if(MSVC)
     target_compile_options(EyeLeo PRIVATE $<$<CONFIG:DEBUG>:/MDd>)
     target_compile_options(EyeLeo PRIVATE $<$<CONFIG:RELEASE>:/MD>)
 else()
-    target_compile_options(EyeLeo PRIVATE -Wall -Wextra -Wpedantic)
+    target_compile_options(EyeLeo PRIVATE -Wall -Wextra)
 endif()
 
 set_target_properties(EyeLeo PROPERTIES

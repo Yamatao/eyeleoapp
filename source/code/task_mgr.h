@@ -4,6 +4,7 @@
 #include "wx/thread.h"
 #include <list>
 #include <utility>
+#include <atomic>
 
 wxDECLARE_EVENT(EXECUTE_TASK_EVENT, wxCommandEvent);
 
@@ -45,7 +46,7 @@ private:
     typedef std::list<TaskListItem> TaskList;
     TaskList _tasks;
 
-    volatile long _endSignal;
+    std::atomic_bool _endSignal;
 
     wxCriticalSection _cs;
 

@@ -30,7 +30,9 @@ private:
 
     void UpdateTimeLabel();
 
+#ifdef WIN32
     virtual WXLRESULT MSWWindowProc(WXUINT message, WXWPARAM wParam, WXLPARAM lParam);
+#endif
 
     bool _showing;
     bool _hiding;

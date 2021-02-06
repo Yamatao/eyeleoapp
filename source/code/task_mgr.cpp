@@ -57,12 +57,11 @@ void TaskManager::RemoveTasks(const wxString &address, bool lock) {
 
 void TaskManager::StopTasks() {
     wxCriticalSectionLocker locker(_cs);
-
-    InterlockedIncrement(&_endSignal);
+    _endSignal.store(true);
 }
 
 wxThread::ExitCode TaskManager::Entry() {
-    while (_endSignal == 0 && !TestDestroy()) {
+    while (!_endSignal.load() && !TestDestroy()) {
         ::wxMilliSleep(20);
 
         wxMilliClock_t now = ::wxGetLocalTimeMillis();
@@ -73,7 +72,7 @@ wxThread::ExitCode TaskManager::Entry() {
             TaskList::iterator end = _tasks.end();
             TaskList::iterator it = _tasks.begin();
             while (it != end) {
-                if (TestDestroy() || _endSignal != 0)
+                if (TestDestroy() || _endSignal.load())
                     return 0;
 
                 TaskListItem &item = (*it);

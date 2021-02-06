@@ -190,9 +190,11 @@ MiniPauseControls::MiniPauseControls(wxWindow *parent)
 }
 
 void MiniPauseControls::Init(int displayInd, unsigned int showCount) {
+#ifdef WIN32
     if ((GetExtraStyle() & WS_EX_LAYERED) == 0)
         SetWindowLong(GetHWND(), GWL_EXSTYLE, GetExtraStyle() | WS_EX_LAYERED);
     SetLayeredWindowAttributes(GetHWND(), RGB(32, 33, 34), 0, LWA_COLORKEY);
+#endif
     SetBackgroundColour(wxColour(32, 33, 34));
 
     // Set position to center of the screen

@@ -47,8 +47,10 @@ EyeApp *getApp() {
 ///////////////////////////////////////////////////////////////////////////////////////
 
 BEGIN_EVENT_TABLE(EyeApp, wxApp)
+#ifdef WIN32
 EVT_QUERY_END_SESSION(EyeApp::OnQueryEndSession)
 EVT_END_SESSION(EyeApp::OnEndSession)
+#endif
 EVT_COMMAND(wxID_ANY, EXECUTE_TASK_EVENT, EyeApp::OnTaskEvent)
 END_EVENT_TABLE()
 
@@ -217,17 +219,17 @@ bool EyeApp::OnInit() {
 }
 
 bool EyeApp::IsOnlyInstance() const {
-#ifdef NDEBUG
+#ifdef WIN32
     HANDLE hMutex = CreateMutexA(NULL, TRUE, "EyeLeo_mutex");
-#else
-    HANDLE hMutex = CreateMutexA(NULL, TRUE, "EyeLeo_mutex_d");
-#endif
     if (GetLastError()) {
         if (hMutex)
             ReleaseMutex(hMutex);
         return false;
     }
     return true;
+#else
+    return true; // TODO: impl
+#endif
 }
 
 wxString EyeApp::GetSavePath() const {
@@ -336,53 +338,80 @@ void EyeApp::OnUserActivity() {
 }
 
 // Check if full screen app is running, returns display number or -1 as 'display'
-bool EyeApp::IsFullscreenAppRunning(int *display, HWND *fullscreenWndHandle) const {
+bool EyeApp::IsFullscreenAppRunning(int *display) const {
     refillResolutionParams();
 
+#ifdef WIN32
     HWND hWnd = GetForegroundWindow();
-    if (!hWnd) {
-        // logging::msg("IsFullscreenAppRunning failed 0");
+    if (!hWnd)
         return false;
-    }
 
     HWND hDesktop = GetDesktopWindow();
     HWND hShell = GetShellWindow();
-    if (hWnd == hDesktop || hWnd == hShell) {
-        logging::msg("IsFullscreenAppRunning failed 1");
+    if (hWnd == hDesktop || hWnd == hShell)
         return false;
-    }
 
-    if (!IsWindowVisible(hWnd) || IsIconic(hWnd)) {
-        logging::msg("IsFullscreenAppRunning failed 2");
+    if (!IsWindowVisible(hWnd) || IsIconic(hWnd))
         return false;
-    }
 
     RECT wndArea;
-    if (!GetWindowRect(hWnd, &wndArea)) {
-        logging::msg("IsFullscreenAppRunning failed 3");
+    if (!GetWindowRect(hWnd, &wndArea))
         return false;
-    }
 
     // logging::msg(wxString::Format("wndArea (%d, %d), (%d, %d)", wndArea.left, wndArea.right, wndArea.top, wndArea.bottom));
-
     for (int d = 0; d < osCaps.numDisplays; ++d) {
         wxRect displayArea = osCaps.displays[d].geometry;
 
         // logging::msg(wxString::Format("%d) displayArea (%d, %d, %d, %d)", d, displayArea.x, displayArea.y, displayArea.width, displayArea.height));
-
-        if (wndArea.left == displayArea.x && wndArea.top == displayArea.y && wndArea.right - wndArea.left == displayArea.width &&
+        if (wndArea.left == displayArea.x &&
+            wndArea.top == displayArea.y &&
+            wndArea.right - wndArea.left == displayArea.width &&
             wndArea.bottom - wndArea.top == displayArea.height) {
             if (display)
                 *display = d;
-            if (fullscreenWndHandle)
-                *fullscreenWndHandle = hWnd;
             // logging::msg(wxString::Format("Fullscreen app is at disp %d", d));
             return true;
         }
     }
-    // logging::msg("No fullscreen app running");
     return false;
+#else
+    return false;
+#endif
 }
+
+#ifdef WIN32
+HWND EyeApp::GetFullscreenAppHwnd() const {
+    refillResolutionParams();
+
+    HWND hWnd = GetForegroundWindow();
+    if (!hWnd)
+        return 0;
+
+    HWND hDesktop = GetDesktopWindow();
+    HWND hShell = GetShellWindow();
+    if (hWnd == hDesktop || hWnd == hShell)
+        return 0;
+
+    if (!IsWindowVisible(hWnd) || IsIconic(hWnd))
+        return 0;
+
+    RECT wndArea;
+    if (!GetWindowRect(hWnd, &wndArea))
+        return 0;
+
+    for (int d = 0; d < osCaps.numDisplays; ++d) {
+        wxRect displayArea = osCaps.displays[d].geometry;
+
+        if (wndArea.left == displayArea.x &&
+            wndArea.top == displayArea.y &&
+            wndArea.right - wndArea.left == displayArea.width &&
+            wndArea.bottom - wndArea.top == displayArea.height) {
+            return hWnd;
+        }
+    }
+    return 0;
+}
+#endif
 
 void EyeApp::UpdateTaskbarText() {
     if (GetNextState() == STATE_AUTO_RELAX) {
@@ -447,6 +476,7 @@ void EyeApp::OnTaskEvent(wxCommandEvent &c) {
 }
 
 bool EyeApp::CheckInactivity() {
+#ifdef WIN32
     POINT p;
     BOOL res = GetCursorPos(&p);
     if (!res)
@@ -458,6 +488,9 @@ bool EyeApp::CheckInactivity() {
     }
 
     return true;
+#else
+    return false; // TODO
+#endif
 }
 
 ITask *EyeApp::getWindow(const wxString &address) {
@@ -640,10 +673,12 @@ void EyeApp::ExecuteTask(float, long time_went) {
     case STATE_START_BIG_PAUSE: {
         logging::msg(wxString("State: Start big pause"));
         if (_enableStrictMode) {
-            HWND hwnd;
-            bool fullscreenBlock = IsFullscreenAppRunning(0, &hwnd);
-            if (fullscreenBlock && hwnd) {
+            bool fullscreenBlock = IsFullscreenAppRunning();
+            if (fullscreenBlock) {
+#ifdef WIN32
+                HWND hwnd = GetFullscreenAppHwnd();
                 ShowWindow(hwnd, SW_FORCEMINIMIZE);
+#endif
                 ChangeState(STATE_START_BIG_PAUSE, 2000);
             } else {
                 StartBigPause();
@@ -702,10 +737,10 @@ void EyeApp::ExecuteTask(float, long time_went) {
 void EyeApp::UpdateDebugWindow() {
     if (!_debugWindow)
         return;
-    _debugWindow->_timeLeftToBigPause->SetLabel(wxString::Format(L"%d", _timeLeftToBigPause));
-    _debugWindow->_timeLeftToMiniPause->SetLabel(wxString::Format(L"%d", _timeLeftToMiniPause));
-    _debugWindow->_inactivityTime->SetLabel(wxString::Format(L"%d", _inactivityTime));
-    _debugWindow->_relaxingTimeLeft->SetLabel(wxString::Format(L"%d", _relaxingTimeLeft));
+    _debugWindow->_timeLeftToBigPause->SetLabel(wxString::Format(L"%ld", _timeLeftToBigPause));
+    _debugWindow->_timeLeftToMiniPause->SetLabel(wxString::Format(L"%ld", _timeLeftToMiniPause));
+    _debugWindow->_inactivityTime->SetLabel(wxString::Format(L"%ld", _inactivityTime));
+    _debugWindow->_relaxingTimeLeft->SetLabel(wxString::Format(L"%ld", _relaxingTimeLeft));
 }
 
 void EyeApp::AskForBigPause() {
@@ -749,8 +784,10 @@ void EyeApp::RefuseBigPause() {
 void EyeApp::AutoRelax() {
     logging::msg("AutoRelax");
 
+#ifdef WIN32
     UninstallActivityMonitor();
     InstallActivityMonitor();
+#endif
 
     _inactivityTime = 0;
     _timeLeftToBigPause = 0;
@@ -876,7 +913,7 @@ void EyeApp::CloseBigPauseWnds() {
 }
 
 void EyeApp::StopBigPause() {
-    logging::msg(wxString::Format("EyeApp::StopBigPause, bigPauseWnds.size=%d", _bigPauseWnds.size()));
+    logging::msg(wxString::Format("EyeApp::StopBigPause, bigPauseWnds.size=%llu", _bigPauseWnds.size()));
 
     CloseBigPauseWnds();
 
@@ -964,7 +1001,9 @@ void EyeApp::OnDebugWindowClosed() {
 
 void EyeApp::OpenSettings() {
     if (_settingsWnd) {
-        ::SetForegroundWindow(_settingsWnd->GetHWND());
+#ifdef WIN32
+        ::SetForegroundWindow(_settingsWnd->GetHWND()); // TODO
+#endif
         return;
     }
 
@@ -1134,8 +1173,12 @@ void EyeApp::SaveSettings() {
     nodeStatistics.append_attribute(L"postpone_count") = _userPostponeCount;
     nodeStatistics.append_attribute(L"auto_break_count") = _userAutoBreakCount;
     nodeStatistics.append_attribute(L"short_break_count") = _userShortBreakCount;
+#ifdef WIN32
     if (_lastShutdown.IsValid())
         nodeStatistics.append_attribute(L"last_shutdown") = _lastShutdown.FormatISOCombined().c_str();
+#else
+    // TODO
+#endif
 
     assert(_lastBigPauseTimeLeft < INT_MAX);
     nodeStatistics.append_attribute(L"last_big_pause_time_left") = (int)(_lastBigPauseTimeLeft);
@@ -1253,7 +1296,7 @@ void EyeApp::OnSettingsClosed() {
             _timeLeftToMiniPause = 0;
     }
 
-    logging::msg(wxString::Format("    _timeLeftToMiniPause = %d, _timeLeftToBigPause = %d", _timeLeftToMiniPause, _timeLeftToBigPause));
+    logging::msg(wxString::Format("    _timeLeftToMiniPause = %ld, _timeLeftToBigPause = %ld", _timeLeftToMiniPause, _timeLeftToBigPause));
 }
 
 void EyeApp::TogglePausedMode(int minutes) {
@@ -1327,7 +1370,9 @@ int EyeApp::OnExit() {
 
     DeletePendingEvents();
 
+#ifdef WIN32
     UninstallActivityMonitor();
+#endif
     _taskBarIcon->RemoveIcon();
 
     Stop();
@@ -1346,7 +1391,9 @@ void EyeApp::OnQueryEndSession(wxCloseEvent &evt) {
     DeletePendingEvents();
     getApp()->Exit();
 
+#ifdef WIN32
     wxApp::OnQueryEndSession(evt);
+#endif
 
     logging::msg("done OnQueryEndSession");
 }
@@ -1354,12 +1401,18 @@ void EyeApp::OnQueryEndSession(wxCloseEvent &evt) {
 void EyeApp::OnEndSession(wxCloseEvent &evt) {
     logging::msg("OnEndSession");
 
+#ifdef WIN32
     UninstallActivityMonitor();
+#endif
     _taskBarIcon->RemoveIcon();
 
     Stop();
 
+#ifdef WIN32
     wxApp::OnEndSession(evt);
+#else
+    // TODO
+#endif
 
     logging::msg("done OnEndSession");
 }
@@ -1424,7 +1477,11 @@ void EyeTaskBarIcon::OnLeftButtonDown(wxMouseEvent /*wxTaskBarIconEvent*/ &WXUNU
 
 void EyeTaskBarIcon::ShowBalloonToolip(wxString const &text, unsigned msec) {
     if (getApp()->GetShowNotificationsEnabled()) {
+#ifdef WIN32
         ShowBalloon(langPack->Get("tb_popup_default"), text, msec, wxICON_INFORMATION);
+#else
+        // TODO
+#endif
     }
 }
 
