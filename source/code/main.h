@@ -4,6 +4,7 @@
 #include "task_mgr.h"
 #include "wx/taskbar.h"
 #include "wx/wx.h"
+#include <map>
 #include <vector>
 
 class SettingsWindow;
@@ -220,6 +221,9 @@ private:
     wxString _website;
 
     int _lastDuration;
+
+    // when a task was last executed, per address; see OnTaskEvent
+    std::map<wxString, wxMilliClock_t> _taskLastRun;
     int _currentState;
     int _nextState;
 

@@ -471,8 +471,17 @@ void EyeApp::OnTaskEvent(wxCommandEvent &c) {
     if (!pl)
         return;
 
+    // The task thread keeps re-firing a task until its handler re-schedules it, so several events for the same
+    // period may queue up while the main thread is busy. Count time from the latest execution of this address,
+    // otherwise the same milliseconds are subtracted several times (e.g. an 8 s short break ends in 2 s).
     wxMilliClock_t now = ::wxGetLocalTimeMillis();
-    wxMilliClock_t time_went = now - pl->start_time;
+    wxMilliClock_t from = pl->start_time;
+    std::map<wxString, wxMilliClock_t>::iterator lastRun = _taskLastRun.find(pl->address);
+    if (lastRun != _taskLastRun.end() && lastRun->second > from)
+        from = lastRun->second;
+    _taskLastRun[pl->address] = now;
+
+    wxMilliClock_t time_went = now - from;
     float f = float(time_went.ToDouble() / pl->duration.ToDouble());
 
     if (pl->check != 12345) {
