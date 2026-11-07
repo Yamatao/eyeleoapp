@@ -4,6 +4,7 @@
 #include "task_mgr.h"
 #include "wx/taskbar.h"
 #include "wx/wx.h"
+#include <map>
 #include <vector>
 
 class SettingsWindow;
@@ -124,6 +125,9 @@ public:
     bool GetMiniPauseFullscreenEnabled() const {
         return _miniPauseFullscreenEnabled;
     }
+    bool GetFullscreenDetectionEnabled() const {
+        return _fullscreenDetectionEnabled;
+    }
 
     void SetBigPauseEnabled(bool enabled) {
         _enableBigPause = enabled;
@@ -170,6 +174,9 @@ public:
     void SetMiniPauseFullscreenEnabled(bool enabled) {
         _miniPauseFullscreenEnabled = enabled;
     }
+    void SetFullscreenDetectionEnabled(bool enabled) {
+        _fullscreenDetectionEnabled = enabled;
+    }
 
     bool IsFullscreenAppRunning(int *display = 0, HWND *fullscreenWndHandle = 0) const;
 
@@ -214,6 +221,9 @@ private:
     wxString _website;
 
     int _lastDuration;
+
+    // when a task was last executed, per address; see OnTaskEvent
+    std::map<wxString, wxMilliClock_t> _taskLastRun;
     int _currentState;
     int _nextState;
 
@@ -241,6 +251,7 @@ private:
     bool _firstLaunch;
     bool _showNotificationsEnabled;
     bool _miniPauseFullscreenEnabled;
+    bool _fullscreenDetectionEnabled;
 
     // statistics
     unsigned int _userShortBreakCount;

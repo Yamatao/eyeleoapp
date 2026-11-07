@@ -359,6 +359,25 @@ SettingsWindow::SettingsWindow(const wxString &title)
     toolMiniPauseFullscreenSizer->SetDelay(800);
     _chkMiniPauseFullscreenSizer->SetToolTip(toolMiniPauseFullscreenSizer);
 
+    imgIcon = new wxStaticBitmap(pageSettings, wxID_ANY, _iconWindow);
+    _chkFullscreenDetection = new wxCheckBox(pageSettings,
+                                             ID_SETTINGS_CHK_FULLSCREEN_DETECTION,
+                                             langPack->Get("settings_fullscreen_detection"),
+                                             wxDefaultPosition,
+                                             wxDefaultSize,
+                                             wxCHK_2STATE,
+                                             wxDefaultValidator,
+                                             _("chkFullscreenDetection"));
+    wxBoxSizer *sizerFullscreenDetection = new wxBoxSizer(wxHORIZONTAL);
+
+    sizerFullscreenDetection->Add(imgIcon, wxSizerFlags().Center());
+    sizerFullscreenDetection->AddSpacer(3);
+    sizerFullscreenDetection->Add(_chkFullscreenDetection, wxSizerFlags().Center().Border(wxALL, 3));
+
+    wxToolTip *toolFullscreenDetection = new wxToolTip(langPack->Get("settings_fullscreen_detection_tooltip"));
+    toolFullscreenDetection->SetDelay(800);
+    _chkFullscreenDetection->SetToolTip(toolFullscreenDetection);
+
     //
     sizerPanel->Add(sizerBigPauses, wxSizerFlags().Left().Border(wxALL, 4));
     sizerPanel->Add(sizerWarnPauses, wxSizerFlags().Left().Border(wxALL, 4));
@@ -374,6 +393,8 @@ SettingsWindow::SettingsWindow(const wxString &title)
     sizerPanel->Add(sizerShowNotifications, wxSizerFlags().Left().Border(wxLEFT, 4));
     sizerPanel->AddSpacer(8);
     sizerPanel->Add(sizerMiniPauseFullscreenSizer, wxSizerFlags().Left().Border(wxLEFT, 4));
+    sizerPanel->AddSpacer(8);
+    sizerPanel->Add(sizerFullscreenDetection, wxSizerFlags().Left().Border(wxLEFT, 4));
     sizerPanel->AddSpacer(8);
     sizerPanel->Add(sizerTryButtons, wxSizerFlags().Left().Border(wxALL, 4));
 
@@ -604,6 +625,10 @@ void SettingsWindow::SetMiniPauseFullscreenSizerEnabled(bool value) {
     _chkMiniPauseFullscreenSizer->SetValue(value);
 }
 
+void SettingsWindow::SetFullscreenDetectionEnabled(bool value) {
+    _chkFullscreenDetection->SetValue(value);
+}
+
 bool SettingsWindow::GetBigPauseEnabled() const {
     return _chkBigPauses->GetValue();
 }
@@ -669,6 +694,10 @@ bool SettingsWindow::GetMiniPauseFullscreenSizerEnabled() const {
     return _chkMiniPauseFullscreenSizer->GetValue();
 }
 
+bool SettingsWindow::GetFullscreenDetectionEnabled() const {
+    return _chkFullscreenDetection->GetValue();
+}
+
 void SettingsWindow::PullSettings() {
     SetBigPauseEnabled(getApp()->GetBigPauseEnabled());
     SetBigPauseInterval(getApp()->GetBigPauseInterval());
@@ -685,6 +714,7 @@ void SettingsWindow::PullSettings() {
     SetInactivityTrackingEnabled(getApp()->GetInactivityTrackingEnabled());
     SetShowNotificationsEnabled(getApp()->GetShowNotificationsEnabled());
     SetMiniPauseFullscreenSizerEnabled(getApp()->GetMiniPauseFullscreenEnabled());
+    SetFullscreenDetectionEnabled(getApp()->GetFullscreenDetectionEnabled());
 }
 
 void SettingsWindow::PushSettings() {
@@ -703,6 +733,7 @@ void SettingsWindow::PushSettings() {
     getApp()->SetInactivityTrackingEnabled(GetInactivityTrackingEnabled());
     getApp()->SetShowNotificationsEnabled(GetShowNotificationsEnabled());
     getApp()->SetMiniPauseFullscreenEnabled(GetMiniPauseFullscreenSizerEnabled());
+    getApp()->SetFullscreenDetectionEnabled(GetFullscreenDetectionEnabled());
     getApp()->SaveSettings();
 }
 

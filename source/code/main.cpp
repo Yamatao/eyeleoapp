@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <wx/button.h>
 #include <wx/checkbox.h>
+#include <wx/display.h>
 #include <wx/combobox.h>
 #include <wx/filename.h>
 #include <wx/sizer.h>
@@ -333,9 +334,34 @@ void EyeApp::OnUserActivity() {
     }
 }
 
+// Shell windows (desktop, taskbar, emoji panel, Start menu) may cover a whole monitor, but they aren't fullscreen apps
+static bool isShellWindow(HWND hWnd) {
+    wchar_t cls[64] = {};
+    GetClassName(hWnd, cls, 64);
+    const wchar_t *shellClasses[] = {L"Progman", L"WorkerW", L"Shell_TrayWnd", L"Shell_SecondaryTrayWnd", L"Windows.UI.Core.CoreWindow"};
+    for (const wchar_t *shellClass : shellClasses) {
+        if (wcscmp(cls, shellClass) == 0)
+            return true;
+    }
+    return false;
+}
+
+static wxString describeWindow(HWND hWnd) {
+    if (!hWnd)
+        return L"<none>";
+    wchar_t cls[128] = {};
+    wchar_t title[128] = {};
+    GetClassName(hWnd, cls, 128);
+    GetWindowText(hWnd, title, 128);
+    return wxString::Format(L"class='%s' title='%s'", cls, title);
+}
+
 // Check if full screen app is running, returns display number or -1 as 'display'
 bool EyeApp::IsFullscreenAppRunning(int *display, HWND *fullscreenWndHandle) const {
     refillResolutionParams();
+
+    if (!_fullscreenDetectionEnabled)
+        return false;
 
     HWND hWnd = GetForegroundWindow();
     if (!hWnd) {
@@ -345,41 +371,58 @@ bool EyeApp::IsFullscreenAppRunning(int *display, HWND *fullscreenWndHandle) con
 
     HWND hDesktop = GetDesktopWindow();
     HWND hShell = GetShellWindow();
-    if (hWnd == hDesktop || hWnd == hShell) {
+    if (hWnd == hDesktop || hWnd == hShell || isShellWindow(hWnd)) {
         logging::msg("IsFullscreenAppRunning failed 1");
         return false;
     }
+
+    DWORD pid = 0;
+    GetWindowThreadProcessId(hWnd, &pid);
+    if (pid == GetCurrentProcessId()) // our own break windows
+        return false;
 
     if (!IsWindowVisible(hWnd) || IsIconic(hWnd)) {
         logging::msg("IsFullscreenAppRunning failed 2");
         return false;
     }
 
-    RECT wndArea;
-    if (!GetWindowRect(hWnd, &wndArea)) {
+    // an ordinary maximized window has a caption and leaves the taskbar visible
+    if (IsZoomed(hWnd) && (GetWindowLong(hWnd, GWL_STYLE) & WS_CAPTION) == WS_CAPTION)
+        return false;
+
+    HMONITOR hMonitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONULL);
+    MONITORINFO monitorInfo = {sizeof(MONITORINFO)};
+    RECT clientArea;
+    if (!hMonitor || !GetMonitorInfo(hMonitor, &monitorInfo) || !GetClientRect(hWnd, &clientArea)) {
         logging::msg("IsFullscreenAppRunning failed 3");
         return false;
     }
+    MapWindowPoints(hWnd, NULL, reinterpret_cast<POINT *>(&clientArea), 2);
 
-    // logging::msg(wxString::Format("wndArea (%d, %d), (%d, %d)", wndArea.left, wndArea.right, wndArea.top, wndArea.bottom));
+    // Borderless windows may be a pixel larger or shifted, and DPI virtualization may round coordinates,
+    // so check that the client area covers the monitor instead of exact equality
+    const int tolerance = 2;
+    const RECT &mon = monitorInfo.rcMonitor;
+    if (clientArea.left > mon.left + tolerance || clientArea.top > mon.top + tolerance || clientArea.right < mon.right - tolerance ||
+        clientArea.bottom < mon.bottom - tolerance)
+        return false;
 
+    int displayInd = -1;
     for (int d = 0; d < osCaps.numDisplays; ++d) {
-        wxRect displayArea = osCaps.displays[d].geometry;
-
-        // logging::msg(wxString::Format("%d) displayArea (%d, %d, %d, %d)", d, displayArea.x, displayArea.y, displayArea.width, displayArea.height));
-
-        if (wndArea.left == displayArea.x && wndArea.top == displayArea.y && wndArea.right - wndArea.left == displayArea.width &&
-            wndArea.bottom - wndArea.top == displayArea.height) {
-            if (display)
-                *display = d;
-            if (fullscreenWndHandle)
-                *fullscreenWndHandle = hWnd;
-            // logging::msg(wxString::Format("Fullscreen app is at disp %d", d));
-            return true;
+        if (osCaps.displays[d].geometry == wxRect(mon.left, mon.top, mon.right - mon.left, mon.bottom - mon.top)) {
+            displayInd = d;
+            break;
         }
     }
-    // logging::msg("No fullscreen app running");
-    return false;
+    if (displayInd == -1)
+        displayInd = wxDisplay::GetFromPoint(wxPoint((mon.left + mon.right) / 2, (mon.top + mon.bottom) / 2));
+
+    // logging::msg(wxString::Format("Fullscreen app is at disp %d: %s", displayInd, describeWindow(hWnd)));
+    if (display)
+        *display = displayInd;
+    if (fullscreenWndHandle)
+        *fullscreenWndHandle = hWnd;
+    return true;
 }
 
 void EyeApp::UpdateTaskbarText() {
@@ -428,8 +471,17 @@ void EyeApp::OnTaskEvent(wxCommandEvent &c) {
     if (!pl)
         return;
 
+    // The task thread keeps re-firing a task until its handler re-schedules it, so several events for the same
+    // period may queue up while the main thread is busy. Count time from the latest execution of this address,
+    // otherwise the same milliseconds are subtracted several times (e.g. an 8 s short break ends in 2 s).
     wxMilliClock_t now = ::wxGetLocalTimeMillis();
-    wxMilliClock_t time_went = now - pl->start_time;
+    wxMilliClock_t from = pl->start_time;
+    std::map<wxString, wxMilliClock_t>::iterator lastRun = _taskLastRun.find(pl->address);
+    if (lastRun != _taskLastRun.end() && lastRun->second > from)
+        from = lastRun->second;
+    _taskLastRun[pl->address] = now;
+
+    wxMilliClock_t time_went = now - from;
     float f = float(time_went.ToDouble() / pl->duration.ToDouble());
 
     if (pl->check != 12345) {
@@ -902,14 +954,17 @@ void EyeApp::StartMiniPause() {
     logging::msg("StartMiniPause");
 
     int fullscreenDisplay = -1;
-    IsFullscreenAppRunning(&fullscreenDisplay);
+    HWND fullscreenWnd = 0;
+    IsFullscreenAppRunning(&fullscreenDisplay, &fullscreenWnd);
 
     if (_miniPauseWnds.empty()) {
         _userShortBreakCount++;
 
         for (int displayInd = 0; displayInd < osCaps.numDisplays; ++displayInd) {
-            if (fullscreenDisplay == displayInd)
+            if (fullscreenDisplay == displayInd) {
+                logging::msg(wxString::Format(L"Short break skipped on display %d because of fullscreen app: %s", displayInd, describeWindow(fullscreenWnd)));
                 continue;
+            }
 
             MiniPauseWindow *wnd = new MiniPauseWindow(displayInd, _userShortBreakCount);
             wnd->Init(_miniPauseFullscreenEnabled);
@@ -1050,6 +1105,9 @@ bool EyeApp::LoadSettings() {
         } else if (wcscmp(name, L"mini_pause_fullscreen_mode") == 0) {
             bool enabled = node.attribute(L"enabled").as_bool();
             _miniPauseFullscreenEnabled = enabled;
+        } else if (wcscmp(name, L"fullscreen_detection") == 0) {
+            bool enabled = node.attribute(L"enabled").as_bool();
+            _fullscreenDetectionEnabled = enabled;
         }
     }
     return true;
@@ -1186,6 +1244,10 @@ void EyeApp::SaveSettings() {
     nodeMiniPauseFullscreenMode.set_name(L"mini_pause_fullscreen_mode");
     nodeMiniPauseFullscreenMode.append_attribute(L"enabled") = GetMiniPauseFullscreenEnabled();
 
+    pugi::xml_node nodeFullscreenDetection = node.append_child(pugi::node_element);
+    nodeFullscreenDetection.set_name(L"fullscreen_detection");
+    nodeFullscreenDetection.append_attribute(L"enabled") = GetFullscreenDetectionEnabled();
+
     doc.save_file((GetSavePath() + L"settings.xml").wchar_str(), L"\t");
 }
 
@@ -1207,6 +1269,7 @@ void EyeApp::ResetSettings() {
     _settingInactivityTracking = true;
     _showNotificationsEnabled = true;
     _miniPauseFullscreenEnabled = false;
+    _fullscreenDetectionEnabled = true;
 }
 
 void EyeApp::ApplySettings() {

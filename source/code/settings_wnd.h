@@ -19,6 +19,7 @@ enum
 
     ID_SETTINGS_CHK_MINI_PAUSES,
     ID_SETTINGS_CHK_ENABLE_MINI_PAUSE_FULLSCREEN,
+    ID_SETTINGS_CHK_FULLSCREEN_DETECTION,
     ID_SETTINGS_SEL_MINI_PAUSE_INTERVAL,
     ID_SETTINGS_SEL_MINI_PAUSE_DURATION,
 
@@ -99,6 +100,7 @@ private:
     wxCheckBox *_chkShowNotifications;
 
     wxCheckBox *_chkMiniPauseFullscreenSizer;
+    wxCheckBox *_chkFullscreenDetection;
 
     wxString GetInformation() const;
 
@@ -118,6 +120,7 @@ public:
     void SetCanCloseNotifications(bool value);
     void SetShowNotificationsEnabled(bool value);
     void SetMiniPauseFullscreenSizerEnabled(bool value);
+    void SetFullscreenDetectionEnabled(bool value);
 
 private:
     bool GetBigPauseEnabled() const;
@@ -135,6 +138,7 @@ private:
     bool GetInactivityTrackingEnabled() const;
     bool GetShowNotificationsEnabled() const;
     bool GetMiniPauseFullscreenSizerEnabled() const;
+    bool GetFullscreenDetectionEnabled() const;
 
     static bool inited;
 

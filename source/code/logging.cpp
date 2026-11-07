@@ -1,5 +1,6 @@
 #include "logging.h"
 #include <stdarg.h>
+#include <wx/datetime.h>
 #include <wx/filefn.h>
 #ifdef WIN32
 #include "shlobj.h"
@@ -69,7 +70,8 @@ void msg(wxString const &msg) {
 #endif
 
     if (logFile) {
-        fwrite((const char *)msg.mb_str(wxConvUTF8), 1, msg.size(), logFile);
+        wxScopedCharBuffer line = (wxDateTime::Now().Format("%Y-%m-%d %H:%M:%S ") + msg).utf8_str();
+        fwrite(line.data(), 1, line.length(), logFile);
         fwrite("\n", 1, 1, logFile);
 
         fclose(logFile);

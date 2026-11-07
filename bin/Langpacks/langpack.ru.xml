@@ -60,6 +60,8 @@
 	<string id="settings_mini_pause_tooltip" text="Короткие перерывы проводятся чаще больших перерывов, но их длительность - всего несколько секунд. За это время вы можете снять немного напряжения с глаз." />
 	<string id="settings_mini_pause_fullscreen" text="Показывать короткие перерывы в полноэкранном режиме"/>
 	<string id="settings_mini_pause_fullscreen_tooltip" text="Когда полноэкранный режим активирован короткие перерывы отображаются также, как и большие перерывы - в виде полупрозрачного окна на весь экран. В противном случае они будут отображены как небольшие окна в центре экрана." />
+	<string id="settings_fullscreen_detection" text="Не показывать перерывы поверх полноэкранных приложений"/>
+	<string id="settings_fullscreen_detection_tooltip" text="Перерывы откладываются, пока активное окно занимает весь экран (игры, видео, презентации). Отключите, если перерывы пропускаются во время работы в обычных приложениях." />
 	<string id="settings_mini_pause_value_1" text="5 минут" />
 	<string id="settings_mini_pause_value_2" text="8 минут" />
 	<string id="settings_mini_pause_value_3" text="10 минут" />

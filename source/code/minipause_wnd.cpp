@@ -2,6 +2,7 @@
 #include "excercises.h"
 #include "image_resources.h"
 #include "language_set.h"
+#include "logging.h"
 #include "main.h"
 #include "oscapabilities.h"
 #include "wx/button.h"
@@ -42,6 +43,7 @@ MiniPauseWindow::MiniPauseWindow(int displayInd, unsigned int showCount)
     , _showCount(showCount)
     , _displayInd(displayInd)
     , _state(STATE_SHOWING)
+    , _activeSince(0)
     , _alpha(0.0f) {
     SetName(std::string("MiniPauseWindow") + (char)('0' + displayInd));
 }
@@ -102,6 +104,8 @@ void MiniPauseWindow::ExecuteTask(float f, long wentMs) {
             _state = MiniPauseWindow::STATE_ACTIVE;
 
             _timeLeft = 1000 * getApp()->GetMiniPauseDuration();
+            _activeSince = ::wxGetLocalTimeMillis();
+            logging::msg(wxString::Format("MiniPauseWindow %d shown at (%d, %d)", _displayInd, GetPosition().x, GetPosition().y));
 
             _controlsWnd->UpdateTimeLabel(_timeLeft);
 
@@ -119,6 +123,7 @@ void MiniPauseWindow::ExecuteTask(float f, long wentMs) {
         _controlsWnd->Update();
 
         if (_timeLeft <= 0) {
+            logging::msg(wxString::Format("MiniPauseWindow %d hides after %ld ms", _displayInd, (::wxGetLocalTimeMillis() - _activeSince).ToLong()));
             Hide();
         } else {
             g_TaskMgr->AddTask(GetName(), 100);

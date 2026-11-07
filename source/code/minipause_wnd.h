@@ -35,6 +35,7 @@ private:
     MiniPauseControls *_controlsWnd;
 
     int _timeLeft;
+    wxMilliClock_t _activeSince;
     int _showCount;
     int _displayInd;
 
